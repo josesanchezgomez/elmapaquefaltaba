@@ -1,0 +1,380 @@
+---
+/**
+ * EL BUCLE: el mecanismo, dibujado y con palabras.
+ *
+ * Va en #mapa, junto a la definición de «mecanismo» (el primer párrafo de
+ * MAPA.parrafos en contenido.ts), porque la dibuja: lo que vives, lo que sientes, cómo
+ * respondes y el alivio que te devuelve al mismo punto.
+ *
+ *   Algo duele → Lo tapas (el logro, la compra, la persona, el siguiente
+ *   entretenimiento, las sustancias) → Un rato bien → Vuelve → Algo duele…
+ *
+ * La vuelta está repasada varias veces, como un surco de tanto pasar por él,
+ * alrededor de una hondonada (el vacío que se rodea sin entrar). La otra
+ * opción es la turquesa: desde «Algo duele», en vez de taparlo, LO MIRAS. La
+ * línea entra en la hondonada y ahí se enciende: es el «Cuando empiezas a verlo
+ * con claridad…» del último párrafo de MAPA.parrafos (v9), dibujado.
+ *
+ * En el móvil el riel coral (el que viene dando vueltas desde el
+ * reconocimiento) entra en el bucle por la izquierda y, desde la hondonada
+ * encendida, el riel turquesa sigue bajando hasta el resto de la explicación:
+ * es la misma línea que recorre toda la página. En el escritorio el dibujo va
+ * a la derecha del texto y no lleva esos empalmes: la línea termina en la luz.
+ *
+ * La lista de «Lo tapas» es de José (26/09): cambió «el viaje» por «el
+ * siguiente entretenimiento» y añadió «las sustancias». «Lo miras» sustituye a
+ * «hacia dentro», que se leía al revés porque la línea salía del bucle. Los
+ * rótulos están aquí, no en contenido.ts (el cerrojo de verificar-texto solo
+ * admite allí frases de TEXTO-v7.md). El título del dibujo, lo que oye quien
+ * usa lector de pantalla, son esos mismos rótulos y ese último párrafo, literales.
+ */
+import { anillo, barbas, curva, muestrea, pincel, temblor, type Punto } from '../lib/trazo';
+import { TAM_ROTULO } from '../lib/mapa';
+import { MAPA } from '../contenido';
+
+interface Props {
+  variante: 'movil' | 'escritorio';
+}
+const { variante } = Astro.props;
+const conRiel = variante === 'movil';
+
+const ANCHO = 390;
+const ALTO = conRiel ? 452 : 410;
+// Centro de la vuelta. En el móvil el dibujo va 12 unidades más a la
+// izquierda: así la columna de «Lo tapas» (COL) deja 18 unidades de margen
+// con el borde de la pantalla (antes, 6) sin rozar la vuelta.
+// v6 (Poppins, más ancha que Instrument Serif): en el escritorio la vuelta va
+// más a la izquierda y más estrecha, y la lista de «Lo tapas» a su derecha,
+// alineada a la izquierda y con aire (José: «se mete entretenimiento en el dibujo»).
+const C: Punto = conRiel ? [164, 206] : [152, 206];
+// En el móvil la vuelta es 8 unidades más estrecha: a su izquierda cabe
+// «Vuelve» sin tocar el borde de la pantalla ni la vuelta, y a su derecha la
+// lista de «Lo tapas» al tamaño de los rótulos.
+const RX = conRiel ? 84 : 76;
+const RY = 120;
+// Tamaño de los rótulos, en unidades del dibujo (390 de ancho): el mismo que
+// los del mapa de la portada (TAM_ROTULO, 18,5). En el móvil el dibujo va a lo
+// ancho de la pantalla: a 320 se ven a 15,2 px. La lista de «Lo tapas» va al
+// mismo tamaño en el móvil; en el escritorio el bucle mide 380-520 px y la
+// lista puede ir más pequeña (16,5 → 16,1 px como poco) sin bajar de 15.
+const TAM = TAM_ROTULO;
+const TAM_OBJETOS = conRiel ? TAM_ROTULO : 16.5;
+const PASO_OBJETOS = Math.round(TAM_OBJETOS * 1.2);
+// La columna de «Lo tapas» va alineada a la derecha para que la línea larga
+// («entretenimiento,») crezca hacia el bucle sin salirse del móvil. En el
+// móvil empieza más abajo (a la altura de la estación): ahí la vuelta ya se
+// curva hacia dentro y la lista, más grande, no la roza.
+const COL = conRiel ? 372 : 152 + 76 + 20;
+const ANCLA_TAPAS = conRiel ? 'end' : 'start';
+const OBJETOS = ['el logro,', 'la compra,', 'la persona,', 'el siguiente', 'entretenimiento,', 'las sustancias'];
+
+/* Las cuatro estaciones, en el sentido de las agujas del reloj. */
+const en = (grados: number): Punto => {
+  const a = (grados * Math.PI) / 180;
+  return [C[0] + RX * Math.cos(a), C[1] + RY * Math.sin(a)];
+};
+const DUELE = en(-90);
+const TAPAS = en(0);
+const RATO = en(90);
+const VUELVE = en(180);
+
+/* La vuelta, repasada cuatro veces: cada pasada un poco distinta. */
+const vuelta = (semilla: number, k: number): string => {
+  const pts: Punto[] = [];
+  for (let i = 0; i < 16; i++) {
+    const a = (i / 16) * Math.PI * 2;
+    pts.push([C[0] + RX * k * Math.cos(a), C[1] + RY * k * Math.sin(a)]);
+  }
+  const linea = muestrea(pts, 4, true);
+  return curva(temblor(linea, 2.2, semilla).filter((_, i) => i % 3 === 0), true);
+};
+const pasadas = [
+  { d: vuelta(3, 1), clase: 'pasada pasada--1' },
+  { d: vuelta(8, 1.018), clase: 'pasada pasada--2' },
+  { d: vuelta(14, 0.985), clase: 'pasada pasada--3' },
+  { d: vuelta(21, 1.03), clase: 'pasada pasada--4' },
+];
+
+/* Flechitas del sentido, sobre la vuelta, entre estación y estación. La de
+   «Un rato bien → Vuelve» va a 150° y no a 135°: ahí la cruzaría la salida. */
+const flecha = (grados: number) => {
+  const [x, y] = en(grados);
+  const a = (grados * Math.PI) / 180;
+  const t: Punto = [-RX * Math.sin(a), RY * Math.cos(a)]; // tangente
+  const L = Math.hypot(t[0], t[1]);
+  const [ux, uy] = [t[0] / L, t[1] / L];
+  const l = 7;
+  const p1: Punto = [x - ux * l - uy * l * 0.7, y - uy * l + ux * l * 0.7];
+  const p2: Punto = [x - ux * l + uy * l * 0.7, y - uy * l - ux * l * 0.7];
+  return `M${p1[0].toFixed(1)} ${p1[1].toFixed(1)}L${x.toFixed(1)} ${y.toFixed(1)}L${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+};
+const flechas = [-45, 45, 150, 215].map(flecha).join('');
+
+/* La hondonada en el centro: el vacío que se rodea. */
+const H: Punto = [C[0] - 4, C[1] + 10];
+const curvas = [1, 0.6].map((k, i) => anillo([H[0] - 3 * i, H[1] + 3 * i], 46 * k, 34 * k, 61 + i * 9, 0.12, -10));
+
+/* «Lo miras»: desde «Algo duele», en vez de dar la vuelta, la línea entra en
+   la hondonada y termina en ella. Ahí se enciende. */
+const salida: Punto[] = [DUELE, [C[0] + 2, 128], [C[0] - 6, 174], H];
+const trazoSalida = pincel(salida, 3.4, 0.25, 12);
+const ejeSalida = curva(salida);
+
+/* En el móvil, el riel de la página sigue desde la luz hacia abajo, más fino:
+   no es otra salida del bucle, es el camino que continúa. */
+const riel = curva([H, [128, 250], [96, 290], [60, 340], [30, 398], [17, 432], [17, ALTO]]);
+
+/* El riel coral del reconocimiento entra por arriba y se suma a la vuelta. */
+const entrada = `M17 0L17 ${VUELVE[1] - 40}Q17 ${VUELVE[1]} ${VUELVE[0]} ${VUELVE[1]}`;
+
+const id = `bucle-${variante}`;
+
+/* Arriba de la lista de «Lo tapas» (su primer renglón). */
+const TAPAS_Y = conRiel ? TAPAS[1] - 16 : TAPAS[1] - 30;
+
+/* Lo que dice el dibujo, con sus propias palabras: los rótulos en su orden y
+   la frase de la explicación que dibuja «Lo miras» (el último párrafo). */
+const titulo = `Algo duele. Lo tapas: ${OBJETOS.join(' ').replace(/,$/, '')}. Un rato bien. Vuelve. Lo miras. ${MAPA.parrafos[MAPA.parrafos.length - 1]}`;
+---
+
+<figure class:list={['bucle', `bucle--${variante}`]} data-bucle>
+  <svg viewBox={`0 0 ${ANCHO} ${ALTO}`} role="img" aria-labelledby={`${id}-titulo`}>
+    <title id={`${id}-titulo`}>{titulo}</title>
+    <defs>
+      <mask id={`${id}-m`} maskUnits="userSpaceOnUse" x="-20" y="-20" width={ANCHO + 40} height={ALTO + 40}>
+        <path class="revela-salida" pathLength="1" d={ejeSalida} fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"></path>
+      </mask>
+      <radialGradient id={`${id}-luz`}>
+        <stop offset="0" stop-color="#5E998F" stop-opacity="0.55"></stop>
+        <stop offset="0.55" stop-color="#5E998F" stop-opacity="0.16"></stop>
+        <stop offset="1" stop-color="#5E998F" stop-opacity="0"></stop>
+      </radialGradient>
+    </defs>
+
+    <g class="bucle__hondonada">
+      {curvas.map((pts) => <path d={curva(pts, true)} />)}
+      <path class="bucle__barbas" d={barbas(curvas[0], H, 9, 5, 4)}></path>
+    </g>
+
+    {conRiel && <path class="bucle__entrada" d={entrada}></path>}
+
+    {pasadas.map((p) => <path class:list={p.clase} pathLength="1" d={p.d}></path>)}
+    <path class="bucle__flechas" d={flechas}></path>
+
+    {[DUELE, TAPAS, RATO, VUELVE].map(([x, y]) => <circle class="bucle__estacion" cx={x} cy={y} r="5.5"></circle>)}
+
+    {conRiel && <path class="bucle__riel" pathLength="1" d={riel}></path>}
+
+    <path class="bucle__salida" d={trazoSalida} mask={`url(#${id}-m)`}></path>
+
+    <g class="bucle__luz">
+      <ellipse cx={H[0]} cy={H[1]} rx="44" ry="34" fill={`url(#${id}-luz)`}></ellipse>
+      <circle cx={H[0]} cy={H[1]} r="6"></circle>
+    </g>
+
+    <g class="bucle__rotulos" font-size={TAM}>
+      <text x={DUELE[0]} y={DUELE[1] - 22} text-anchor="middle">Algo duele</text>
+      <text x={COL} y={TAPAS_Y} text-anchor={ANCLA_TAPAS}>
+        <tspan>Lo tapas:</tspan>
+        {OBJETOS.map((o, i) => (
+          <tspan class="bucle__objetos" font-size={TAM_OBJETOS} x={COL} dy={i === 0 ? PASO_OBJETOS + 4 : PASO_OBJETOS}>{o}</tspan>
+        ))}
+      </text>
+      <text x={RATO[0]} y={RATO[1] + 35} text-anchor="middle">Un rato bien</text>
+      {/* Pegado a su estación, por fuera de la vuelta y por debajo de donde
+          entra el riel coral: así no lo cruza ningún trazo. */}
+      <text x={VUELVE[0] - 8} y={VUELVE[1] + 44} text-anchor="end">Vuelve</text>
+      {/* En el móvil, a la derecha del riel que sigue bajando (no lo pisa). */}
+      <text class="bucle__dentro" x={H[0] + 24} y={conRiel ? H[1] + 52 : H[1] + 60} text-anchor="middle">Lo miras</text>
+    </g>
+  </svg>
+</figure>
+
+<style>
+  .bucle {
+    width: calc(100% + var(--sangria) + var(--dcha));
+    margin-left: calc(-1 * var(--sangria));
+  }
+
+  .bucle svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .bucle__hondonada path {
+    fill: var(--color-terreno);
+    stroke: var(--color-curva-nivel);
+    stroke-width: 1.1;
+  }
+
+  .bucle__hondonada .bucle__barbas {
+    fill: none;
+    stroke: var(--color-curva-nivel);
+    stroke-linecap: round;
+  }
+
+  .bucle__entrada {
+    fill: none;
+    stroke: var(--color-vuelta);
+    stroke-width: 2.2;
+    stroke-dasharray: 7 5;
+  }
+
+  /* La vuelta repasada: la primera pasada firme, las demás más gastadas. */
+  .pasada {
+    fill: none;
+    stroke: var(--color-vuelta);
+    stroke-linecap: round;
+  }
+  .pasada--1 {
+    stroke-width: 2.4;
+  }
+  .pasada--2 {
+    stroke-width: 1.5;
+    opacity: 0.6;
+  }
+  .pasada--3 {
+    stroke-width: 1.3;
+    opacity: 0.45;
+  }
+  .pasada--4 {
+    stroke-width: 1.1;
+    opacity: 0.3;
+  }
+
+  .bucle__flechas {
+    fill: none;
+    stroke: var(--color-vuelta);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .bucle__estacion {
+    fill: var(--banda);
+    stroke: var(--color-vuelta);
+    stroke-width: 2.2;
+  }
+
+  .bucle__salida {
+    fill: var(--color-hilo);
+  }
+
+  .bucle__riel {
+    fill: none;
+    stroke: var(--color-hilo);
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: 0.7;
+  }
+
+  /* La hondonada encendida: donde se mira, se ve. */
+  .bucle__luz circle {
+    fill: var(--color-hilo);
+  }
+
+  .bucle__rotulos text {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    fill: var(--color-vuelta-texto);
+    paint-order: stroke;
+    stroke: var(--banda);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+  }
+
+  .bucle__rotulos .bucle__objetos {
+    fill: var(--color-tinta-2);
+    font-style: normal;
+    font-family: var(--font-cuerpo);
+  }
+
+  .bucle__rotulos .bucle__dentro {
+    fill: var(--color-oro-texto);
+  }
+
+  @media (min-width: 1000px) {
+    .bucle {
+      width: 100%;
+      margin: 0;
+    }
+  }
+
+  /* El segundo momento: la vuelta se dibuja al llegar a ella, una vez. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .pasada {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+    :global(.js) .bucle__estacion,
+    :global(.js) .bucle__flechas,
+    :global(.js) .bucle__rotulos {
+      opacity: 0;
+      transition: opacity 500ms ease;
+    }
+    :global(.js) .revela-salida,
+    :global(.js) .bucle__riel {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+    :global(.js) .bucle__luz,
+    :global(.js) .bucle__rotulos .bucle__dentro {
+      opacity: 0;
+      transition: opacity 600ms ease;
+    }
+    :global(.js) .bucle[data-visto] .pasada {
+      animation: trazar-bucle 1.1s cubic-bezier(0.4, 0.1, 0.3, 1) forwards;
+    }
+    :global(.js) .bucle[data-visto] .pasada--2 {
+      animation-delay: 0.25s;
+    }
+    :global(.js) .bucle[data-visto] .pasada--3 {
+      animation-delay: 0.5s;
+    }
+    :global(.js) .bucle[data-visto] .pasada--4 {
+      animation-delay: 0.75s;
+    }
+    :global(.js) .bucle[data-visto] .bucle__estacion,
+    :global(.js) .bucle[data-visto] .bucle__flechas,
+    :global(.js) .bucle[data-visto] .bucle__rotulos {
+      opacity: 1;
+      transition-delay: 0.9s;
+    }
+    :global(.js) .bucle[data-visto] .revela-salida {
+      animation: trazar-bucle 900ms cubic-bezier(0.5, 0, 0.3, 1) 1.7s forwards;
+    }
+    /* Cuando la línea llega al centro, se enciende; después sigue el riel. */
+    :global(.js) .bucle[data-visto] .bucle__luz,
+    :global(.js) .bucle[data-visto] .bucle__rotulos .bucle__dentro {
+      opacity: 1;
+      transition-delay: 2.5s;
+    }
+    :global(.js) .bucle[data-visto] .bucle__riel {
+      animation: trazar-bucle 900ms ease-out 2.9s forwards;
+    }
+  }
+
+  @keyframes trazar-bucle {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>
+
+<script>
+  // Solo se anima si hay JavaScript (clase .js, puesta en Base.astro): sin él,
+  // el dibujo está entero desde el principio.
+  const bucles = document.querySelectorAll<HTMLElement>('[data-bucle]');
+  const io = new IntersectionObserver(
+    (entradas) =>
+      entradas.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.setAttribute('data-visto', '');
+        io.unobserve(e.target);
+      }),
+    { threshold: 0.35 }
+  );
+  bucles.forEach((b) => io.observe(b));
+</script>

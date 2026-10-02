@@ -1,0 +1,372 @@
+---
+/**
+ * La portada: el mapa que faltaba.
+ *
+ * Hay tres composiciones del mismo mapa y el CSS enseña una (así la portada
+ * sale bien dibujada aunque no haya JavaScript):
+ *   · MOVIL (móvil y tableta): encima del titular, a todo el ancho. Las cuatro
+ *     sendas salen de la casa y vuelven a ella; la turquesa baja cruzando la
+ *     hondonada y sale por abajo en x = 17, donde empieza el riel del texto.
+ *   · PORTATIL (1000–1279): a la izquierda del texto, con el hueco de arriba a
+ *     la derecha para la ventana de José.
+ *   · ESCRITORIO (desde 1280): a la derecha del texto, con el mismo hueco.
+ *
+ * La ventana de José («Escúchame medio minuto») ya no va aquí dentro: es
+ * Ventana.astro y en el HTML va DETRÁS de las acciones (el orden de Nacho:
+ * titular, párrafos y acciones, y debajo el clip). En el móvil se lee ahí; en
+ * el escritorio se coloca sobre su hueco del mapa.
+ *
+ * PARA RETOCAR EL MAPA se mueven los puntos de MOVIL, PORTATIL y ESCRITORIO: la
+ * casa (el punto al que vuelve todo), la hondonada, cada senda con su destino y
+ * su rótulo, y la senda turquesa. Regla: ningún rótulo toca un borde, otra
+ * senda ni otro texto, y en las dos de escritorio la zona de la ventana no la
+ * cruza nada.
+ *
+ * Los rótulos de todos los dibujos miden lo mismo: 18,5 unidades del dibujo
+ * (TAM_ROTULO en lib/mapa.ts; el bucle usa el mismo). En un móvil de 320 se ven
+ * a 15,2 px: nunca por debajo de 15.
+ */
+import { dibujaMapa, TAM_ROTULO, type Composicion } from '../lib/mapa';
+
+/* Móvil y tableta: 390 × 300. Sin ventana: el dibujo usa todo el ancho. Los
+   rótulos quedan a 14 unidades o más de cada borde (11 px a 320). */
+const MOVIL: Composicion = {
+  id: 'mm',
+  ancho: 390,
+  alto: 300,
+  encaje: 'xMidYMax meet',
+  casa: [214, 118],
+  hondonada: { centro: [150, 190], rx: 50, ry: 30, giro: -8 },
+  tamRotulo: TAM_ROTULO,
+  grosorRuta: 3.6,
+  sendas: [
+    {
+      rotulo: ['el siguiente logro'],
+      camino: [[228, 88], [244, 60]],
+      destino: [254, 40],
+      radio: 17,
+      texto: { x: 222, y: 30, ancla: 'end' },
+    },
+    {
+      rotulo: ['el siguiente', 'entretenimiento'],
+      camino: [[180, 104], [124, 88]],
+      destino: [86, 80],
+      radio: 17,
+      texto: { x: 14, y: 124, ancla: 'start' },
+    },
+    {
+      rotulo: ['la siguiente', 'compra'],
+      camino: [[254, 128], [300, 140]],
+      destino: [338, 150],
+      radio: 17,
+      texto: { x: 376, y: 196, ancla: 'end' },
+    },
+    {
+      rotulo: ['la siguiente persona'],
+      camino: [[234, 156], [248, 196]],
+      destino: [252, 228],
+      radio: 17,
+      texto: { x: 250, y: 274, ancla: 'middle' },
+    },
+  ],
+  ruta: [
+    [214, 118],
+    [204, 144],
+    [178, 168],
+    [152, 190],
+    [128, 208],
+    [92, 224],
+    [56, 242],
+    [30, 264],
+    [18, 286],
+    [17, 300],
+  ],
+};
+
+/* Portátil (1000–1279): 390 × 420, a la izquierda del texto. La ventana ocupa
+   x 214–374, y 0–315; ahí no entra nada. La senda turquesa sale por abajo en
+   x = 17, justo sobre el riel. «el siguiente entretenimiento» va en dos
+   renglones y el logro se aparta a la derecha para no rozarlo. */
+const PORTATIL: Composicion = {
+  id: 'mp',
+  ancho: 390,
+  alto: 420,
+  encaje: 'xMidYMax meet',
+  casa: [128, 206],
+  hondonada: { centro: [100, 282], rx: 50, ry: 36, giro: -8 },
+  tamRotulo: TAM_ROTULO,
+  grosorRuta: 3.6,
+  sendas: [
+    {
+      rotulo: ['el siguiente logro'],
+      camino: [[154, 150], [181, 100]],
+      destino: [190, 68],
+      radio: 19,
+      texto: { x: 206, y: 34, ancla: 'end' },
+    },
+    {
+      rotulo: ['el siguiente', 'entretenimiento'],
+      camino: [[92, 192], [60, 170]],
+      destino: [40, 150],
+      radio: 18,
+      texto: { x: 18, y: 92, ancla: 'start' },
+    },
+    {
+      rotulo: ['la siguiente', 'compra'],
+      camino: [[176, 250], [250, 324], [300, 336]],
+      destino: [338, 342],
+      radio: 18,
+      texto: { x: 372, y: 386, ancla: 'end' },
+    },
+    {
+      // Un poco a la izquierda y más arriba que «la siguiente compra»: lado a
+      // lado y a la misma altura se leían «la siguiente la siguiente».
+      rotulo: ['la siguiente', 'persona'],
+      camino: [[160, 262], [190, 306]],
+      destino: [200, 334],
+      radio: 18,
+      texto: { x: 184, y: 378, ancla: 'middle' },
+    },
+  ],
+  ruta: [
+    [128, 206],
+    [122, 236],
+    [108, 260],
+    [98, 284],
+    [104, 306],
+    [90, 330],
+    [60, 346],
+    [36, 364],
+    [22, 390],
+    [17, 408],
+    [17, 420],
+  ],
+};
+
+/* Escritorio: 760 × 820, a la derecha del texto. La ventana ocupa x 476–690,
+   y 0–430. La senda turquesa sale por la esquina de abajo a la izquierda,
+   bajando, y un conector la lleva hasta el riel del texto. */
+const ESCRITORIO: Composicion = {
+  id: 'me',
+  ancho: 760,
+  alto: 820,
+  encaje: 'xMinYMax meet',
+  casa: [300, 404],
+  hondonada: { centro: [256, 510], rx: 96, ry: 60, giro: -14 },
+  tamRotulo: 20,
+  grosorRuta: 4.4,
+  sendas: [
+    {
+      rotulo: ['el siguiente logro'],
+      camino: [[318, 310], [302, 228]],
+      destino: [292, 176],
+      radio: 28,
+      texto: { x: 292, y: 124, ancla: 'middle' },
+    },
+    {
+      rotulo: ['el siguiente', 'entretenimiento'],
+      camino: [[204, 356], [124, 318]],
+      destino: [88, 298],
+      radio: 26,
+      texto: { x: 40, y: 234, ancla: 'start' },
+    },
+    {
+      rotulo: ['la siguiente compra'],
+      camino: [[420, 452], [540, 486]],
+      destino: [612, 500],
+      radio: 27,
+      texto: { x: 612, y: 460, ancla: 'middle' },
+    },
+    {
+      rotulo: ['la siguiente persona'],
+      camino: [[378, 520], [436, 600]],
+      destino: [462, 630],
+      radio: 27,
+      texto: { x: 462, y: 694, ancla: 'middle' },
+    },
+  ],
+  ruta: [
+    [300, 404],
+    [296, 452],
+    [262, 510],
+    [224, 578],
+    [168, 660],
+    [100, 730],
+    [40, 780],
+    [8, 806],
+    [0, 820],
+  ],
+};
+---
+
+<div class="mapa" data-mapa>
+  <Fragment set:html={dibujaMapa(MOVIL, 'mapa__svg--movil')} />
+  <Fragment set:html={dibujaMapa(PORTATIL, 'mapa__svg--portatil')} />
+  <Fragment set:html={dibujaMapa(ESCRITORIO, 'mapa__svg--escritorio')} />
+</div>
+
+<style>
+  .mapa {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 390 / 300;
+  }
+
+  .mapa :global(.mapa__svg) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .mapa :global(.mapa__svg--portatil),
+  .mapa :global(.mapa__svg--escritorio) {
+    display: none;
+  }
+
+  /* ── El dibujo ── */
+  .mapa :global(.hondonada__curva) {
+    fill: var(--color-terreno);
+    stroke: var(--color-curva-nivel);
+    stroke-width: 1.2;
+  }
+
+  .mapa :global(.hondonada__curva--1) {
+    stroke: var(--color-curva-nivel-2);
+  }
+
+  .mapa :global(.hondonada__curva--2) {
+    stroke: var(--color-curva-nivel-3);
+  }
+
+  .mapa :global(.hondonada__barbas) {
+    fill: none;
+    stroke: var(--color-curva-nivel);
+    stroke-width: 1.1;
+    stroke-linecap: round;
+  }
+
+  .mapa :global(.senda) {
+    fill: none;
+    stroke: var(--color-vuelta);
+    stroke-width: 2.1;
+    stroke-dasharray: 6.5 4.6;
+    stroke-linecap: round;
+  }
+
+  .mapa :global(.destino) {
+    fill: var(--color-vuelta);
+  }
+
+  .mapa :global(.ruta) {
+    fill: var(--color-hilo);
+  }
+
+  .mapa :global(.casa) {
+    fill: var(--color-tinta);
+    stroke: var(--banda);
+    stroke-width: 2;
+  }
+
+  /* Los rótulos llevan su propio contraste: un halo de pizarra. */
+  .mapa :global(.topo) {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    fill: var(--color-vuelta-texto);
+    paint-order: stroke;
+    stroke: var(--banda);
+    stroke-width: 5px;
+    stroke-linejoin: round;
+    letter-spacing: 0.005em;
+  }
+
+  /* Tableta: la columna del móvil, centrada. */
+  @media (min-width: 600px) and (max-width: 999.98px) {
+    .mapa {
+      max-width: var(--ancho);
+      margin-inline: auto;
+    }
+  }
+
+  /* Portátil (1000–1279): el mapa a la izquierda y más grande, con su hueco
+     para la ventana; el texto a su derecha (index.astro). La senda sale justo
+     sobre el riel. --mapa-w lo pone la portada (index.astro). El margen deja
+     la salida de la senda (x = 17 de 390) justo sobre el riel (x = 24). */
+  @media (min-width: 1000px) and (max-width: 1279.98px) {
+    .mapa {
+      width: var(--mapa-w, 560px);
+      margin-left: calc(24px - var(--mapa-w, 560px) * 17 / 390);
+      aspect-ratio: 390 / 420;
+    }
+    .mapa :global(.mapa__svg--movil) {
+      display: none;
+    }
+    .mapa :global(.mapa__svg--portatil) {
+      display: block;
+    }
+  }
+
+  /* Escritorio ancho: el mapa grande a la derecha del texto, arriba. La senda
+     sale por su pie izquierdo y el conector de la portada (index.astro) la
+     lleva, a mano, hasta el riel. Su ancho y su derecha los pone la portada:
+     por encima de 1440 el mapa no crece ni se va al borde de la pantalla,
+     acompaña a la retícula de 1440 como la cabecera. */
+  @media (min-width: 1280px) {
+    .mapa {
+      position: absolute;
+      top: 0;
+      right: var(--mapa-derecha, 0px);
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      width: var(--mapa-ancho, min(52%, 800px));
+      aspect-ratio: auto;
+    }
+    .mapa :global(.mapa__svg--movil) {
+      display: none;
+    }
+    .mapa :global(.mapa__svg--escritorio) {
+      position: relative;
+      inset: auto;
+      display: block;
+      flex: none;
+      height: auto;
+      aspect-ratio: 760 / 820;
+    }
+  }
+
+  /* ── El único momento orquestado: el mapa se dibuja al llegar ── */
+  @keyframes trazar {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes aparecer {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .mapa :global(.mapa__revela) {
+      stroke-dasharray: 1;
+      animation: trazar 1.05s cubic-bezier(0.35, 0.1, 0.25, 1) both;
+      animation-delay: calc(var(--i) * 140ms + 150ms);
+    }
+    .mapa :global(.destino),
+    .mapa :global(.topo) {
+      animation: aparecer 420ms ease both;
+      animation-delay: calc(var(--i) * 140ms + 700ms);
+    }
+    .mapa :global(.mapa__revela--ruta) {
+      animation: trazar 900ms cubic-bezier(0.5, 0, 0.3, 1) both;
+      animation-delay: 1.3s;
+    }
+  }
+</style>

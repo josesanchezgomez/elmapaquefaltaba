@@ -1,0 +1,218 @@
+---
+/**
+ * Política de privacidad (RGPD, art. 13, y LOPDGDD). Mismos apartados que la de
+ * referencia que dio José (expertoenpersonalidad.com/politica-de-privacidad,
+ * 30/09), escritos para lo que hace esta web de verdad: dos formularios, el
+ * botón de WhatsApp, sin publicidad ni analítica, y con los derechos del RGPD,
+ * no los antiguos ARCO. El 01/10, contrastada con la que propuso Gemini a José:
+ * entra lo que faltaba (la visita a la web y su base legal, el botón de
+ * WhatsApp, quién es cada proveedor y dónde trata los datos, la copia que
+ * guarda Web3Forms) y no entra lo que no es cierto (texto/DECISIONES-v15.md).
+ * Pendiente de revisión legal: el consentimiento de los datos de salud (art. 9).
+ */
+import Base from '../layouts/Base.astro';
+import { MARCA, TITULAR } from '../consts';
+
+const correo = TITULAR.correo || '[ correo de contacto ]';
+const mailto = TITULAR.correo ? `mailto:${TITULAR.correo}` : undefined;
+---
+
+<Base
+  titulo="Política de privacidad · El mapa que faltaba"
+  noIndexar
+  descripcion="Qué datos se recogen en este sitio, para qué, durante cuánto tiempo y cómo ejercer tus derechos."
+>
+  <article class="envoltorio legal">
+    <h1>Política de privacidad</h1>
+    <p class="legal__fecha">Última actualización: 1 de octubre de 2026</p>
+    <p class="legal__entrada">
+      En corto: lo que escribes en el formulario o por WhatsApp lo lee José y lo usa para
+      contestarte. Nada más.
+    </p>
+
+    <section>
+      <h2>Quién trata tus datos</h2>
+      <ul class="datos">
+        <li>Responsable: {TITULAR.nombre}</li>
+        <li>NIF: {TITULAR.nif}</li>
+        <li>Domicilio: {TITULAR.domicilio}</li>
+        <li>Correo electrónico: <a href={mailto}>{correo}</a></li>
+        <li>Sitio web: {MARCA.dominio}</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Qué datos se recogen y para qué</h2>
+      <ul class="lista">
+        <li>
+          <strong>Al visitar la web:</strong> GitHub, que la aloja, registra de forma automática
+          datos técnicos de la visita, como tu dirección IP y tu navegador, para servirla y
+          protegerla. La web no usa cookies ni analítica.
+        </li>
+        <li>
+          <strong>Si escribes desde el formulario:</strong> tu nombre, tu correo y lo que
+          cuentes en las preguntas. Se usan para leerte, contestarte y valorar contigo si
+          encaja alguno de los caminos.
+        </li>
+        <li>
+          <strong>Si escribes por WhatsApp o por Instagram:</strong> José recibe tu número de
+          teléfono o tu usuario, el nombre y la foto de tu perfil y lo que escribas. Se usan
+          para contestarte, igual que lo del formulario. El botón de WhatsApp solo abre el chat
+          con un mensaje ya escrito: hasta que lo envías, José no recibe nada.
+        </li>
+        <li>
+          <strong>Si te apuntas a la lista de la escuela:</strong> tu nombre y tu correo. Se usan
+          solo para avisarte cuando la escuela abra.
+        </li>
+      </ul>
+      <p>
+        Tus datos no se usan para enviarte publicidad, no se venden ni se ceden a nadie y con ellos
+        no se toman decisiones automatizadas ni se elaboran perfiles.
+      </p>
+      <p>
+        Los campos que no son obligatorios lo dicen («si quieres»). Sin los obligatorios, el
+        formulario no se envía y no es posible contestarte.
+      </p>
+    </section>
+
+    <section>
+      <h2>Datos sobre tu salud</h2>
+      <p>
+        Es posible que, al contar tu caso, hables de tu salud. Esos datos solo se tratan con tu
+        consentimiento expreso, que das al marcar la casilla del formulario, y se usan únicamente
+        para contestarte. Si hablas de tu salud por WhatsApp o por Instagram, lo que cuentes se usa
+        igual: solo para contestarte.
+      </p>
+    </section>
+
+    <section>
+      <h2>Base legal</h2>
+      <ul class="lista">
+        <li>
+          <strong>Los formularios:</strong> tu consentimiento, que das al marcar la casilla antes
+          de enviarlos.
+        </li>
+        <li>
+          <strong>WhatsApp e Instagram:</strong> tu consentimiento, que das al empezar tú la
+          conversación.
+        </li>
+        <li>
+          <strong>La visita a la web:</strong> el interés legítimo en servirla y mantenerla segura.
+        </li>
+      </ul>
+      <p>
+        Puedes retirar tu consentimiento cuando quieras escribiendo a
+        <a href={mailto}>{correo}</a>; lo tratado hasta entonces sigue siendo válido.
+      </p>
+    </section>
+
+    <section>
+      <h2>Cuánto tiempo se guardan</h2>
+      <ul class="lista">
+        <li>
+          Lo que escribes en el formulario, por WhatsApp o por Instagram: mientras dure la
+          conversación y, como mucho, un año después del último mensaje. Web3Forms, que hace
+          llegar el formulario, guarda su propia copia hasta tres años y después la borra sola.
+        </li>
+        <li>
+          La lista de la escuela: hasta que se te avise de que abre o hasta que pidas salir de
+          ella.
+        </li>
+        <li>
+          Los datos técnicos de la visita: lo que fije GitHub, que los borra de forma automática.
+        </li>
+      </ul>
+      <p>En todos los casos, antes si pides que se borren.</p>
+    </section>
+
+    <section>
+      <h2>Quién más los ve</h2>
+      <p>
+        Nadie más los recibe, salvo que lo exija una ley. Para que la web funcione, algunos
+        proveedores los tratan por cuenta de José y solo para eso:
+      </p>
+      <ul class="lista">
+        <li>
+          <strong>Web3Forms</strong> (Web3Creative, que opera desde la India), que hace llegar lo que
+          envías en el formulario al correo de José. Usa servidores en la Unión Europea y en
+          Estados Unidos.
+        </li>
+        <li><strong>Google</strong> (Gmail), donde José recibe y contesta el correo.</li>
+        <li>
+          <strong>GitHub</strong> (GitHub Pages, de GitHub, Inc., en Estados Unidos), que aloja y sirve
+          la web. Como cualquier servidor, registra por seguridad la dirección IP de quien la visita.
+        </li>
+      </ul>
+      <p>
+        Los tres pueden tratar datos fuera del Espacio Económico Europeo, siempre con las garantías
+        que exige el RGPD: GitHub y Google, con el Marco de Privacidad de Datos UE-EE. UU. (una
+        decisión de adecuación de la Comisión Europea), y Web3Forms, con las cláusulas
+        contractuales tipo de la Comisión Europea.
+      </p>
+    </section>
+
+    <section>
+      <h2>WhatsApp, Instagram y YouTube</h2>
+      <p>
+        Si escribes por Instagram o WhatsApp, o si entras en el grupo de WhatsApp de la comunidad,
+        esas plataformas tratan tus datos según sus propias políticas, como responsables de sus
+        servicios: WhatsApp Ireland Limited y, en Instagram, Meta Platforms Ireland Limited. No
+        trabajan por cuenta de José. En el grupo, los demás miembros ven tu nombre, tu número y lo
+        que escribes. Lo que José recibe por esos canales lo usa igual que lo del formulario: para
+        contestarte.
+      </p>
+      <p>
+        Los vídeos no cargan nada de YouTube hasta que pulsas para verlos. Está explicado en la
+        <a href="/cookies">política de cookies</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Tus derechos</h2>
+      <p>
+        Puedes pedir acceder a tus datos, rectificarlos, borrarlos, limitar su uso, oponerte a que
+        se traten o llevártelos a otro sitio. Basta con escribir a <a href={mailto}>{correo}</a> o por correo postal al
+        domicilio de arriba. Si hace falta comprobar que eres tú, se te pedirá un documento que lo
+        acredite. Tendrás respuesta en un mes como mucho.
+      </p>
+      <p>
+        Si crees que algo no se ha hecho bien, puedes reclamar ante la Agencia Española de
+        Protección de Datos (aepd.es).
+      </p>
+    </section>
+
+    <section>
+      <h2>Lo que te toca a ti</h2>
+      <p>
+        Respondes de que los datos que das son ciertos y están al día. Si al contar tu caso hablas
+        de otra persona, cuenta solo lo necesario para que se entienda.
+      </p>
+    </section>
+
+    <section>
+      <h2>Menores de edad</h2>
+      <p>
+        Los servicios de este sitio están pensados para personas mayores de edad. Si tienes menos
+        de 14 años, no envíes ningún formulario sin el consentimiento de tus padres o tutores.
+      </p>
+    </section>
+
+    <section>
+      <h2>Seguridad</h2>
+      <p>
+        La web va cifrada y lo que escribes solo lo lee José. Se aplican las medidas técnicas y
+        organizativas razonables para que tus datos no se pierdan ni los vea quien no debe, aunque
+        ningún sistema conectado a internet es del todo invulnerable.
+      </p>
+    </section>
+
+    <section>
+      <h2>Cambios en esta política</h2>
+      <p>
+        Si esta política cambia, el cambio se publica aquí antes de aplicarse, con su fecha. La ley
+        que la rige es la española, junto con el Reglamento General de Protección de Datos (UE)
+        2016/679 y la Ley Orgánica 3/2018 de Protección de Datos Personales.
+      </p>
+    </section>
+  </article>
+</Base>

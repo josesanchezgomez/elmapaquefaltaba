@@ -1,0 +1,600 @@
+---
+/**
+ * El formulario: la carta (portada y 1 a 1) y la lista de la escuela.
+ *
+ * La decisión que lo gobierna: EL PRIMER CAMPO ES LA PREGUNTA, NO LA IDENTIDAD.
+ * Primero se escribe lo que duele; los datos van al final y con motivo
+ * («para responderte»). Solo la primera pregunta es obligatoria: una
+ * respuesta buena vale más que cuatro abandonadas. Etiquetas y botón salen
+ * de CONTACTO (y el botón de la escuela, de ESCUELA.avisame).
+ *
+ * Las otras tres («si quieres») se pliegan tras «Tres preguntas más (si
+ * quieres)» cuando hay JavaScript, en la portada y en el 1 a 1; sin él se ven
+ * todas. Se comprueba al enviar (nada grita en rojo mientras se
+ * escribe): el aviso sale bajo el campo, el foco va al primero que falta y el
+ * aviso se quita al corregir.
+ *
+ * EL ENVÍO, en mejora progresiva:
+ *   · Sin JavaScript: POST normal a Web3Forms, que redirige con su campo
+ *     `redirect` a /gracias (carta) o a /gracias-lista (escuela). Avisa el
+ *     propio navegador si falta algo.
+ *   · Con JavaScript: se envía por detrás (fetch, respuesta en JSON). Solo si
+ *     Web3Forms contesta success: true se pasa a la página de gracias. Si
+ *     falla (HTTP no ok, success: false, red caída o 20 s sin respuesta),
+ *     sale CONTACTO.error junto al botón en una región role="alert", no se
+ *     borra nada de lo escrito y el botón vuelve a estar disponible.
+ *   Mientras envía, el botón queda ocupado (aria-busy) sin desactivarse: si se
+ *   desactivara, el foco del teclado se perdería al pulsarlo.
+ */
+import { CONTACTO, ESCUELA } from '../contenido';
+import { FORMULARIO, REDES } from '../consts';
+
+interface Props {
+  /** 'completo' las cuatro preguntas · 'escuela' lista de espera. */
+  variante?: 'completo' | 'escuela';
+  asunto: string;
+  /** El texto del botón de enviar, si la página lo cambia (1 a 1: Nacho, 30/09). */
+  boton?: string;
+}
+const { variante = 'completo', asunto, boton } = Astro.props;
+
+/** Los id llevan prefijo para no chocar con los de la página ni entre sí. */
+const id = (nombre: string) => `f-${variante}-${nombre}`;
+const [principal, ...opcionales] = CONTACTO.campos;
+/** Adónde lleva el envío: cada formulario tiene su página de gracias. */
+const gracias = new URL(variante === 'escuela' ? '/gracias-lista' : '/gracias', Astro.site).href;
+/** El aviso de fallo, con «Instagram.» como salida (abre el privado). El punto
+    va dentro del enlace: así la frase sigue entera, sin corte antes del punto,
+    y verificar-texto la encuentra literal. */
+const [falloAntes, falloDespues] = CONTACTO.error.split('Instagram.');
+---
+
+<form class="carta" action={FORMULARIO.endpoint} method="POST" data-formulario>
+  <input type="hidden" name="access_key" value={FORMULARIO.clave} />
+  <input type="hidden" name="subject" value={asunto} />
+  <input type="hidden" name="from_name" value="El mapa que faltaba" />
+  <input type="hidden" name="redirect" value={gracias} />
+  {/* Trampa para robots: fuera de la vista y del tabulador. */}
+  <input type="checkbox" name="botcheck" class="trampa" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+  {
+    variante === 'completo' && (
+      <>
+        <p class="campo campo--principal">
+          <label for={id('campo-0')}>{principal.etiqueta}</label>
+          <textarea id={id('campo-0')} name={principal.etiqueta} rows={principal.filas} required={!principal.opcional} />
+        </p>
+
+        <button type="button" class="mas-boton" aria-expanded="true" aria-controls={id('mas')} data-mas-boton hidden>
+          <span class="mas-boton__ico" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 12 12">
+              <path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+          </span>
+          Tres preguntas más (si quieres)
+        </button>
+
+        <div class="mas" id={id('mas')} data-mas>
+          <div>
+            {opcionales.map((campo, i) => (
+              <p class="campo">
+                <label for={id(`campo-${i + 1}`)}>
+                  {campo.etiqueta} {campo.opcional && <span class="opcional">(si quieres)</span>}
+                </label>
+                <textarea id={id(`campo-${i + 1}`)} name={campo.etiqueta} rows={campo.filas} required={!campo.opcional} />
+              </p>
+            ))}
+          </div>
+        </div>
+
+        <p class="campo">
+          <label for={id('nombre')}>{CONTACTO.nombre}</label>
+          <input id={id('nombre')} name="Nombre" type="text" autocomplete="name" required />
+        </p>
+        <p class="campo">
+          <label for={id('contacto')}>{CONTACTO.contacto}</label>
+          <input id={id('contacto')} name="Correo" type="email" autocomplete="email" required />
+        </p>
+      </>
+    )
+  }
+
+  {
+    variante === 'escuela' && (
+      <>
+        <p class="campo">
+          <label for={id('nombre')}>{CONTACTO.nombre}</label>
+          <input id={id('nombre')} name="Nombre" type="text" autocomplete="name" required />
+        </p>
+        <p class="campo">
+          <label for={id('correo')}>Tu correo</label>
+          <input id={id('correo')} name="Correo" type="email" autocomplete="email" required />
+        </p>
+      </>
+    )
+  }
+
+  <p class="consentimiento">
+    <input id={id('consiento')} name="Consentimiento" type="checkbox" required />
+    <span class="consentimiento__caja" aria-hidden="true">
+      <svg viewBox="0 0 14 14"><path d="M2 7.5l3.2 3.2L12 3.6" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </span>
+    <label for={id('consiento')}>
+      {
+        variante === 'completo' ? (
+          <>
+            He leído y acepto la <a href="/privacidad">política de privacidad</a>, y que uses lo que te cuento,
+            también si habla de mi salud, solo para contestarme.
+          </>
+        ) : (
+          <>
+            He leído y acepto la <a href="/privacidad">política de privacidad</a>.
+          </>
+        )
+      }
+    </label>
+  </p>
+
+  <button type="submit" class="boton boton--ancho carta__enviar">
+    {boton ?? (variante === 'completo' ? CONTACTO.boton : ESCUELA.avisame.boton)}
+  </button>
+  {/* El aviso de fallo del envío. La región está siempre (vacía): así el
+      lector de pantalla la anuncia al llenarse. El texto viaja en la plantilla. */}
+  <p class="carta__fallo" role="alert" data-fallo></p>
+  <template data-fallo-texto>
+    {falloAntes}<a href={REDES.instagramDM} target="_blank" rel="noopener noreferrer">Instagram.</a>{falloDespues}
+  </template>
+
+  <slot />
+</form>
+
+<style>
+  .carta {
+    margin-top: 28px;
+  }
+
+  /* Trampa para robots: invisible para las personas y fuera del tabulador. */
+  .trampa {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    pointer-events: none;
+  }
+
+  .campo {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0 0 22px;
+  }
+
+  /* Las preguntas de la carta: Besley 600 en el paso TEXTO; la primera, que
+     hace de titular, en el TÍTULO 3. */
+  label {
+    max-width: 30ch;
+    font: 600 var(--t-texto) / 1.35 var(--font-cuerpo);
+    letter-spacing: 0;
+    color: var(--color-tinta);
+  }
+
+  /* La primera pregunta hace de titular de la carta. */
+  .campo--principal label {
+    font-size: var(--t-3);
+    line-height: 1.22;
+  }
+
+  /* En el escritorio el campo mide 640 px: la pregunta usa todo el ancho y
+     no se parte a 350 px encima de él. */
+  @media (min-width: 1000px) {
+    label {
+      max-width: none;
+    }
+  }
+
+  /* «(si quieres)», siempre en su renglón bajo la pregunta y a la misma
+     distancia en las tres (antes cambiaba de sitio según se partiera). */
+  .opcional {
+    display: block;
+    margin-top: 2px;
+    font: 400 var(--t-nota) / 1.3 var(--font-cuerpo);
+    letter-spacing: 0;
+    color: var(--color-tinta-2);
+  }
+
+  textarea,
+  input[type='text'],
+  input[type='email'] {
+    width: 100%;
+    min-height: 52px;
+    padding: 13px 14px;
+    border: 1.6px solid var(--color-borde-campo);
+    border-radius: var(--radio);
+    background: var(--color-campo);
+    color: var(--color-tinta);
+    font: 400 var(--t-ui) / 1.55 var(--font-cuerpo);
+    resize: vertical;
+    transition:
+      border-color var(--t-rapida),
+      background-color var(--t-rapida);
+  }
+
+  /* Renglones de carta dentro de las preguntas. */
+  textarea {
+    background-image: linear-gradient(to bottom, transparent calc(100% - 1px), rgba(28, 42, 37, 0.08) calc(100% - 1px));
+    background-size: 100% 26.35px;
+    background-position: 0 13px;
+    background-attachment: local;
+  }
+
+  textarea:hover,
+  input:hover {
+    border-color: var(--color-tinta-2);
+  }
+
+  textarea:focus-visible,
+  input[type='text']:focus-visible,
+  input[type='email']:focus-visible {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 2px;
+    border-color: var(--color-acento);
+  }
+
+  /* Estado de error: en la paleta de la casa, no el globo rojo del navegador. */
+  .carta [aria-invalid='true'] {
+    border-color: var(--color-vuelta-texto);
+  }
+
+  .carta :global(.error) {
+    display: block;
+    font-size: var(--t-nota);
+    line-height: 1.4;
+    color: var(--color-vuelta-texto);
+  }
+
+  /* ── Las tres preguntas «si quieres» ── */
+  .mas-boton {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 48px;
+    margin: -6px 0 18px;
+    padding: 8px 2px;
+    border: 0;
+    background: none;
+    color: var(--color-acento);
+    font: 600 var(--t-ui) / 1.2 var(--font-cuerpo);
+    cursor: pointer;
+  }
+
+  .mas-boton[hidden] {
+    display: none;
+  }
+
+  .mas-boton__ico {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1.6px var(--color-acento);
+  }
+
+  .mas {
+    display: grid;
+    grid-template-rows: 1fr;
+  }
+
+  .mas > div {
+    min-height: 0;
+    overflow: hidden;
+    /* Holgura para que el contorno de foco de los campos no salga recortado. */
+    margin-inline: -8px;
+    padding: 0 8px;
+  }
+
+  .mas[data-cerrado] {
+    grid-template-rows: 0fr;
+    visibility: hidden;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .mas {
+      transition:
+        grid-template-rows 320ms ease,
+        visibility 0s;
+    }
+  }
+
+  /* ── La casilla: 44 px de zona táctil, con el estilo de la marca ── */
+  .consentimiento {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px;
+    margin: 8px 0 24px;
+  }
+
+  .consentimiento input {
+    position: absolute;
+    z-index: 1;
+    /* 44 × 44 con el cuadrado (24 px, 1 px más abajo) justo en su centro. */
+    left: -10px;
+    top: -9px;
+    width: 44px;
+    height: 44px;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .consentimiento__caja {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 24px;
+    height: 24px;
+    margin-top: 1px;
+    border-radius: 4px;
+    background: var(--color-campo);
+    box-shadow: inset 0 0 0 1.6px var(--color-borde-campo);
+    transition: background-color var(--t-rapida);
+    /* El cuadrado solo se ve: el toque es del input invisible que va encima. */
+    pointer-events: none;
+  }
+
+  .consentimiento__caja svg {
+    width: 14px;
+    height: 14px;
+    opacity: 0;
+  }
+
+  .consentimiento input:checked + .consentimiento__caja {
+    background: var(--color-oliva);
+    box-shadow: none;
+  }
+
+  .consentimiento input:checked + .consentimiento__caja svg {
+    opacity: 1;
+  }
+
+  .consentimiento input:focus-visible + .consentimiento__caja {
+    outline: 2px solid var(--color-acento);
+    outline-offset: 3px;
+  }
+
+  .consentimiento input[aria-invalid='true'] + .consentimiento__caja {
+    box-shadow: inset 0 0 0 1.6px var(--color-vuelta-texto);
+  }
+
+  .consentimiento label {
+    flex: 1;
+    max-width: none;
+    font: 400 var(--t-nota) / 1.45 var(--font-cuerpo);
+    letter-spacing: 0;
+    color: var(--color-tinta-2);
+    cursor: pointer;
+  }
+
+  .consentimiento label a {
+    display: inline-block;
+    padding: 12px 0;
+    margin: -12px 0;
+    color: var(--color-acento);
+    text-underline-offset: 3px;
+  }
+
+  .consentimiento :global(.error) {
+    flex-basis: 100%;
+    padding-left: 36px;
+  }
+
+  /* El envío, un poco más alto que un botón normal; la letra, la de todos. */
+  .carta__enviar {
+    min-height: 58px;
+  }
+
+  .carta__enviar[aria-busy='true'] {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  /* El fallo del envío, junto al botón. Vacío no ocupa nada. Con texto, un
+     filete coral a la izquierda (el mismo coral de los avisos de los campos)
+     y la tinta principal: es una frase que hay que leer entera. */
+  .carta__fallo:not(:empty) {
+    margin-top: 14px;
+    padding: 2px 0 2px 14px;
+    border-left: 3px solid var(--color-vuelta-texto);
+    font-size: var(--t-nota);
+    line-height: 1.5;
+    color: var(--color-tinta);
+  }
+
+  /* 44 px de zona táctil sin mover la línea de sitio. */
+  .carta__fallo a {
+    display: inline-block;
+    padding: 12px 2px;
+    margin: -12px -2px;
+    color: var(--color-oliva);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 4px;
+  }
+</style>
+
+<script>
+  const AVISOS = {
+    falta: 'Rellena este campo para poder enviarlo.',
+    casilla: 'Marca la casilla para poder enviarlo.',
+    correo: 'Revisa el correo: le falta algo para ser válido.',
+    otro: 'Revisa este campo.',
+  };
+  const quieto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  document.querySelectorAll<HTMLFormElement>('[data-formulario]').forEach((formulario) => {
+    /* ── Las tres preguntas «si quieres», plegadas tras su botón ── */
+    const mas = formulario.querySelector<HTMLElement>('[data-mas]');
+    const masBoton = formulario.querySelector<HTMLButtonElement>('[data-mas-boton]');
+    if (mas && masBoton) {
+      mas.setAttribute('data-cerrado', '');
+      mas.setAttribute('inert', '');
+      masBoton.hidden = false;
+      masBoton.setAttribute('aria-expanded', 'false');
+      masBoton.addEventListener('click', () => {
+        mas.removeAttribute('data-cerrado');
+        mas.removeAttribute('inert');
+        masBoton.setAttribute('aria-expanded', 'true');
+        // Cuando termina de abrirse, el botón se va y el foco entra en la primera.
+        window.setTimeout(() => {
+          masBoton.hidden = true;
+          mas.querySelector<HTMLTextAreaElement>('textarea')?.focus();
+        }, quieto ? 0 : 320);
+      });
+    }
+
+    /* ── Avisos ── */
+    // Con JavaScript, los avisos los pone la página; sin él, el navegador.
+    formulario.noValidate = true;
+    const boton = formulario.querySelector<HTMLButtonElement>('button[type="submit"]');
+    const campos = [...formulario.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[required]')];
+
+    const aviso = (campo: HTMLInputElement | HTMLTextAreaElement) => {
+      if (campo.validity.valueMissing) return campo.type === 'checkbox' ? AVISOS.casilla : AVISOS.falta;
+      if (campo.validity.typeMismatch) return AVISOS.correo;
+      return AVISOS.otro;
+    };
+
+    /** Marca o desmarca un campo. Devuelve si es válido. */
+    const revisar = (campo: HTMLInputElement | HTMLTextAreaElement) => {
+      const idError = `${campo.id}-error`;
+      let error = document.getElementById(idError);
+      // Un campo con solo espacios cuenta como vacío.
+      if (campo.type !== 'checkbox' && campo.value.trim() === '') campo.value = '';
+
+      if (campo.checkValidity()) {
+        campo.removeAttribute('aria-invalid');
+        campo.removeAttribute('aria-describedby');
+        error?.remove();
+        return true;
+      }
+      if (!error) {
+        error = document.createElement('span');
+        error.className = 'error';
+        error.id = idError;
+        campo.closest('p')?.append(error);
+      }
+      error.textContent = aviso(campo);
+      campo.setAttribute('aria-invalid', 'true');
+      campo.setAttribute('aria-describedby', idError);
+      return false;
+    };
+
+    // Un campo ya marcado se vuelve a mirar al corregirlo, para quitar el aviso.
+    campos.forEach((campo) => {
+      const alCambiar = () => {
+        if (campo.getAttribute('aria-invalid') === 'true') revisar(campo);
+      };
+      campo.addEventListener('input', alCambiar);
+      campo.addEventListener('change', alCambiar);
+    });
+
+    /* ── El envío ── */
+    const fallo = formulario.querySelector<HTMLElement>('[data-fallo]');
+    const falloTexto = formulario.querySelector<HTMLTemplateElement>('[data-fallo-texto]');
+    const redirect = formulario.querySelector<HTMLInputElement>('input[name="redirect"]');
+    let enviando = false;
+
+    /** Botón ocupado (o libre). No se desactiva: el foco seguiría en él. */
+    const ocupado = (si: boolean) => {
+      enviando = si;
+      if (!boton) return;
+      if (si) {
+        boton.setAttribute('aria-busy', 'true');
+        boton.setAttribute('aria-disabled', 'true');
+      } else {
+        boton.removeAttribute('aria-busy');
+        boton.removeAttribute('aria-disabled');
+      }
+    };
+
+    const quitarFallo = () => fallo?.replaceChildren();
+
+    /** El aviso de fallo junto al botón. Se vacía y se vuelve a llenar para
+        que el lector de pantalla lo anuncie también la segunda vez. */
+    const mostrarFallo = () => {
+      if (!fallo || !falloTexto) return;
+      quitarFallo();
+      window.setTimeout(() => fallo.replaceChildren(falloTexto.content.cloneNode(true)), 60);
+    };
+
+    /** Envía por detrás. Devuelve true solo si Web3Forms dice success: true. */
+    const enviar = async () => {
+      const datos = new FormData(formulario);
+      // La redirección la hace la página: la respuesta tiene que ser JSON.
+      datos.delete('redirect');
+      // En JSON, como en la documentación de Web3Forms: con FormData, los
+      // nombres de los campos con tilde («¿Qué te gustaría…?») llegaban rotos
+      // al correo («Â¿QuÃ©…»).
+      const cuerpo: Record<string, FormDataEntryValue> = Object.fromEntries(datos);
+      // «Responder» en el correo va a quien ha escrito (su correo).
+      const correo = formulario.querySelector<HTMLInputElement>('input[autocomplete="email"]')?.value.trim() ?? '';
+      if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) cuerpo.replyto = correo;
+      const corte = new AbortController();
+      const reloj = window.setTimeout(() => corte.abort(), 20000);
+      try {
+        const respuesta = await fetch(formulario.action, {
+          method: 'POST',
+          body: JSON.stringify(cuerpo),
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          signal: corte.signal,
+        });
+        if (!respuesta.ok) return false;
+        const json = await respuesta.json().catch(() => null);
+        return json?.success === true;
+      } catch {
+        return false;
+      } finally {
+        window.clearTimeout(reloj);
+      }
+    };
+
+    formulario.addEventListener('submit', (evento) => {
+      if (enviando) {
+        evento.preventDefault();
+        return;
+      }
+      const malos = campos.filter((campo) => !revisar(campo));
+      if (malos.length) {
+        evento.preventDefault();
+        malos[0].focus();
+        return;
+      }
+      // Sin fetch (navegador muy antiguo), el envío normal: Web3Forms redirige.
+      if (typeof fetch !== 'function' || !redirect) {
+        ocupado(true);
+        return;
+      }
+      evento.preventDefault();
+      quitarFallo();
+      ocupado(true);
+      enviar().then((bien) => {
+        if (bien) {
+          // A la página de gracias de ESTA web (la ruta del campo redirect): en
+          // una web de pruebas no salta al dominio definitivo.
+          window.location.assign(new URL(redirect.value).pathname);
+          return;
+        }
+        ocupado(false);
+        mostrarFallo();
+      });
+    });
+
+    // Si se vuelve atrás desde la página de gracias, el botón no se queda ocupado.
+    window.addEventListener('pageshow', () => ocupado(false));
+  });
+</script>

@@ -1,0 +1,42 @@
+---
+/**
+ * La foto a sangre de una cabecera (portada y páginas), detrás del velo y del
+ * titular. Son fotos de José o suyas (FONDOS en consts.ts, 01/10): ya no hay
+ * fotos de stock. `foco` dice qué parte de la foto se queda a la vista cuando
+ * la cabecera la recorta (en el móvil, sobre todo).
+ *
+ * Nitidez (José, 02/10: «se ve poco nítida»): cada cabecera está en cuatro
+ * anchos (`-1280`, `-1600`, el fichero base de 1920 y `-2560`) y el navegador
+ * coge el que pide su pantalla: una de 1920, la de 1920; un portátil de retina,
+ * la de 2560. En el móvil se le dice 520 px a propósito: coge la de 1280 o la de
+ * 1600, como antes, porque la de 2560 subía la carga de la portada de 2 a 4 s
+ * en un móvil con 4G lenta. La foto entera (16:9) ocupa justo el ancho.
+ */
+import { FONDOS } from '../consts';
+
+interface Props {
+  foto: keyof typeof FONDOS;
+  /** La forma de la cabecera: la portada (más alta), una página o la foto entera (16:9). */
+  forma?: 'portada' | 'pagina' | 'entera';
+}
+const { forma = 'pagina' } = Astro.props;
+const f = FONDOS[Astro.props.foto];
+const sizes = forma === 'entera' ? '100vw' : '(max-width: 899.98px) 520px, 100vw';
+const base = f.src.replace(/\.webp$/, '');
+const srcset = `${base}-1280.webp 1280w, ${base}-1600.webp 1600w, ${f.src} 1920w, ${base}-2560.webp 2560w`;
+---
+
+<figure class="heroe__fondo">
+  <img
+    src={f.src}
+    srcset={srcset}
+    sizes={sizes}
+    width={f.ancho}
+    height={f.alto}
+    alt={f.alt}
+    style={`object-position: ${f.foco}`}
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  />
+</figure>

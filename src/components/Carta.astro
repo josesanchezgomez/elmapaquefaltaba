@@ -1,0 +1,172 @@
+---
+/**
+ * La carta: el contacto por escrito. Se usa en la portada y en el
+ * acompañamiento 1 a 1, las dos veces dentro de una .admision (la misma
+ * retícula). El título y la entrada cambian por página (por defecto, los de
+ * la portada: CONTACTO.titulo y CONTACTO.entrada).
+ *
+ * La promesa con su cara (Promesa.astro): en la portada va en la entrada,
+ * tras sus dos frases, como la escribe Nacho (30/09); en el 1 a 1, junto al
+ * botón. Debajo de todo, la salida ligera (José, 01/10): «También puedes
+ * escribirme por:» y los botones de Instagram (al privado) y de WhatsApp (a su
+ * número, con su mensaje ya escrito). Juntos si caben; si no, uno bajo otro.
+ *
+ * El botón de WhatsApp (con el número cifrado) es BotonWhatsApp.astro.
+ */
+import Formulario from './Formulario.astro';
+import BotonWhatsApp from './BotonWhatsApp.astro';
+import Promesa from './Promesa.astro';
+import { CONTACTO } from '../contenido';
+import { atarCortas, negritas } from '../lib/texto';
+import { REDES } from '../consts';
+
+interface Props {
+  asunto: string;
+  /** El título de la carta (h2). */
+  titulo?: string;
+  /** La entrada bajo el título: un párrafo por línea del brief. */
+  entrada?: readonly string[];
+  /** La promesa va en la entrada (portada) y no junto al botón (1 a 1). */
+  promesaArriba?: boolean;
+  /** El texto del botón de enviar (por defecto, CONTACTO.boton). */
+  boton?: string;
+  /** El mensaje que WhatsApp deja escrito (por defecto, CONTACTO.mensajeWhatsApp). */
+  mensajeWhatsApp?: string;
+}
+const {
+  asunto,
+  titulo = CONTACTO.titulo,
+  entrada = CONTACTO.entrada,
+  promesaArriba = false,
+  boton,
+  mensajeWhatsApp: mensaje = CONTACTO.mensajeWhatsApp,
+} = Astro.props;
+---
+
+<div class:list={['carta-caja', { 'carta-caja--promesa-arriba': promesaArriba }]}>
+  {/* La cabeza de la carta va junta: en la admisión, en el escritorio ancho,
+      ocupa la columna izquierda y acompaña al formulario (ver abajo). El
+      «lado» es solo el recorrido de esa compañía. */}
+  <div class="carta-caja__lado">
+    <div class="carta-caja__cabeza">
+      <h2 set:html={atarCortas(titulo)} />
+      <div class="carta-caja__entrada">
+        {entrada.map((p) => <p set:html={negritas(p)} />)}
+      </div>
+      {promesaArriba && <Promesa />}
+    </div>
+  </div>
+
+  <Formulario variante="completo" asunto={asunto} boton={boton}>
+    {!promesaArriba && <Promesa />}
+  </Formulario>
+
+  <p class="carta-caja__privado">{CONTACTO.privado}</p>
+  <div class="puertas">
+    <a class="boton boton--linea" href={REDES.instagramDM} target="_blank" rel="noopener noreferrer">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+        <circle cx="12" cy="12" r="4"></circle>
+        <circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"></circle>
+      </svg>
+      Instagram
+    </a>
+    <BotonWhatsApp mensaje={mensaje} />
+  </div>
+</div>
+
+<style>
+  /* v6: la página de contacto de la plantilla. Una tarjeta blanca con
+     sombra; a la izquierda, el panel lima («Let's get in touch») con el
+     título, la entrada y la promesa; a la derecha, el formulario. Dentro del
+     lima, todo en tinta oscura (el gris no llega a 4,5:1 sobre el lima). */
+  .carta-caja {
+    overflow: hidden;
+    border-radius: var(--radio);
+    background: #fff;
+    box-shadow: var(--sombra);
+  }
+
+  .carta-caja__lado {
+    padding: clamp(28px, 4vw, 48px);
+    background: var(--color-oro);
+    color: var(--color-sobre-oro);
+  }
+
+  .carta-caja__lado :global(h2),
+  .carta-caja__lado :global(p),
+  .carta-caja__lado :global(strong),
+  .carta-caja__lado :global(b) {
+    color: var(--color-sobre-oro);
+  }
+
+  .carta-caja > :global(form),
+  .carta-caja__privado,
+  .puertas {
+    margin-inline: clamp(24px, 4vw, 48px);
+  }
+
+  .carta-caja > :global(form) {
+    margin-top: clamp(28px, 4vw, 48px);
+  }
+
+  .carta-caja__entrada {
+    margin-top: 20px;
+    max-width: 40ch;
+  }
+
+  .carta-caja__entrada p + p {
+    margin-top: 10px;
+  }
+
+  .carta-caja__privado {
+    margin-top: 36px;
+    text-wrap: balance;
+  }
+
+  /* Instagram y WhatsApp, uno junto a otro si caben; si no, uno bajo otro. */
+  .puertas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    max-width: 440px;
+    margin-top: 16px;
+    margin-bottom: clamp(28px, 4vw, 48px);
+  }
+
+  .puertas .boton {
+    padding-inline: 16px;
+  }
+
+  @media (min-width: 1100px) {
+    .carta-caja {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      grid-template-rows: auto auto 1fr;
+      align-items: start;
+      max-width: 1140px;
+      margin-inline: auto;
+    }
+    .carta-caja__lado {
+      grid-column: 1;
+      grid-row: 1 / span 3;
+      align-self: stretch;
+    }
+    .carta-caja__cabeza {
+      position: sticky;
+      top: calc(var(--cab) + 32px);
+    }
+    .carta-caja > :global(form) {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .carta-caja__privado {
+      grid-column: 2;
+      grid-row: 2;
+    }
+    .puertas {
+      grid-column: 2;
+      grid-row: 3;
+    }
+  }
+</style>

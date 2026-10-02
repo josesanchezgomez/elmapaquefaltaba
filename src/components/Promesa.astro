@@ -1,0 +1,81 @@
+---
+/**
+ * La promesa de la carta: su cara, grande y nítida, y «Lo leo yo. Te contesto
+ * yo.». En la portada va en la entrada de la carta, tras sus dos frases (así la
+ * escribe Nacho, 30/09); en el 1 a 1, junto al botón de enviar.
+ */
+import { CONTACTO } from '../contenido';
+import { FOTOS } from '../consts';
+
+const [uno, ...resto] = CONTACTO.firma.split('. ');
+---
+
+<div class="promesa">
+  <img
+    class="promesa__cara"
+    data-cara
+    src={FOTOS.carta.src}
+    width={FOTOS.carta.ancho}
+    height={FOTOS.carta.alto}
+    alt={FOTOS.carta.alt}
+    loading="lazy"
+    decoding="async"
+  />
+  <p class="promesa__frase"><span>{uno}.</span> <span>{resto.join('. ')}</span></p>
+</div>
+
+<style>
+  .promesa {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 22px;
+  }
+
+  .promesa__cara {
+    flex: none;
+    width: 118px;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radio);
+  }
+
+  /* Una frase suelta, paso ENUNCIADO. */
+  .promesa__frase {
+    font: 400 var(--t-enunciado) / 1.1 var(--font-display);
+    letter-spacing: -0.015em;
+  }
+
+  /* Cada frase en su renglón y entera: nunca un «yo.» suelto. */
+  .promesa__frase span {
+    display: block;
+    white-space: nowrap;
+  }
+
+  /* En los móviles más estrechos la foto cede para que «Te contesto yo.»
+     quepa en su renglón. */
+  @media (max-width: 374px) {
+    .promesa__cara {
+      width: 104px;
+    }
+    .promesa {
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 359.98px) {
+    .promesa__cara {
+      width: 84px;
+    }
+    .promesa {
+      gap: 14px;
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .promesa__cara {
+      width: 150px;
+    }
+  }
+</style>

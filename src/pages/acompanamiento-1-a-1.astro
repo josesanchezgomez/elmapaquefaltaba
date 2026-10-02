@@ -1,0 +1,273 @@
+---
+/**
+ * ACOMPAÑAMIENTO 1 A 1 · texto v10 (versión 4, 30/09, segunda pasada).
+ *
+ * Ajuste de Nacho del 30/09: el 1 a 1 no se presenta como un pack que se
+ * evalúa o se compra desde la web, sino como una conversación: «resueno con
+ * José → siento que entiende lo que me pasa → quiero contarle mi caso →
+ * hablamos → José me explica cómo trabajaría conmigo → decido». Sin precio,
+ * número de sesiones ni duración en ninguna parte de la página.
+ *
+ * v6 (plantilla LifeCoach): cabecera con foto a sangre (el árbol de dos troncos) y
+ * migas; los bloques de la plantilla (foto y texto, tarjetas con icono,
+ * banda turquesa, pasos en círculos). El orden y el texto, los de la v5:
+ *   1 · La cabeza: la pregunta, los cinco párrafos, la ficha («Acompañamiento
+ *       individual online. Primero hablamos…»), el botón y su promesa.
+ *   2 · Trabajamos sobre situaciones reales de tu vida (y lo espiritual).
+ *   3 · Puede encajar contigo si…
+ *   4 · Qué vamos a trabajar: la entrada y cuatro bloques.
+ *   5 · No acompaño esto solo porque lo haya estudiado.
+ *   6 · Cómo empezamos: cinco pasos.
+ *   7 · Yo puedo acompañarte, pero no puedo hacer el proceso por ti.
+ *   8 · Preguntas frecuentes (plegables).
+ *   9 · La carta, con «Quiero contarte mi caso».
+ *
+ * La acción («Cuéntame tu caso») baja siempre a la carta de esta página.
+ */
+import Base from '../layouts/Base.astro';
+import FotoFondo from '../components/FotoFondo.astro';
+import Icono from '../components/Icono.astro';
+import Frecuentes from '../components/Frecuentes.astro';
+import Carta from '../components/Carta.astro';
+import { ACCION, ACOMPANAMIENTO as A, CONTACTO, SEO } from '../contenido';
+import { OG } from '../lib/og';
+import { migas, preguntas, servicio } from '../lib/esquema';
+import { FOTOS, MARCA } from '../consts';
+import { atarCortas, negritas, esFuerte } from '../lib/texto';
+
+const [uno, ...resto] = CONTACTO.firma.split('. ');
+// Un icono por bloque de «Qué vamos a trabajar», en su orden.
+const ICONOS = ['bucle', 'lupa', 'mano', 'camino'] as const;
+---
+
+<Base
+  titulo={SEO.acompanamiento.titulo}
+  descripcion={SEO.acompanamiento.descripcion}
+  og={OG.acompanamiento}
+  esquema={(site, ruta) => [migas(site, ruta, A.antetitulo), servicio(site, ruta), preguntas(site, ruta, A.frecuentes.lista)]}
+  barra={{ texto: ACCION.caso, href: '#contacto', ocultarSobre: '#contacto' }}
+>
+  {/* 1 · La cabecera con foto (el árbol de dos troncos) y migas; el titular,
+       a la derecha, donde la foto deja aire */}
+  <section class="heroe heroe--pagina heroe--derecha" aria-labelledby="t-uno">
+    <FotoFondo foto="unoAUno" />
+    <div class="envoltorio">
+      <div class="heroe__bloque">
+        <nav aria-label="Estás en">
+          <ol class="migas">
+            <li><a href="/">Inicio</a></li>
+            <li aria-current="page">{A.antetitulo}</li>
+          </ol>
+        </nav>
+        <h1 id="t-uno">{A.titulo}</h1>
+      </div>
+    </div>
+  </section>
+
+  {/* 2 · La entrada, la ficha y el botón, junto a su foto */}
+  <section class="banda banda--salvia" aria-label={A.antetitulo}>
+    <div class="envoltorio partida partida--al-reves">
+      <figure class="partida__foto foto-marco">
+        <img src={FOTOS.americana.src} width={FOTOS.americana.ancho} height={FOTOS.americana.alto} alt={FOTOS.americana.alt} loading="lazy" decoding="async" />
+      </figure>
+      <div class="partida__texto">
+        <p class="antetitulo">{A.antetitulo}</p>
+        {A.parrafos.map((p) => <p class:list={{ fuerte: esFuerte(p) }} set:html={negritas(p)} />)}
+        <p class="ficha">{A.ficha}</p>
+        <div class="acciones" data-accion-principal>
+          <a class="boton" href="#contacto">{ACCION.caso}</a>
+          <p class="quien-firma">
+            <strong>{MARCA.persona}</strong> · {uno}. <span class="nw">{resto.join('. ')}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* 3 · Situaciones reales y la dimensión espiritual */}
+  <section class="banda banda--papel" aria-labelledby="t-sesiones">
+    <div class="envoltorio">
+      <div class="cabeza-seccion">
+        <h2 id="t-sesiones" set:html={atarCortas(A.sesiones.titulo)} />
+      </div>
+      <div class="columna">
+        {A.sesiones.parrafos.map((p) => <p>{p}</p>)}
+        {A.espiritualidad.map((p) => <p>{p}</p>)}
+      </div>
+    </div>
+  </section>
+
+  {/* 4 · Puede encajar contigo si… */}
+  <section class="banda banda--salvia" aria-labelledby="t-encaja">
+    <div class="envoltorio">
+      <div class="cabeza-seccion">
+        <h2 id="t-encaja" set:html={atarCortas(A.encaja.titulo)} />
+      </div>
+      <ul class="puntos">
+        {A.encaja.lineas.map((l) => <li>{l}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  {/* 5 · Qué vamos a trabajar: las tarjetas con icono de la plantilla */}
+  <section class="banda banda--papel" aria-labelledby="t-trabajo">
+    <div class="envoltorio">
+      <div class="cabeza-seccion">
+        <h2 id="t-trabajo" set:html={atarCortas(A.trabajo.titulo)} />
+        <p>{A.trabajo.entrada}</p>
+      </div>
+      <div class="tarjetas tarjetas--4">
+        {
+          A.trabajo.bloques.map((b, i) => (
+            <article class="tarjeta">
+              <span class="circulo"><Icono nombre={ICONOS[i] ?? 'camino'} /></span>
+              <h3>{b.nombre}</h3>
+              <p>{b.texto}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* 6 · No acompaño esto solo porque lo haya estudiado: su tarjeta sobre el gris.
+       El turquesa se queda solo para la cita de Jung de la portada (la voz de
+       otro, como los testimonios de la plantilla): una sola pausa. */}
+  <section class="banda banda--salvia" aria-labelledby="t-autoridad">
+    <div class="envoltorio">
+      <div class="caja uno-autoridad">
+        <h2 id="t-autoridad" class="raya" set:html={atarCortas(A.autoridad.titulo)} />
+        <div class="columna">
+          {A.autoridad.parrafos.map((p) => <p>{p}</p>)}
+        </div>
+        <p class="frase uno-cierre">{A.autoridad.cierre}</p>
+      </div>
+    </div>
+  </section>
+
+  {/* 7 · Cómo empezamos: los pasos en sus círculos */}
+  <section class="banda banda--papel" aria-labelledby="t-proceso">
+    <div class="envoltorio">
+      <div class="cabeza-seccion">
+        <h2 id="t-proceso" set:html={atarCortas(A.proceso.titulo)} />
+      </div>
+      <ol class="pasos uno-pasos">
+        {
+          A.proceso.pasos.map((p) => (
+            <li>
+              <h3>{p.nombre}</h3>
+              <p>{p.texto}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  {/* 8 · El compromiso */}
+  <section class="banda banda--salvia" aria-labelledby="t-compromiso">
+    <div class="envoltorio">
+      <div class="cabeza-seccion">
+        <h2 id="t-compromiso" set:html={atarCortas(A.compromiso.titulo)} />
+      </div>
+      <div class="columna">
+        {A.compromiso.parrafos.map((p) => <p class:list={{ fuerte: esFuerte(p) }} set:html={negritas(p)} />)}
+      </div>
+    </div>
+  </section>
+
+  {/* 9 · Preguntas frecuentes */}
+  <section class="banda banda--papel" aria-label={A.frecuentes.titulo}>
+    <div class="envoltorio">
+      <Frecuentes lista={A.frecuentes.lista} titulo={A.frecuentes.titulo} />
+    </div>
+  </section>
+
+  {/* 10 · La carta */}
+  <section class="banda banda--salvia admision" id="contacto">
+    <div class="envoltorio admision__dentro">
+      <Carta
+        asunto="Cuéntame tu caso — acompañamiento 1 a 1"
+        titulo={A.contacto.titulo}
+        entrada={A.contacto.entrada}
+        boton={A.contacto.boton}
+      />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .foto-marco {
+    overflow: hidden;
+    border-radius: var(--radio);
+    box-shadow: var(--sombra);
+  }
+
+  .partida__foto img {
+    aspect-ratio: 3 / 4;
+  }
+
+  /* LA FICHA: qué es y cómo se empieza, con la raya lima a la izquierda. */
+  .ficha {
+    max-width: 44ch;
+    margin-top: 26px !important;
+    padding-left: 16px;
+    border-left: 3px solid var(--color-oro);
+    color: var(--color-tinta);
+    font-size: var(--t-destacado);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .quien-firma {
+    margin-top: 14px;
+    font-size: var(--t-nota);
+    line-height: 1.35;
+  }
+
+  .quien-firma strong {
+    font-weight: 600;
+  }
+
+  @media (min-width: 600px) {
+    .acciones .quien-firma {
+      margin-top: 0;
+    }
+  }
+
+  /* La autoridad: la tarjeta blanca sobre el gris. */
+  .uno-autoridad {
+    max-width: 900px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .uno-autoridad .columna {
+    margin-top: 28px;
+    text-align: left;
+  }
+
+  .uno-autoridad p {
+    color: var(--color-tinta-2);
+  }
+
+  .uno-cierre {
+    margin-top: 32px;
+  }
+
+  .uno-autoridad .uno-cierre {
+    color: var(--color-tinta);
+  }
+
+  .uno-pasos {
+    max-width: 1240px;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 1100px) {
+    .uno-pasos {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 28px;
+    }
+  }
+</style>

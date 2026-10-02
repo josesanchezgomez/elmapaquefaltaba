@@ -1,0 +1,140 @@
+---
+/**
+ * Los caminos, a la manera de los «paquetes» de la plantilla LifeCoach:
+ * tarjetas blancas con sombra (cuatro desde el 01/10, con el grupal), el nombre en mayúsculas espaciadas, el
+ * dato donde la plantilla pone el precio («Gratis.», «En preparación.»; el 1 a 1
+ * no lleva: primero se habla), el texto y el botón lima al pie, a caballo del
+ * borde. Sin precios. Todo sale de CAMINOS.lista (contenido.ts).
+ */
+import Icono from './Icono.astro';
+import { CAMINOS } from '../contenido';
+import { atarCifras } from '../lib/texto';
+
+// El icono de cada camino, por su destino.
+const ICONOS: Record<string, Parameters<typeof Icono>[0]['nombre']> = {
+  '/acompanamiento-1-a-1#contacto': 'conversacion',
+  '/acompanamiento-grupal': 'encuentro',
+  '/comunidad': 'grupo',
+  '/escuela': 'libro',
+};
+---
+
+<div class="paquetes">
+  {
+    CAMINOS.lista.map((camino) => (
+      <article class:list={['paquete', { 'paquete--preparacion': camino.estado === 'en-preparacion' }]}>
+        <span class="circulo">
+          <Icono nombre={ICONOS[camino.ruta] ?? 'camino'} />
+        </span>
+        <h3 class="paquete__nombre">{camino.nombre}</h3>
+        {'dato' in camino && camino.dato && <p class="paquete__dato">{atarCifras(camino.dato)}</p>}
+        <p class="paquete__texto">{camino.texto}</p>
+        <p class="paquete__accion">
+          <a class="boton" href={camino.ruta}>{camino.accion}</a>
+        </p>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .paquetes {
+    display: grid;
+    gap: 56px 30px;
+  }
+
+  .paquete {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 36px 30px 0;
+    border-radius: var(--radio);
+    background: #fff;
+    box-shadow: var(--sombra);
+    text-align: center;
+  }
+
+  .paquete .circulo {
+    margin-bottom: 22px;
+  }
+
+  /* El nombre, como el de los paquetes: mayúsculas espaciadas. */
+  .paquete__nombre {
+    font: 600 14px / 1.4 var(--font-cuerpo);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  /* Donde la plantilla pone el precio. */
+  .paquete__dato {
+    margin-top: 10px;
+    color: var(--color-tinta);
+    font: 500 26px / 1.2 var(--font-display);
+  }
+
+  .paquete__texto {
+    margin-top: 14px;
+  }
+
+  /* El botón, al pie y a caballo del borde de la tarjeta (como en la plantilla). */
+  .paquete__accion {
+    margin-top: auto;
+    padding-top: 26px;
+    transform: translateY(25px);
+  }
+
+  /* En el móvil (01/10, «mucho scroll»): la tarjeta, en compacto. El icono
+     pequeño a la izquierda del nombre, el texto a la izquierda y el botón
+     dentro, a lo ancho: cada tarjeta ocupaba más de media pantalla. */
+  @media (max-width: 699.98px) {
+    .paquetes {
+      gap: 16px;
+    }
+    .paquete {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 0 14px;
+      padding: 22px 20px;
+      text-align: left;
+    }
+    .paquete .circulo {
+      width: 46px;
+      height: 46px;
+      margin: 0;
+    }
+    .paquete .circulo :global(svg) {
+      width: 22px;
+      height: 22px;
+    }
+    .paquete__dato,
+    .paquete__texto,
+    .paquete__accion {
+      grid-column: 1 / -1;
+    }
+    .paquete__dato {
+      margin-top: 12px;
+      font-size: 22px;
+    }
+    .paquete__texto {
+      margin-top: 10px;
+    }
+    .paquete__accion {
+      padding-top: 16px;
+      transform: none;
+    }
+    .paquete__accion :global(.boton) {
+      width: 100%;
+    }
+  }
+
+  /* Cuatro: de dos en dos (en una fila de cuatro, los botones se parten en
+     tres renglones). */
+  @media (min-width: 700px) {
+    .paquetes {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: 980px;
+      margin-inline: auto;
+    }
+  }
+</style>

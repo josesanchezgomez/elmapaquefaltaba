@@ -1,0 +1,113 @@
+---
+/**
+ * Aviso legal (LSSI, art. 10). Mismos apartados que el de referencia que dio
+ * José (expertoenpersonalidad.com/aviso-legal, 30/09), escritos para esta web
+ * y con sus datos, que viven en TITULAR (src/consts.ts).
+ */
+import Base from '../layouts/Base.astro';
+import { MARCA, TITULAR } from '../consts';
+
+const correo = TITULAR.correo || '[ correo de contacto ]';
+const mailto = TITULAR.correo ? `mailto:${TITULAR.correo}` : undefined;
+---
+
+<Base
+  titulo="Aviso legal · El mapa que faltaba"
+  noIndexar
+  descripcion="Quién es el titular de este sitio y en qué condiciones se usa."
+>
+  <article class="envoltorio legal">
+    <h1>Aviso legal</h1>
+    <p class="legal__fecha">Última actualización: 30 de septiembre de 2026</p>
+
+    <section>
+      <h2>Titular del sitio</h2>
+      <p>
+        En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la
+        Sociedad de la Información y de Comercio Electrónico (LSSI-CE), estos son los datos del
+        titular de este sitio:
+      </p>
+      <ul class="datos">
+        <li>Nombre y apellidos: {TITULAR.nombre}</li>
+        <li>NIF: {TITULAR.nif}</li>
+        <li>Domicilio: {TITULAR.domicilio}</li>
+        <li>Correo electrónico: <a href={mailto}>{correo}</a></li>
+        <li>Nombre comercial: {MARCA.nombre}</li>
+        <li>Sitio web: {MARCA.dominio}</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Uso del sitio</h2>
+      <p>
+        Este sitio informa sobre los servicios de acompañamiento y formación de su titular y permite
+        ponerse en contacto con él. Navegar por él supone aceptar este aviso legal, la
+        <a href="/privacidad">política de privacidad</a> y la
+        <a href="/cookies">política de cookies</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Los contenidos</h2>
+      <p>
+        Los textos y vídeos de este sitio tienen un carácter informativo y divulgativo. Cuentan la
+        experiencia y el enfoque de trabajo de su titular.
+      </p>
+      <p>
+        El titular cuida que lo publicado sea correcto y esté al día, pero, dentro de los límites
+        que marca la ley, no responde de los errores u omisiones que pudiera haber ni de las
+        decisiones que cada persona tome a partir de esa información.
+      </p>
+    </section>
+
+    <section>
+      <h2>Naturaleza de los servicios</h2>
+      <p>
+        Los servicios que se ofrecen aquí son de <strong>coaching y acompañamiento personal</strong>.
+        Son complementarios al tratamiento convencional: si estás siguiendo uno, no tienes que
+        abandonarlo.
+      </p>
+    </section>
+
+    <section>
+      <h2>Enlaces a otros sitios</h2>
+      <p>
+        Este sitio enlaza con servicios de terceros, como YouTube, Instagram o WhatsApp, que el
+        titular no controla. Cada uno tiene sus propias condiciones y su política de privacidad, y
+        el titular no responde de sus contenidos ni de su funcionamiento.
+      </p>
+    </section>
+
+    <section>
+      <h2>Propiedad intelectual</h2>
+      <p>
+        Los textos, imágenes, dibujos, vídeos y demás contenidos de este sitio son de su titular o
+        de quienes le han dado permiso para usarlos, salvo las citas, que pertenecen a sus autores.
+        Reproducirlos, distribuirlos, transformarlos o comunicarlos públicamente, en todo o en
+        parte, requiere su consentimiento expreso.
+      </p>
+      <p>
+        El diseño parte de la plantilla «LifeCoach» de
+        <a href="https://colorlib.com" target="_blank" rel="nofollow noopener noreferrer">Colorlib</a>, con licencia
+        <a href="https://creativecommons.org/licenses/by/3.0/deed.es" target="_blank" rel="nofollow noopener noreferrer">Creative Commons Reconocimiento 3.0</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Datos personales</h2>
+      <p>
+        Para escribir al titular o apuntarte a la lista de la escuela hay que dar algunos datos
+        personales. Qué se hace con ellos, durante cuánto tiempo y cómo ejercer tus derechos está
+        en la <a href="/privacidad">política de privacidad</a>.
+      </p>
+    </section>
+
+    <section>
+      <h2>Legislación aplicable</h2>
+      <p>
+        Este aviso legal se rige por la legislación española. Cualquier controversia derivada del
+        uso de este sitio se resolverá conforme a ella.
+      </p>
+    </section>
+  </article>
+</Base>

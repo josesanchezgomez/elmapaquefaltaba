@@ -1,0 +1,238 @@
+---
+/**
+ * v6 (plantilla LifeCoach): cabecera con foto a sangre (José en la ladera, con su perro) y
+ * migas; los bloques de la plantilla. El texto y el orden, los de la v5.
+ *
+ * LA COMUNIDAD · texto v9 (versión 4, 30/09, segunda pasada: la paleta y la
+ * letra de la web de ChatGPT, retícula centrada; ver texto/DECISIONES-v9.md).
+ *
+ * Nacho: la comunidad no vende con la intensidad del 1 a 1; deja entrar con
+ * poca fricción. La cabeza son cuatro párrafos y el último, en negrita, dice
+ * que se puede participar, preguntar o solo escuchar. «Cómo funciona» (texto de
+ * José del 30/09, noche) cierra con «Un espacio cuidado» en su cartel.
+ *
+ * Se entra por el enlace directo al grupo (decisión de José, 25/09): «Quiero
+ * entrar» abre WhatsApp en otra pestaña. Pegada a cada botón va una sola nota
+ * (C.aviso; José, 01/10: «Pulsa para ir a La comunidad, es un grupo de
+ * WhatsApp.»). En la barra fija ocupa el sitio de la firma.
+ *
+ * Aquí no va la salida por Instagram con «MAPA»: sería otra ruta compitiendo
+ * con la única acción de la página.
+ */
+import Base from '../layouts/Base.astro';
+import FotoFondo from '../components/FotoFondo.astro';
+import Frecuentes from '../components/Frecuentes.astro';
+import { COMUNIDAD as C, SEO } from '../contenido';
+import { OG } from '../lib/og';
+import { migas, preguntas } from '../lib/esquema';
+import { REDES } from '../consts';
+import { atarCortas, negritas, esFuerte } from '../lib/texto';
+---
+
+<Base
+  titulo={SEO.comunidad.titulo}
+  descripcion={SEO.comunidad.descripcion}
+  og={OG.comunidad}
+  esquema={(site, ruta) => [migas(site, ruta, C.antetitulo), preguntas(site, ruta, C.frecuentes.lista)]}
+  barra={{ texto: C.boton, href: REDES.whatsapp, externo: true, ocultarSobre: '#entrar', nota: C.aviso }}
+>
+  {/* La cabecera con foto (José en la ladera, con su perro) y migas */}
+  <section class="heroe heroe--pagina heroe--entera comunidad-heroe" aria-labelledby="t-comunidad">
+    <FotoFondo foto="comunidad" forma="entera" />
+    <div class="envoltorio">
+      <nav aria-label="Estás en">
+        <ol class="migas">
+          <li><a href="/">Inicio</a></li>
+          <li aria-current="page">{C.antetitulo}</li>
+        </ol>
+      </nav>
+      <h1 id="t-comunidad">{C.titulo}</h1>
+    </div>
+  </section>
+
+  {/* La entrada y el botón, en su columna (01/10: sin dibujo) */}
+  <section class="banda banda--papel" aria-label={C.antetitulo}>
+    <div class="envoltorio">
+      <div class="partida__texto entrada-sola">
+        <p class="antetitulo">{C.antetitulo}</p>
+        {C.parrafos.map((p) => <p class:list={{ fuerte: esFuerte(p) }} set:html={negritas(p)} />)}
+        <div class="acciones comunidad-accion" data-accion-principal>
+          <a class="boton" href={REDES.whatsapp} target="_blank" rel="noopener noreferrer">{C.boton}</a>
+          <p class="comunidad-accion__pegado">
+            <span>{C.aviso}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="banda banda--salvia" aria-labelledby="t-desde">
+    <div class="envoltorio">
+      <div class="cabeza-seccion">
+        <h2 id="t-desde" set:html={atarCortas(C.desde.titulo)} />
+      </div>
+      <div class="columna">
+        {C.desde.parrafos.map((p) => <p class:list={{ fuerte: esFuerte(p) }} set:html={negritas(p)} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="banda banda--papel" aria-labelledby="t-encontraras">
+    <div class="envoltorio">
+      <div class="cabeza-seccion">
+        <h2 id="t-encontraras" set:html={atarCortas(C.encontraras.titulo)} />
+      </div>
+      <ul class="puntos">
+        {C.encontraras.lineas.map((l) => <li>{l}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="banda banda--salvia" aria-labelledby="t-funciona">
+    <div class="envoltorio">
+      <div class="cabeza-seccion">
+        <h2 id="t-funciona" set:html={atarCortas(C.funciona.titulo)} />
+      </div>
+      <div class="columna">
+        {C.funciona.parrafos.map((p) => <p class:list={{ fuerte: esFuerte(p) }} set:html={negritas(p)} />)}
+        <div class="norma caja">
+          <h3>{C.funciona.cuidado.titulo}</h3>
+          {C.funciona.cuidado.parrafos.map((p) => <p>{p}</p>)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="banda banda--papel" aria-label={C.frecuentes.titulo}>
+    <div class="envoltorio">
+      <Frecuentes lista={C.frecuentes.lista} titulo={C.frecuentes.titulo} />
+    </div>
+  </section>
+
+  {/* El cierre, en la banda gris (José, 30/09: «no debería ser azul sino gris») */}
+  <section class="banda banda--salvia comunidad-cierre" id="entrar" aria-labelledby="t-entrar">
+    <div class="envoltorio">
+      <h2 id="t-entrar" class="raya" set:html={atarCortas(C.cierre.titulo)} />
+      <p class="comunidad-cierre__texto">
+        {C.cierre.lineas.map((linea, i) => (i ? <> <span set:html={negritas(linea)} /></> : <span set:html={negritas(linea)} />))}
+      </p>
+      <div class="acciones acciones--centro comunidad-accion">
+        <a class="boton" href={REDES.whatsapp} target="_blank" rel="noopener noreferrer">{C.boton}</a>
+        <p class="comunidad-accion__pegado">
+          <span>{C.aviso}</span>
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* La cabecera (José, 01/10: «no me hagas zoom»): en el móvil, la foto
+     entera (16:9). En el escritorio, como mucho 560 px (José, 02/10: «esta
+     imagen es muy grande»): la foto se ve a todo lo ancho, sin ampliarla, y
+     el encuadre baja hasta José. El titular, más estrecho, a su izquierda. */
+  .heroe--entera {
+    min-height: min(56.25vw, 560px);
+  }
+
+  @media (max-width: 899.98px) {
+    .heroe--entera {
+      padding-block: 20px;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .comunidad-heroe h1 {
+      max-width: 20ch;
+    }
+  }
+
+  /* La entrada, sin el dibujo (José, 01/10): en la columna de lectura. */
+  .entrada-sola {
+    max-width: var(--columna);
+    margin-inline: auto;
+  }
+
+  .entrada-sola .antetitulo {
+    text-align: left;
+  }
+
+  .comunidad-accion__pegado {
+    margin-top: 10px;
+    font-size: var(--t-nota);
+    line-height: 1.45;
+  }
+
+  .comunidad-accion__pegado span {
+    display: block;
+    text-wrap: balance;
+  }
+
+  @media (min-width: 600px) {
+    .comunidad-accion {
+      flex-wrap: nowrap;
+      gap: 24px;
+    }
+    .comunidad-accion .boton {
+      flex: none;
+      white-space: nowrap;
+    }
+    .comunidad-accion__pegado {
+      flex: 0 1 auto;
+      min-width: 0;
+      max-width: 24em;
+      margin-top: 0;
+    }
+  }
+
+  /* «Un espacio cuidado»: su tarjeta, con la raya lima arriba. */
+  .columna > .norma {
+    margin-top: 32px;
+    border-top: 3px solid var(--color-oro);
+  }
+
+  .norma h3 {
+    margin-bottom: 10px;
+  }
+
+  .norma p + p {
+    margin-top: 10px;
+  }
+
+  /* El cierre, centrado sobre el gris. */
+  .comunidad-cierre {
+    text-align: center;
+  }
+
+  .comunidad-cierre__texto {
+    max-width: 30ch;
+    margin: var(--tras-titulo) auto 0;
+    color: var(--color-tinta);
+    font: 500 var(--t-enunciado) / 1.4 var(--font-display);
+  }
+
+  .comunidad-cierre__texto span {
+    display: block;
+  }
+
+  .comunidad-cierre__texto :global(strong) {
+    font-weight: 600;
+  }
+
+  .comunidad-cierre .comunidad-accion {
+    margin-top: 36px;
+  }
+
+  .comunidad-cierre .comunidad-accion__pegado {
+    color: var(--color-tinta);
+  }
+
+  @media (min-width: 600px) {
+    .comunidad-cierre .comunidad-accion {
+      justify-content: center;
+    }
+    .comunidad-cierre .comunidad-accion__pegado {
+      text-align: left;
+    }
+  }
+</style>
