@@ -90,6 +90,7 @@ const jsonLd = noIndexar
     <meta property="og:image:alt" content={og.alt} />
     <meta name="twitter:card" content="summary_large_image" />
     {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+    <slot name="cabeza" />
   </head>
 
   <body>

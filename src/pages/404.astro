@@ -16,6 +16,16 @@ const caminos = MENU_PLANO.filter((m) => m.ruta !== '/');
   descripcion="Esta página no existe. Desde aquí puedes volver a la portada o ir a uno de los caminos."
   noIndexar
 >
+  {/* Las URL van sin barra final (astro.config) y GitHub Pages da 404 en
+       /comunidad/. Si la URL que no existe acaba en barra, se prueba sin ella.
+       Las barras del principio se juntan en una: «//otra-web/» no sale fuera. */}
+  <script is:inline slot="cabeza">
+    (function () {
+      var p = location.pathname;
+      var q = '/' + p.replace(/^\/+/, '').replace(/\/+$/, '');
+      if (q !== '/' && q !== p) location.replace(q + location.search + location.hash);
+    })();
+  </script>
   <section class="banda banda--salvia perdida" aria-labelledby="t-perdida">
     <div class="envoltorio perdida__texto">
       <h1 id="t-perdida">Esta página no existe.</h1>
