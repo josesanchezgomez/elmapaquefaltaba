@@ -1,0 +1,131 @@
+---
+/**
+ * El molde de todas las páginas: <head>, cabecera, pie y barra fija.
+ *
+ * La barra fija del pulgar (solo móvil) lleva la acción de cada página. Se le
+ * pasa por `barra`; sin ella, no se pinta (gracias y legales).
+ */
+import '../styles/global.css';
+import serif from '@fontsource/poppins/files/poppins-latin-600-normal.woff2?url';
+import sans from '@fontsource/poppins/files/poppins-latin-400-normal.woff2?url';
+import Cabecera from '../components/Cabecera.astro';
+import Pie from '../components/Pie.astro';
+import BarraFija from '../components/BarraFija.astro';
+import { MARCA } from '../consts';
+import { OG } from '../lib/og';
+import { rutaLimpia } from '../lib/ruta';
+import { aJsonLd, base, pagina, type Nodo } from '../lib/esquema';
+
+interface Props {
+  /** El título completo de SEO (SEO.*.titulo en contenido.ts): va tal cual al <title> y a og:title. */
+  titulo: string;
+  /** La meta descripción (SEO.*.descripcion): también og:description. */
+  descripcion: string;
+  /** La acción de la barra fija del móvil. */
+  barra?: { texto: string; href: string; externo?: boolean; ocultarSobre?: string; nota?: string };
+  /** La página de gracias ya lleva la firma en su texto: no se repite en el pie. */
+  sinFirma?: boolean;
+  /** Fuera de los buscadores (gracias: solo tiene sentido después de escribir). */
+  noIndexar?: boolean;
+  /** La imagen al compartir el enlace (1200×630), la de cada página; por defecto, la de la portada. */
+  og?: { src: string; alt: string };
+  /** Los datos estructurados propios de la página (servicio, preguntas, vídeo),
+      además de José, la web y la página, que van siempre (src/lib/esquema.ts). */
+  esquema?: (site: URL, ruta: string) => Nodo[];
+}
+
+const { titulo, descripcion, barra, sinFirma = false, noIndexar = false, og = OG.portada, esquema } = Astro.props;
+const ruta = rutaLimpia(Astro.url.pathname);
+const canonica = new URL(ruta, Astro.site);
+const imagenOG = new URL(og.src, Astro.site);
+/* Sin datos estructurados en lo que no va a los buscadores (gracias, 404). */
+const jsonLd = noIndexar
+  ? ''
+  : aJsonLd([...base(Astro.site!), pagina(Astro.site!, ruta, titulo, descripcion, imagenOG.href), ...(esquema?.(Astro.site!, ruta) ?? [])]);
+
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{titulo}</title>
+    <meta name="description" content={descripcion} />
+    <meta name="theme-color" content="#FFFFFF" />
+    {/* Sin canonical en lo que no va a Google: la 404 se sirve en cualquier URL. */}
+    {
+      noIndexar ? (
+        <meta name="robots" content="noindex" />
+      ) : (
+        <>
+          <link rel="canonical" href={canonica} />
+          <meta name="robots" content="max-image-preview:large" />
+        </>
+      )
+    }
+    {/* El favicon es el signo de la marca (el mismo dibujo que Signo.astro), en
+         ficheros: Google lo enseña junto al nombre de la web en sus resultados
+         (pide una URL que pueda rastrear, de 48 px o múltiplo). */}
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    {/* Marca que hay JavaScript: solo entonces se esconde lo que luego se anima. */}
+    <script is:inline>document.documentElement.classList.add('js');</script>
+
+    {/* Las dos letras de la primera pantalla, antes que nada. */}
+    <link rel="preload" as="font" type="font/woff2" href={serif} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={sans} crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={MARCA.nombre} />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:url" content={canonica} />
+    <meta property="og:title" content={titulo} />
+    <meta property="og:description" content={descripcion} />
+    <meta property="og:image" content={imagenOG} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={og.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
+  </head>
+
+  <body>
+    <a class="saltar" href="#contenido">Saltar al contenido</a>
+    <Cabecera />
+
+    <main id="contenido" tabindex="-1">
+      <slot />
+    </main>
+
+    <Pie sinFirma={sinFirma} />
+    {barra && <BarraFija {...barra} />}
+
+    <style>
+      /* Se esconde recortándolo, no sacándolo del lienzo: fuera del lienzo
+         provoca scroll lateral en algunos navegadores. */
+      .saltar {
+        position: absolute;
+        top: 8px;
+        left: 12px;
+        z-index: 100;
+        padding: 12px 16px;
+        border-radius: var(--radio);
+        background: var(--color-oro);
+        color: var(--color-sobre-oro);
+        font-weight: 600;
+        text-decoration: none;
+        clip-path: inset(50%);
+        white-space: nowrap;
+      }
+      .saltar:focus {
+        clip-path: none;
+      }
+      main:focus {
+        outline: none;
+      }
+    </style>
+  </body>
+</html>

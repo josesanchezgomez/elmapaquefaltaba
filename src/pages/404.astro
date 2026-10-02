@@ -1,0 +1,77 @@
+---
+/**
+ * 404 · la página que sirve GitHub Pages cuando una URL no existe. Va
+ * fuera de los buscadores y con el molde de gracias: dice qué ha pasado y
+ * devuelve a los caminos. Microcopia de Claude (v5, SEO), sin frases del
+ * texto de José: es navegación.
+ */
+import Base from '../layouts/Base.astro';
+import { MARCA, MENU_PLANO } from '../consts';
+
+const caminos = MENU_PLANO.filter((m) => m.ruta !== '/');
+---
+
+<Base
+  titulo={`Página no encontrada · ${MARCA.nombre}`}
+  descripcion="Esta página no existe. Desde aquí puedes volver a la portada o ir a uno de los caminos."
+  noIndexar
+>
+  <section class="banda banda--salvia perdida" aria-labelledby="t-perdida">
+    <div class="envoltorio perdida__texto">
+      <h1 id="t-perdida">Esta página no existe.</h1>
+      <p class="perdida__entrada">
+        Puede que el enlace esté mal escrito o que la página haya cambiado de sitio.
+      </p>
+      <p class="perdida__volver"><a class="boton" href="/">Volver a la portada</a></p>
+      <ul class="perdida__caminos">
+        {caminos.map((c) => <li><a class="enlace" href={c.ruta}>{c.texto}</a></li>)}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* El molde de gracias (gracias.astro), con los caminos en lugar de la firma. */
+  .perdida {
+    padding-bottom: 72px;
+  }
+
+  .perdida__texto > * {
+    max-width: 34ch;
+  }
+
+  .perdida__entrada {
+    margin-top: var(--tras-titulo);
+    font: 400 var(--t-enunciado) / 1.15 var(--font-display);
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  .perdida__volver {
+    margin-top: 36px;
+  }
+
+  /* Los tres caminos: en el móvil, uno debajo de otro (ninguno colgando);
+     en el escritorio, en un renglón. */
+  .perdida__caminos {
+    display: grid;
+    margin-top: 20px;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-filete-fuerte);
+  }
+
+  @media (min-width: 1000px) {
+    .perdida {
+      padding: 64px max(var(--lado), (100% - var(--ancho)) / 2) 96px;
+    }
+    .perdida__texto {
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+    .perdida__texto > .perdida__caminos {
+      display: flex;
+      gap: 0 28px;
+      max-width: none;
+    }
+  }
+</style>

@@ -1,0 +1,370 @@
+---
+/**
+ * La barra fija del pulgar (solo móvil y tableta).
+ *
+ * Su cara pequeña, «José · Lo leo yo. Te contesto yo.» y la acción de la
+ * página (la que le pasa cada página: «Cuéntame tu caso», «Quiero entrar»…).
+ * Está a la vista mientras la acción principal de la página
+ * ([data-accion-principal]) no se ve: desde la carga, si cae por debajo del
+ * pliegue (en el móvil, la portada y el 1 a 1: así la primera pantalla
+ * siempre tiene una acción), y otra vez cuando ya se ha quedado arriba. La
+ * acción cuenta como vista en cuanto asoma por encima de la barra (la barra
+ * se aparta y la deja entera) y hasta que se ha ido del todo por arriba: las
+ * dos nunca coinciden. Y se aparta:
+ *   · sobre lo que ya tiene la acción delante (`ocultarSobre`: el formulario,
+ *     la entrada de la página o, en la escuela, su botón de envío);
+ *   · mientras está a la vista otro bloque .acciones de la página con el MISMO
+ *     destino (botón o enlace): dos acciones iguales a la vez en pantalla
+ *     sobran;
+ *   · cuando pasa por debajo la CARA de José ([data-cara]): sobre su cara no
+ *     va nada. Una foto puede decir dónde está la cara dentro de ella con
+ *     data-cara-zona="arriba abajo" (fracciones del alto; si no, la foto
+ *     entera). Si entre dos caras la barra fuera a estar a la vista menos de
+ *     una pantalla, cuentan como un solo tramo: la barra no vuelve para irse
+ *     al momento (nada de parpadeos);
+ *   · mientras se escribe en un campo: con el teclado abierto taparía lo que
+ *     se está escribiendo.
+ *
+ * Mientras la barra se aparta por una cara durante más de una pantalla de
+ * scroll, la cabecera se queda a la vista (Cabecera.astro lee
+ * html[data-sin-barra]): el menú, con «Cuéntame tu caso» dentro, sigue a un
+ * toque. En un tramo corto (la foto de «Yo fui mi primer caso») la barra se
+ * aparta sin que baje la cabecera: si no, en 200 px de scroll se cruzaban dos
+ * animaciones de ida y dos de vuelta.
+ *
+ * `nota` sustituye a la firma cuando la promesa «Lo leo yo. Te contesto yo.» no
+ * es la de esa acción: en la comunidad, el aviso del número («Es un grupo de
+ * WhatsApp: otros miembros podrán ver tu número.»); en la escuela, que
+ * apuntarse no compromete (ahí nadie lee ni contesta nada).
+ *
+ * Si no cabe todo en un renglón de barra (móviles estrechos o una etiqueta
+ * larga, como «Cuéntame qué te pasa» a 375 px), cede lo que menos importa y
+ * nunca la frase ni el botón a medias:
+ *   · con la firma, se quita la firma: queda su cara y el botón, a lo ancho;
+ *   · con la nota (que no se puede quitar), si pasa de tres renglones se
+ *     quita la cara y la nota gana ese sitio.
+ */
+import { CONTACTO } from '../contenido';
+import { FOTOS, MARCA } from '../consts';
+
+interface Props {
+  texto: string;
+  href: string;
+  externo?: boolean;
+  /** Selector de lo que, en pantalla, hace que la barra sobre. */
+  ocultarSobre?: string;
+  /** Aviso que va pegado al botón en lugar de la firma. */
+  nota?: string;
+}
+const { texto, href, externo = false, ocultarSobre = '', nota = '' } = Astro.props;
+const [uno, ...resto] = CONTACTO.firma.split('. ');
+const firma = [`${uno}.`, resto.join('. ')];
+const fuera = externo ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+<aside class="barra" aria-label={texto} data-barra data-ocultar-sobre={ocultarSobre} inert>
+  <img
+    class="barra__cara"
+    src={FOTOS.mini.src}
+    width={FOTOS.mini.ancho}
+    height={FOTOS.mini.alto}
+    alt=""
+    decoding="async"
+  />
+  {
+    nota ? (
+      <p class="barra__quien barra__quien--nota">{nota}</p>
+    ) : (
+      /* La frase va partida en sus dos golpes para que no corte a mitad. */
+      <p class="barra__quien">
+        <span>
+          <strong>{MARCA.persona}</strong> · {firma[0]}
+        </span>
+        <span>{firma[1]}</span>
+      </p>
+    )
+  }
+  <a class="boton barra__boton" href={href} {...fuera}>{texto}</a>
+</aside>
+
+<style>
+  .barra {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 25;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: var(--barra);
+    padding: 12px 12px calc(12px + env(safe-area-inset-bottom));
+    background: var(--color-fondo);
+    box-shadow: 0 -1px 0 var(--color-filete), 0 -8px 24px rgba(28, 42, 37, 0.06);
+    transform: translateY(110%);
+    visibility: hidden;
+    transition:
+      transform var(--t-media) ease,
+      visibility 0s linear var(--t-media);
+  }
+
+  .barra[data-visible] {
+    transform: none;
+    visibility: visible;
+    transition:
+      transform var(--t-media) ease,
+      visibility 0s;
+  }
+
+  .barra__cara {
+    flex: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+
+  .barra__quien {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--t-nota);
+    line-height: 1.3;
+    color: var(--color-tinta-2);
+  }
+
+  /* Cada golpe de la firma, entero en su renglón: si no cabe, se ve al medir
+     (se sale de su caja) y la firma cede el sitio entera. */
+  .barra__quien span {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .barra__quien:not(.barra__quien--nota) {
+    overflow: hidden;
+  }
+
+  .barra[data-justa='firma'] .barra__quien {
+    display: none;
+  }
+
+  .barra[data-justa='firma'] .barra__boton {
+    flex: 1;
+  }
+
+  .barra[data-justa='nota'] .barra__cara {
+    display: none;
+  }
+
+  .barra__quien strong {
+    font-weight: 600;
+    color: var(--color-tinta);
+  }
+
+  .barra__quien--nota {
+    line-height: 1.28;
+    text-wrap: balance;
+  }
+
+  /* El botón no encoge en el caso normal (la firma tiene base 0 y cede antes);
+     solo si su etiqueta no cabe ni sola parte en dos renglones, sin salirse. */
+  .barra__boton {
+    flex: 0 1 auto;
+    min-width: 0;
+    min-height: 48px;
+    padding: 12px 16px;
+    text-wrap: balance;
+  }
+
+  @media (max-width: 379px) {
+    .barra {
+      gap: 8px;
+    }
+    .barra__cara {
+      width: 38px;
+      height: 38px;
+    }
+    .barra__boton {
+      padding-inline: 12px;
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .barra {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  const barra = document.querySelector<HTMLElement>('[data-barra]');
+  const principal = document.querySelector('[data-accion-principal]');
+
+  if (barra) {
+    // 0. Que quepa en su renglón: la firma, entera o nada; la nota, en tres
+    //    renglones como mucho (si no, cede la cara). Se mide sin nada cedido.
+    const quien = barra.querySelector<HTMLElement>('.barra__quien');
+    const encajar = () => {
+      if (!quien) return;
+      barra.removeAttribute('data-justa');
+      if (quien.classList.contains('barra__quien--nota')) {
+        const renglon = parseFloat(getComputedStyle(quien).lineHeight) || 19;
+        if (quien.offsetHeight > renglon * 3 + 1) barra.setAttribute('data-justa', 'nota');
+      } else if (quien.scrollWidth > quien.clientWidth + 1) {
+        barra.setAttribute('data-justa', 'firma');
+      }
+    };
+    encajar();
+    document.fonts?.ready.then(encajar);
+    let anchoAnterior = innerWidth;
+    let alCambiarAncho = () => {};
+    addEventListener('resize', () => {
+      if (innerWidth === anchoAnterior) return; // la barra del navegador que sube y baja no cuenta
+      anchoAnterior = innerWidth;
+      encajar();
+      alCambiarAncho();
+      pintar();
+    });
+
+    const estado = {
+      pasada: !principal,
+      encima: false,
+      doble: false,
+      cara: false,
+      caraLarga: false,
+      escribiendo: false,
+    };
+    const pintar = () => {
+      // En el escritorio la barra no existe (display: none): nada que enseñar.
+      const enUso = barra.offsetWidth > 0;
+      const ver = enUso && estado.pasada && !estado.encima && !estado.doble && !estado.cara && !estado.escribiendo;
+      barra.toggleAttribute('data-visible', ver);
+      barra.toggleAttribute('inert', !ver);
+      // Se aparta por una cara durante más de una pantalla: la cabecera se
+      // queda a la vista, con el menú (y «Cuéntame tu caso» dentro).
+      document.documentElement.toggleAttribute(
+        'data-sin-barra',
+        enUso && estado.pasada && !estado.encima && !estado.doble && estado.cara && estado.caraLarga
+      );
+    };
+
+    // 1. A la vista mientras la acción principal no asoma por encima de la
+    //    barra (la franja de abajo, donde va la barra, no cuenta como vista).
+    if (principal) {
+      let io: IntersectionObserver | undefined;
+      const observar = () => {
+        io?.disconnect();
+        const alto = Math.round(barra.offsetHeight) || 76;
+        io = new IntersectionObserver(
+          ([e]) => {
+            estado.pasada = !e.isIntersecting;
+            pintar();
+          },
+          { rootMargin: `0px 0px -${alto}px 0px` }
+        );
+        io.observe(principal);
+      };
+      observar();
+      alCambiarAncho = observar;
+    }
+
+    // 2. Se aparta sobre lo que ya tiene la acción delante.
+    const zona = barra.dataset.ocultarSobre ? document.querySelector(barra.dataset.ocultarSobre) : null;
+    if (zona) {
+      new IntersectionObserver(
+        ([e]) => {
+          estado.encima = e.isIntersecting;
+          pintar();
+        },
+        { rootMargin: '0px 0px -12% 0px' }
+      ).observe(zona);
+    }
+
+    // 2 bis. Y mientras está a la vista otro bloque de acciones con el mismo botón.
+    const destino = barra.querySelector('.barra__boton')?.getAttribute('href');
+    const dobles = [...document.querySelectorAll<HTMLElement>('.acciones')].filter(
+      (bloque) =>
+        bloque !== principal &&
+        [...bloque.querySelectorAll('a.boton, a.enlace')].some((a) => a.getAttribute('href') === destino)
+    );
+    if (dobles.length) {
+      const vistos = new Set<Element>();
+      const io = new IntersectionObserver((entradas) => {
+        for (const e of entradas) {
+          if (e.isIntersecting) vistos.add(e.target);
+          else vistos.delete(e.target);
+        }
+        estado.doble = vistos.size > 0;
+        pintar();
+      });
+      dobles.forEach((bloque) => io.observe(bloque));
+    }
+
+    // 3. Mientras se escribe en un campo (con el teclado abierto taparía el campo).
+    const esCampo = (el: EventTarget | null) => el instanceof HTMLElement && el.matches('input, textarea, select');
+    document.addEventListener('focusin', (e) => {
+      estado.escribiendo = esCampo(e.target);
+      pintar();
+    });
+    document.addEventListener('focusout', () => {
+      // El foco puede saltar de un campo a otro: se mira cuando ya ha llegado.
+      requestAnimationFrame(() => {
+        estado.escribiendo = esCampo(document.activeElement);
+        pintar();
+      });
+    });
+
+    // 4. Y mientras la cara de José pasa por la franja de abajo, donde va la barra.
+    const caras = [...document.querySelectorAll<HTMLElement>('[data-cara]')];
+    if (caras.length) {
+      /** Los tramos (en px del documento) en los que hay una cara. */
+      const tramos = (alto: number) => {
+        const y = scrollY;
+        const lista = caras
+          .map((c) => {
+            const r = c.getBoundingClientRect();
+            if (!r.height) return null;
+            const [arriba, abajo] = (c.dataset.caraZona ?? '0 1').split(' ').map(Number);
+            return [y + r.top + r.height * arriba, y + r.top + r.height * abajo];
+          })
+          .filter((t): t is number[] => t !== null)
+          .sort((a, b) => a[0] - b[0]);
+        // Si entre dos caras la barra se vería poco más de una pantalla (1,2),
+        // un solo tramo: no vuelve para irse enseguida.
+        const juntos: number[][] = [];
+        for (const t of lista) {
+          const ultimo = juntos[juntos.length - 1];
+          if (ultimo && t[0] - ultimo[1] < innerHeight * 1.2 + alto) ultimo[1] = Math.max(ultimo[1], t[1]);
+          else juntos.push([...t]);
+        }
+        return juntos;
+      };
+
+      let pendiente = false;
+      const mirar = () => {
+        pendiente = false;
+        const alto = barra.offsetHeight || 76;
+        const franja = [scrollY + innerHeight - alto, scrollY + innerHeight];
+        const tramo = tramos(alto).find(([a, b]) => a < franja[1] && b > franja[0]);
+        const cara = Boolean(tramo);
+        // Cuánto scroll dura el tramo sin barra: la cara entera más la franja.
+        const larga = tramo ? tramo[1] - tramo[0] + alto > innerHeight : false;
+        if (cara !== estado.cara || larga !== estado.caraLarga) {
+          estado.cara = cara;
+          estado.caraLarga = larga;
+          pintar();
+        }
+      };
+      const pedir = () => {
+        if (pendiente) return;
+        pendiente = true;
+        requestAnimationFrame(mirar);
+      };
+      addEventListener('scroll', pedir, { passive: true });
+      addEventListener('resize', pedir);
+      addEventListener('load', pedir);
+      mirar();
+    }
+
+    pintar();
+  }
+</script>

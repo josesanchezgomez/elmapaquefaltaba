@@ -1,0 +1,122 @@
+---
+/**
+ * El reproductor de la ventana de la portada.
+ *
+ * Nada de YouTube se carga hasta que se pulsa: ni scripts, ni cookies, ni la
+ * miniatura. Al pulsar, se abre este diálogo con el vídeo de youtube-nocookie.
+ * Sin JavaScript, el enlace abre el vídeo en YouTube.
+ */
+---
+
+<dialog class="reproductor" aria-label="Vídeo" data-reproductor>
+  <div class="reproductor__caja">
+    <button class="reproductor__cerrar" type="button" data-cerrar-video>
+      <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 5l14 14M19 5L5 19" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"></path>
+      </svg>
+      Cerrar
+    </button>
+    <div class="reproductor__video" data-marco></div>
+  </div>
+</dialog>
+
+<style>
+  .reproductor {
+    /* Centrado (la base de Tailwind le quita el margin: auto al <dialog>) y,
+       en un móvil apaisado, tan ancho como quepa en alto: el vídeo y su
+       «Cerrar» siempre enteros en pantalla. */
+    width: min(100vw - 24px, 1100px, (100dvh - 80px) * 16 / 9);
+    max-width: none;
+    max-height: none;
+    margin: auto;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--color-tinta);
+    overflow: visible;
+  }
+
+  .reproductor::backdrop {
+    background: rgba(28, 42, 37, 0.9);
+  }
+
+  .reproductor__video {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--radio);
+    background: #000;
+  }
+
+  .reproductor__video :global(iframe) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .reproductor__cerrar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    margin: 0 0 10px auto;
+    padding: 8px 16px;
+    border: 0;
+    border-radius: var(--radio);
+    background: var(--color-oro);
+    color: var(--color-sobre-oro);
+    font: 600 var(--t-ui) var(--font-cuerpo);
+    cursor: pointer;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .reproductor[open],
+    .reproductor[open]::backdrop {
+      animation: fundido 240ms ease;
+    }
+  }
+
+  @keyframes fundido {
+    from {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  const dialogo = document.querySelector<HTMLDialogElement>('[data-reproductor]');
+  const marco = dialogo?.querySelector<HTMLElement>('[data-marco]');
+  let origen: HTMLElement | null = null;
+
+  document.querySelectorAll<HTMLElement>('[data-reproducir]').forEach((boton) => {
+    boton.addEventListener('click', (e) => {
+      if (!dialogo || !marco) return;
+      e.preventDefault(); // sin JavaScript, el enlace abre el vídeo en YouTube
+      const iframe = document.createElement('iframe');
+      const tramo = boton.dataset.inicio
+        ? `&start=${boton.dataset.inicio}${boton.dataset.fin ? `&end=${boton.dataset.fin}` : ''}`
+        : '';
+      iframe.src = `https://www.youtube-nocookie.com/embed/${boton.dataset.reproducir}?autoplay=1&rel=0${tramo}`;
+      iframe.title = boton.dataset.titulo || 'Vídeo';
+      iframe.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      marco.replaceChildren(iframe);
+      dialogo.setAttribute('aria-label', `Vídeo: ${iframe.title}`);
+      origen = boton;
+      dialogo.showModal();
+    });
+  });
+
+  dialogo?.querySelector('[data-cerrar-video]')?.addEventListener('click', () => dialogo.close());
+  // Un toque fuera del vídeo también lo cierra.
+  dialogo?.addEventListener('click', (e) => {
+    if (e.target === dialogo) dialogo.close();
+  });
+  // Al cerrar se para el vídeo (se quita) y el foco vuelve a quien lo abrió.
+  dialogo?.addEventListener('close', () => {
+    marco?.replaceChildren();
+    origen?.focus();
+  });
+</script>

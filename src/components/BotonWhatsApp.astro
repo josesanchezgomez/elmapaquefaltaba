@@ -1,0 +1,52 @@
+---
+/**
+ * El botón de WhatsApp al número personal de José, con su mensaje ya escrito.
+ * Lo usan la carta (contacto) y «Puedes encontrarme en:» de la portada.
+ *
+ * El número no va escrito en la página (consts.ts, whatsappCifrado): el botón
+ * lleva el número cifrado y el enlace se arma en el navegador al ir a usarlo.
+ * Sin JavaScript, el botón lleva al formulario de contacto (#contacto).
+ * Sin número en el .env, no hay botón.
+ */
+import { CONTACTO } from '../contenido';
+import { whatsappCifrado } from '../consts';
+
+interface Props {
+  /** El mensaje que WhatsApp deja escrito (por defecto, CONTACTO.mensajeWhatsApp). */
+  mensaje?: string;
+}
+const { mensaje = CONTACTO.mensajeWhatsApp } = Astro.props;
+const whatsapp = whatsappCifrado();
+---
+
+{
+  whatsapp && (
+    <a class="boton boton--linea" href="#contacto" data-wa={whatsapp} data-wa-texto={encodeURIComponent(mensaje)}>
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 20.5l1.3-4A8.4 8.4 0 1 1 8.6 19.4z" />
+        <path d="M9.3 8.3c.2 2.7 2.6 5.3 5.6 6l1.2-1.3-1.9-1-1 .9c-1-.4-2-1.4-2.4-2.4l.9-1-1-1.9z" fill="currentColor" stroke="none" />
+      </svg>
+      WhatsApp
+    </a>
+  )
+}
+
+<script>
+  /* El enlace de WhatsApp se arma aquí, no en el HTML: así el número no
+     está escrito en la página. Se arma en cuanto alguien va a usar el botón
+     (el puntero encima, el dedo, el foco del teclado) y, como muy tarde, en
+     el mismo clic, antes de que el navegador siga el enlace. */
+  for (const boton of document.querySelectorAll<HTMLAnchorElement>('a[data-wa]')) {
+    const armar = () => {
+      if (boton.hasAttribute('data-wa-armado')) return;
+      const numero = [...atob(boton.dataset.wa ?? '')].reverse().join('');
+      boton.href = `https://wa.me/${numero}?text=${boton.dataset.waTexto ?? ''}`;
+      boton.target = '_blank';
+      boton.rel = 'noopener noreferrer';
+      boton.setAttribute('data-wa-armado', '');
+    };
+    for (const evento of ['pointerenter', 'pointerdown', 'touchstart', 'focus', 'click']) {
+      boton.addEventListener(evento, armar, { passive: true });
+    }
+  }
+</script>

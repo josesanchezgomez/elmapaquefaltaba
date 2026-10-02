@@ -1,0 +1,74 @@
+---
+/**
+ * «Puedes encontrarme en:» y tres botones, con el mismo estilo que los del
+ * contacto (José, 02/10): Instagram (el perfil), WhatsApp (su número personal,
+ * con el mensaje ya escrito) y YouTube (el canal). Sustituye a los enlaces
+ * «Mi historia, en diez imágenes (en Instagram)» y «El canal» de «Quién soy».
+ */
+import BotonWhatsApp from './BotonWhatsApp.astro';
+import { REDES } from '../consts';
+
+interface Props {
+  rotulo: string;
+}
+const { rotulo } = Astro.props;
+---
+
+<div class="redes">
+  <p class="redes__rotulo">{rotulo}</p>
+  <div class="redes__botones">
+    <a class="boton boton--linea" href={REDES.instagram} target="_blank" rel="noopener noreferrer">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+        <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
+        <circle cx="12" cy="12" r="4"></circle>
+        <circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"></circle>
+      </svg>
+      Instagram
+    </a>
+    <BotonWhatsApp />
+    <a class="boton boton--linea" href={REDES.youtube} target="_blank" rel="noopener noreferrer">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2.5" y="5.5" width="19" height="13" rx="4"></rect>
+        <path d="M10 9.2v5.6l4.8-2.8z" fill="currentColor" stroke="none"></path>
+      </svg>
+      YouTube
+    </a>
+  </div>
+</div>
+
+<style>
+  .redes {
+    margin-top: 28px;
+  }
+
+  .redes__rotulo {
+    color: var(--color-tinta);
+    font-weight: 500;
+  }
+
+  /* Los tres en una fila; en el móvil, más estrechos para que quepan. */
+  .redes__botones {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    max-width: 560px;
+    margin-top: 12px;
+  }
+
+  .redes__botones :global(.boton) {
+    padding-inline: 10px;
+  }
+
+  /* En el móvil no caben tres en fila con el icono al lado: el icono arriba y
+     el nombre debajo, como los iconos de un móvil. */
+  @media (max-width: 559.98px) {
+    .redes__botones :global(.boton) {
+      flex-direction: column;
+      gap: 6px;
+      min-height: 0;
+      padding: 12px 4px;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+    }
+  }
+</style>

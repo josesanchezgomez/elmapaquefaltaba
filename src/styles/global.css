@@ -1,0 +1,935 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   LIFECOACH · el sistema visual de la versión 6 (prueba, 30/09)
+
+   La plantilla «LifeCoach» de Colorlib (CC BY 3.0: el reconocimiento va en el
+   aviso legal, no en el pie) adaptada al texto de la v5, que no se toca.
+
+   · Poppins en todo: titulares en 600, texto en 400. Autoalojada.
+   · Blanco y un gris azulado muy claro (#f8f9fd) alternos; una banda
+     turquesa (#8fd0d2) para la cita. Lima (#c5cf31) de acento.
+   · Portada y cabeceras de página con foto a sangre y velo oscuro; iconos en
+     círculos turquesa; tarjetas blancas con sombra suave.
+   Cambios sobre la plantilla, a propósito:
+   · Contraste AA: el texto del botón lima es oscuro (9,8:1), no blanco
+     (1,7:1); las etiquetas, en un lima oscuro (6,2:1); el texto, en gris
+     #555a60 (≥ 6:1) y no en el gris de la plantilla (3,9:1).
+   · Sin oscuro: la barra superior y el pie, que en la plantilla son negros,
+     van en claro (José no quiere fondos oscuros).
+   · Sin jQuery, carrusel, contadores, testimonios ni Google: nada de eso.
+
+   Los nombres de los tokens son los de la v4/v5 (papel, salvia, oro, oliva…)
+   para que los componentes sigan funcionando: cambian sus valores.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+@import "tailwindcss" source(none);
+
+/* Autoalojada: el navegador nunca llama a Google. */
+@import "@fontsource/poppins/400.css";
+@import "@fontsource/poppins/400-italic.css";
+@import "@fontsource/poppins/500.css";
+@import "@fontsource/poppins/600.css";
+@import "@fontsource/poppins/700.css";
+
+@theme static {
+  /* Los fondos */
+  --color-papel: #ffffff;
+  --color-salvia: #f8f9fd; /* la banda clara de la plantilla */
+  --color-turquesa: #8fd0d2; /* la banda de la cita y los círculos */
+  --color-campo: #ffffff;
+
+  --color-filete: rgba(0, 0, 0, 0.08);
+  --color-filete-fuerte: rgba(0, 0, 0, 0.16);
+
+  /* Tinta */
+  --color-tinta: #1d1d1d; /* titulares */
+  --color-tinta-2: #555a60; /* el texto que se lee · ≥ 6:1 */
+
+  /* Acentos */
+  --color-oro: #c5cf31; /* el lima: fondo del botón y detalles; nunca texto */
+  --color-oro-vivo: #d3dc4c; /* el botón al pasar */
+  --color-oro-hondo: #a4ad1c; /* trazos y marcas finas; nunca texto */
+  --color-oro-texto: #5c6218; /* etiquetas y antetítulos · ≥ 6,2:1 */
+  --color-lima-claro: #e2e798; /* antetítulo sobre foto oscura */
+  --color-sobre-oro: #1d2008; /* texto del botón lima · 9,8:1 */
+  --color-oliva: #1f5f61; /* enlaces: turquesa oscuro · ≥ 7:1 */
+  --color-borde-campo: #8a9097;
+
+  /* Los dibujos (el bucle, los caminos) */
+  --color-vuelta: #8fd0d2;
+  --color-vuelta-texto: #1f5f61;
+  --color-hilo: var(--color-oro-hondo);
+  --color-terreno: rgba(143, 208, 210, 0.12);
+  --color-curva-nivel: rgba(143, 208, 210, 0.55);
+  --color-curva-nivel-2: rgba(143, 208, 210, 0.7);
+  --color-curva-nivel-3: rgba(31, 95, 97, 0.45);
+
+  --color-acento: var(--color-oliva);
+  --color-acento-vivo: var(--color-tinta);
+  --color-sobre-acento: var(--color-sobre-oro);
+  --color-fondo: var(--color-papel);
+
+  --font-display: "Poppins", "Segoe UI", system-ui, sans-serif;
+  --font-cuerpo: "Poppins", "Segoe UI", system-ui, sans-serif;
+}
+
+@layer base {
+  :root {
+    --ancho: 1200px;
+    --lado: clamp(20px, 3.2vw + 8px, 40px);
+    --columna: 720px;
+    --cab: 64px;
+    --barra: 76px;
+    --t-rapida: 180ms;
+    --t-media: 260ms;
+    --radio: 4px;
+    --sombra: 0 24px 48px -13px rgba(0, 0, 0, 0.08);
+    --sombra-circulo: 0 10px 30px -4px rgba(0, 0, 0, 0.15);
+    --banda: var(--color-papel);
+    --sangria: var(--lado);
+    --dcha: var(--lado);
+    --riel-x: var(--lado);
+
+    /* La escala: la de la plantilla (titulares de sección de 24-30 px),
+       algo más grande en el móvil para que el texto largo respire. */
+    --t-nota: 14px;
+    --t-ui: 15px;
+    --t-texto: 16px;
+    --t-destacado: 17px;
+    --t-3: 18px;
+    --t-enunciado: clamp(21px, 18px + 0.8vw, 27px);
+    --t-2: clamp(24px, 20.5px + 0.9vw, 32px);
+    --t-1: clamp(32px, 23px + 2.3vw, 54px);
+    --t-cumbre: clamp(24px, 19px + 1.3vw, 34px);
+
+    /* José, 01/10: «bastante espacio entre secciones y mucho scroll». El aire
+       de cada banda baja de 112 a 80 px (escritorio) y de 64 a 48 (móvil). */
+    --aire: clamp(48px, 32px + 3.5vw, 80px);
+    --tras-titulo: clamp(24px, 20px + 1vw, 36px);
+    --medida: 66ch;
+  }
+
+  @media (min-width: 1000px) {
+    :root {
+      --cab: 84px;
+    }
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    background: var(--color-papel);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+
+  body {
+    margin: 0;
+    min-height: 100svh;
+    color: var(--color-tinta-2);
+    font: 400 var(--t-texto) / 1.8 var(--font-cuerpo);
+    -webkit-font-smoothing: antialiased;
+    background-color: var(--color-papel);
+    overflow-x: clip;
+  }
+
+  @supports not (overflow-x: clip) {
+    html {
+      overflow-x: hidden;
+    }
+  }
+
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  img {
+    height: auto;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  h1,
+  h2 {
+    margin: 0;
+    color: var(--color-tinta);
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  h1 {
+    font-size: var(--t-1);
+    line-height: 1.15;
+  }
+
+  h2 {
+    font-size: var(--t-2);
+    line-height: 1.3;
+  }
+
+  h3 {
+    margin: 0;
+    color: var(--color-tinta);
+    font: 500 var(--t-3) / 1.4 var(--font-cuerpo);
+    text-wrap: balance;
+  }
+
+  p {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  strong,
+  b {
+    font-weight: 600;
+    color: var(--color-tinta);
+  }
+
+  ul,
+  ol,
+  dl,
+  dd,
+  figure,
+  blockquote {
+    margin: 0;
+    padding: 0;
+  }
+
+  ul,
+  ol {
+    list-style: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-oliva);
+    outline-offset: 3px;
+  }
+
+  [id] {
+    scroll-margin-top: calc(var(--cab) + 16px);
+  }
+
+  @media (max-width: 999.98px) {
+    html {
+      scroll-padding-bottom: calc(var(--barra) + 12px);
+    }
+  }
+
+  ::selection {
+    background: var(--color-lima-claro);
+    color: var(--color-tinta);
+  }
+}
+
+@layer components {
+  .sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .nw {
+    white-space: nowrap;
+  }
+
+  /* ── La retícula ─────────────────────────────────────────────────────── */
+
+  .envoltorio {
+    position: relative;
+    width: 100%;
+    max-width: calc(var(--ancho) + 2 * var(--lado));
+    margin-inline: auto;
+    padding-inline: var(--lado);
+  }
+
+  /* ── Las bandas ──────────────────────────────────────────────────────── */
+
+  .banda {
+    padding-block: var(--aire);
+    background: var(--banda);
+  }
+
+  .banda--papel,
+  .banda--fondo {
+    --banda: var(--color-papel);
+  }
+
+  .banda--salvia {
+    --banda: var(--color-salvia);
+  }
+
+  .banda--turquesa {
+    --banda: var(--color-turquesa);
+    color: var(--color-tinta);
+  }
+
+  /* ── La cabecera de una sección: el titular centrado y, debajo, la raya
+     lima de la plantilla (en lugar de su rótulo en mayúsculas). ─────────── */
+
+  .cabeza-seccion {
+    max-width: 820px;
+    margin: 0 auto var(--tras-titulo);
+    text-align: center;
+  }
+
+  .cabeza-seccion > h2::after,
+  .raya::after {
+    content: "";
+    display: block;
+    width: 48px;
+    height: 3px;
+    margin: 18px auto 0;
+    background: var(--color-oro);
+  }
+
+  .raya--izquierda::after {
+    margin-left: 0;
+  }
+
+  .cabeza-seccion > * + * {
+    margin-top: 18px;
+  }
+
+  .cabeza-seccion p {
+    max-width: 62ch;
+    margin-inline: auto;
+  }
+
+  .columna {
+    max-width: var(--columna);
+    margin-inline: auto;
+  }
+
+  .columna > * + * {
+    margin-top: 16px;
+  }
+
+  .fuerte {
+    color: var(--color-tinta);
+    font-size: var(--t-destacado);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  .columna > .fuerte,
+  .columna > .fuerte + * {
+    margin-top: 22px;
+  }
+
+  /* La frase suelta: Poppins 500, centrada. */
+  .frase {
+    max-width: 30ch;
+    margin-inline: auto;
+    color: var(--color-tinta);
+    font: 500 var(--t-enunciado) / 1.35 var(--font-display);
+    text-align: center;
+    text-wrap: balance;
+  }
+
+  /* El antetítulo: la etiqueta de la plantilla, en mayúsculas espaciadas. */
+  .antetitulo {
+    display: block;
+    margin: 0 0 14px;
+    color: var(--color-oro-texto);
+    font: 600 12px / 1.6 var(--font-cuerpo);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+
+  .suave {
+    color: var(--color-tinta-2);
+  }
+
+  /* ── Botones y enlaces ───────────────────────────────────────────────── */
+
+  .boton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 50px;
+    padding: 14px 30px;
+    border: 0;
+    border-radius: var(--radio);
+    background: var(--color-oro);
+    color: var(--color-sobre-oro);
+    font: 600 13px / 1.3 var(--font-cuerpo);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition:
+      background-color var(--t-rapida) ease,
+      transform var(--t-rapida) ease;
+  }
+
+  .boton:hover {
+    background: var(--color-oro-vivo);
+  }
+
+  .boton:active {
+    transform: scale(0.98);
+  }
+
+  .boton[disabled] {
+    opacity: 0.6;
+    cursor: progress;
+  }
+
+  .boton--linea {
+    background: transparent;
+    color: var(--color-oliva);
+    box-shadow: inset 0 0 0 1px var(--color-oliva);
+  }
+
+  .boton--linea:hover {
+    background: rgba(31, 95, 97, 0.06);
+  }
+
+  /* El botón blanco de la portada, sobre la foto. */
+  .boton--blanco {
+    background: #fff;
+    color: var(--color-tinta);
+  }
+
+  .boton--blanco:hover {
+    background: var(--color-lima-claro);
+  }
+
+  .boton--ancho {
+    width: 100%;
+  }
+
+  .enlace {
+    display: inline-block;
+    padding: 10px 0;
+    color: var(--color-oliva);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+    text-decoration-color: var(--color-oro);
+    cursor: pointer;
+    transition: text-decoration-color var(--t-rapida);
+  }
+
+  .enlace:hover {
+    text-decoration-color: var(--color-oliva);
+  }
+
+  .ico {
+    width: 22px;
+    height: 22px;
+    flex: none;
+  }
+
+  .acciones {
+    margin-top: 28px;
+  }
+
+  .acciones .boton {
+    width: 100%;
+  }
+
+  @media (min-width: 600px) {
+    .acciones {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px 28px;
+    }
+    .acciones .boton {
+      width: auto;
+    }
+  }
+
+  .acciones--centro {
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* ── El círculo turquesa de los iconos (la marca de la plantilla) ──────── */
+
+  .circulo {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: var(--color-turquesa);
+    color: var(--color-tinta);
+    box-shadow: var(--sombra-circulo);
+  }
+
+  .circulo svg {
+    width: 34px;
+    height: 34px;
+  }
+
+  .circulo--pequeno {
+    width: 46px;
+    height: 46px;
+  }
+
+  .circulo--pequeno svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* El número de un paso, en su círculo. */
+  .circulo--numero {
+    font: 600 22px / 1 var(--font-display);
+  }
+
+  /* ── Tarjetas: icono, título y texto, centrados (los servicios) ───────── */
+
+  .tarjetas {
+    display: grid;
+    gap: 44px 30px;
+  }
+
+  .tarjeta {
+    text-align: center;
+  }
+
+  .tarjeta .circulo {
+    margin: 0 auto 22px;
+  }
+
+  .tarjeta p {
+    max-width: 34ch;
+    margin: 10px auto 0;
+  }
+
+  @media (min-width: 700px) {
+    .tarjetas {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .tarjetas--4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .tarjetas--3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  /* La caja blanca con sombra (paquetes, formularios, citas). */
+  .caja {
+    padding: clamp(24px, 3vw, 40px);
+    border-radius: var(--radio);
+    background: #fff;
+    box-shadow: var(--sombra);
+  }
+
+  /* ── A dos columnas: foto y texto (el «Why coaching work?») ─────────── */
+
+  .partida {
+    display: grid;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .partida__foto {
+    position: relative;
+  }
+
+  .partida__foto img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  /* En el móvil, cuadradas y centradas en la cara (01/10): a 4:5 la foto
+     ocupaba casi una pantalla antes de empezar a leer. Gana a las
+     proporciones que cada página pone para el escritorio. */
+  @media (max-width: 899.98px) {
+    .partida__foto img {
+      aspect-ratio: 1 / 1 !important;
+      object-position: 50% 30%;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .partida {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+      gap: 64px;
+    }
+    .partida--al-reves {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    }
+    .partida--al-reves .partida__foto {
+      order: 2;
+    }
+  }
+
+  .partida__texto > * + * {
+    margin-top: 16px;
+  }
+
+  .partida__texto > h2 + * {
+    margin-top: 26px;
+  }
+
+  /* Una lista con icono al lado (los «Accountability, Expertise…»). */
+  .con-icono {
+    display: grid;
+    gap: 26px;
+  }
+
+  .con-icono > li {
+    display: flex;
+    gap: 22px;
+    align-items: flex-start;
+  }
+
+  .con-icono p {
+    margin-top: 6px;
+  }
+
+  /* ── Listas de una línea por punto ───────────────────────────────────── */
+  .puntos {
+    display: grid;
+    gap: 4px 48px;
+    max-width: 1000px;
+    margin-inline: auto;
+  }
+
+  .puntos > li {
+    position: relative;
+    padding: 8px 0 8px 42px;
+    color: var(--color-tinta);
+    font-size: var(--t-destacado);
+    line-height: 1.6;
+  }
+
+  /* El punto: un círculo turquesa pequeño con su marca. */
+  .puntos > li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--color-turquesa)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 12.5l4 4 8-9' fill='none' stroke='%231d1d1d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      center / 16px no-repeat;
+  }
+
+  @media (min-width: 760px) {
+    .puntos {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* ── Bloques: las tarjetas blancas con la raya lima arriba ───────────── */
+  .bloques {
+    display: grid;
+    gap: 30px;
+  }
+
+  .bloques > * {
+    padding: 30px;
+    border-top: 3px solid var(--color-oro);
+    border-radius: var(--radio);
+    background: #fff;
+    box-shadow: var(--sombra);
+  }
+
+  .bloques p {
+    margin-top: 10px;
+  }
+
+  @media (min-width: 760px) {
+    .bloques {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* ── Pasos en orden: el número en su círculo turquesa ────────────────── */
+  .pasos {
+    display: grid;
+    gap: 36px 30px;
+    counter-reset: paso;
+  }
+
+  .pasos > li {
+    counter-increment: paso;
+    text-align: center;
+  }
+
+  .pasos > li::before {
+    content: counter(paso);
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: var(--color-turquesa);
+    box-shadow: var(--sombra-circulo);
+    color: var(--color-tinta);
+    font: 600 22px / 1 var(--font-display);
+  }
+
+  .pasos p {
+    max-width: 34ch;
+    margin: 8px auto 0;
+  }
+
+  @media (min-width: 760px) {
+    .pasos {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  }
+
+  /* ══ La foto a sangre con velo: la portada y la cabecera de cada página ══ */
+
+  .heroe {
+    position: relative;
+    display: grid;
+    align-items: center;
+    min-height: clamp(520px, 78svh, 760px);
+    padding-block: 72px;
+    color: #fff;
+    overflow: clip;
+    isolation: isolate;
+  }
+
+  /* «.heroe >» por delante, para que nada que venga después lo pise. */
+  .heroe > .heroe__fondo {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+  }
+
+  .heroe__fondo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .heroe::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.5));
+  }
+
+  /* En las páginas interiores el texto va abajo: el velo se carga ahí y se
+     aclara hacia arriba (José, 02/10: «se ve poco nítida»). A la altura del
+     texto oscurece lo mismo que antes; arriba, la foto respira. */
+  .heroe--pagina::after {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.46) 55%, rgba(0, 0, 0, 0.2) 100%);
+  }
+
+  .heroe h1,
+  .heroe h2 {
+    color: #fff;
+  }
+
+  .heroe .antetitulo {
+    color: var(--color-lima-claro);
+    letter-spacing: 0.26em;
+  }
+
+  .heroe--portada {
+    text-align: center;
+  }
+
+  .heroe--portada h1 {
+    max-width: 22ch;
+    margin-inline: auto;
+    font-weight: 700;
+  }
+
+  /* La cabecera de las páginas interiores: más baja, el texto abajo a la
+     izquierda, con las migas encima (como en la plantilla). */
+  .heroe--pagina {
+    align-items: end;
+    min-height: clamp(380px, 52svh, 460px);
+    padding-block: 56px;
+  }
+
+  .heroe--pagina h1 {
+    max-width: 28ch;
+    font-size: clamp(26px, 20px + 1.5vw, 40px);
+    font-weight: 500;
+  }
+
+  .migas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    margin-bottom: 14px;
+    font-size: var(--t-ui);
+  }
+
+  .migas a {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .migas a:hover {
+    text-decoration: underline;
+  }
+
+  .migas li + li::before {
+    content: "›";
+    margin-right: 12px;
+    color: var(--color-lima-claro);
+  }
+
+  .migas [aria-current] {
+    color: rgba(255, 255, 255, 0.82);
+  }
+
+  /* Cuando José sale a la izquierda de la foto, el titular va a la derecha
+     (hacia donde mira, o donde la foto deja aire). En el móvil, abajo. */
+  @media (min-width: 900px) {
+    .heroe--derecha .heroe__bloque {
+      max-width: 560px;
+      margin-left: auto;
+    }
+  }
+
+  /* ══ Páginas de camino: la cabecera antigua (dibujo), por si queda alguna */
+  .cabeza-camino {
+    position: relative;
+    overflow: clip;
+  }
+
+  .cabeza-camino__entrada {
+    max-width: 30ch;
+    margin-top: 20px;
+    color: var(--color-tinta);
+    font: 500 var(--t-enunciado) / 1.35 var(--font-display);
+    text-wrap: balance;
+  }
+
+  /* ══ La carta ═══════════════════════════════════════════════════════════ */
+  .admision__dentro > * {
+    max-width: 640px;
+    margin-inline: auto;
+  }
+
+  @media (min-width: 1100px) {
+    .admision__dentro > * {
+      max-width: none;
+    }
+  }
+
+  /* ══ Textos legales ═════════════════════════════════════════════════════ */
+
+  .legal {
+    max-width: calc(var(--columna) + 2 * var(--lado));
+    padding-block: 48px var(--aire);
+  }
+
+  .legal__entrada {
+    max-width: 40ch;
+    margin-top: 16px;
+    color: var(--color-tinta);
+    font: 500 var(--t-enunciado) / 1.35 var(--font-display);
+  }
+
+  .legal section {
+    margin-top: 40px;
+  }
+
+  .legal h2 {
+    margin-bottom: 12px;
+    font: 600 var(--t-3) / 1.4 var(--font-cuerpo);
+    letter-spacing: 0;
+  }
+
+  .legal p + p {
+    margin-top: 14px;
+  }
+
+  .legal .datos {
+    display: grid;
+    gap: 6px;
+  }
+
+  .legal__fecha {
+    margin-top: 8px;
+    font-size: var(--t-nota);
+    color: var(--color-tinta-2);
+  }
+
+  .legal .lista {
+    display: grid;
+    gap: 10px;
+    padding-left: 1.2em;
+    list-style: disc;
+  }
+
+  .legal .lista li::marker {
+    color: var(--color-oro-hondo);
+  }
+
+  .legal * + .lista,
+  .legal .lista + p {
+    margin-top: 14px;
+  }
+
+  .legal .datos + p,
+  .legal p + .datos {
+    margin-top: 14px;
+  }
+
+  .legal p a,
+  .legal li a {
+    color: var(--color-oliva);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--color-oro);
+  }
+
+  .legal p a:hover,
+  .legal li a:hover {
+    text-decoration-color: var(--color-oliva);
+  }
+
+  @media (min-width: 1000px) {
+    .legal {
+      padding-top: 96px;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}

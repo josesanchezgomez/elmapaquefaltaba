@@ -1,0 +1,228 @@
+---
+/**
+ * v6 (plantilla LifeCoach): cabecera con foto a sangre (José ante el valle) y
+ * migas; los bloques de la plantilla. El texto y el orden, los de la v5.
+ *
+ * LA ESCUELA · Las piezas del Mecanismo · texto v9 (versión 4, 30/09, segunda
+ * pasada: la paleta y la letra de la web de ChatGPT, retícula centrada; ver
+ * texto/DECISIONES-v9.md). Nacho: no vende un programa que no está cerrado;
+ * es la puerta de quien quiere entender el mapa completo.
+ *
+ * Aún no ha abierto: la página es una lista de espera. «Avísame cuando abra»
+ * baja a su formulario (#avisame). El h1 es el nombre de la escuela; justo
+ * debajo, la pregunta de Nacho como entradilla, con su filete dorado
+ * discontinuo (el de la puerta de la escuela en la portada: aún no ha abierto).
+ *
+ * La barra fija no lleva la firma «Lo leo yo. Te contesto yo.» (aquí nadie lee
+ * ni contesta nada: es una lista): lleva la nota de la comunidad (E.avisame.nota;
+ * José, 01/10: fuera «Apuntarte a esta lista no te compromete a comprar.»).
+ */
+import Base from '../layouts/Base.astro';
+import FotoFondo from '../components/FotoFondo.astro';
+import Icono from '../components/Icono.astro';
+import Formulario from '../components/Formulario.astro';
+import { ESCUELA as E, SEO } from '../contenido';
+import { OG } from '../lib/og';
+import { migas } from '../lib/esquema';
+import { atarCortas, negritas, esFuerte } from '../lib/texto';
+
+const [notaAntes, notaDespues] = E.avisame.nota.split('comunidad');
+---
+
+<Base
+  titulo={SEO.escuela.titulo}
+  descripcion={SEO.escuela.descripcion}
+  og={OG.escuela}
+  esquema={(site, ruta) => [migas(site, ruta, E.rotulo)]}
+  barra={{ texto: E.avisame.boton, href: '#avisame', ocultarSobre: '#avisame [type="submit"]', nota: E.avisame.nota }}
+>
+  {/* La cabecera con foto (José ante el valle: «el mapa completo»), migas, el
+       nombre y la pregunta; a la derecha, José queda a la izquierda */}
+  <section class="heroe heroe--pagina heroe--derecha" aria-labelledby="t-escuela">
+    <FotoFondo foto="escuela" />
+    <div class="envoltorio">
+      <div class="heroe__bloque">
+        <nav aria-label="Estás en">
+          <ol class="migas">
+            <li><a href="/">Inicio</a></li>
+            <li aria-current="page">{E.rotulo}</li>
+          </ol>
+        </nav>
+        <h1 id="t-escuela">{E.titulo}</h1>
+        <p class="escuela-pregunta">{E.pregunta}</p>
+      </div>
+    </div>
+  </section>
+
+  {/* La entrada y el botón, en su columna (01/10: sin dibujo) */}
+  <section class="banda banda--papel" aria-label={E.rotulo}>
+    <div class="envoltorio">
+      <div class="partida__texto entrada-sola">
+        <p class="antetitulo">{E.rotulo}</p>
+        {E.parrafos.map((p) => <p class:list={{ fuerte: esFuerte(p) }} set:html={negritas(p)} />)}
+        <div class="acciones" data-accion-principal>
+          <a class="boton" href="#avisame">{E.avisame.boton}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="banda banda--salvia" aria-labelledby="t-reunir">
+    <div class="envoltorio">
+      <div class="cabeza-seccion">
+        <h2 id="t-reunir" set:html={atarCortas(E.reunir.titulo)} />
+      </div>
+      <div class="columna">
+        {E.reunir.parrafos.map((p) => <p>{p}</p>)}
+      </div>
+      {/* Las tres preguntas, en las tarjetas con icono de la plantilla. */}
+      <ul class="tarjetas tarjetas--3 escuela-preguntas">
+        {
+          E.reunir.preguntas.map((q) => (
+            <li class="tarjeta caja">
+              <span class="circulo circulo--pequeno"><Icono nombre="lupa" /></span>
+              <p>{q}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="banda banda--papel" aria-labelledby="t-para-quien">
+    <div class="envoltorio">
+      <div class="cabeza-seccion">
+        <h2 id="t-para-quien" set:html={atarCortas(E.paraQuien.titulo)} />
+      </div>
+      <ul class="puntos">
+        {E.paraQuien.lineas.map((l) => <li>{l}</li>)}
+      </ul>
+      <div class="escuela-cierre">
+        {E.cierre.map((p) => (
+          <p class:list={['escuela-cierre__frase', { 'escuela-cierre__frase--fuerte': esFuerte(p) }]} set:html={negritas(p)} />
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* Avísame: la franja de suscripción de la plantilla («Subscribe for our weekly tips») */}
+  <section class="banda banda--salvia admision" id="avisame" aria-labelledby="t-avisame">
+    <div class="envoltorio">
+      <div class="caja avisame">
+        <div class="avisame__cabeza">
+          <h2 id="t-avisame" class="raya raya--izquierda" set:html={atarCortas(E.avisame.titulo)} />
+          <div class="avisame__texto">
+            {E.avisame.texto.map((p) => <p>{p}</p>)}
+          </div>
+        </div>
+        <Formulario variante="escuela" asunto="Lista de espera — Las piezas del Mecanismo">
+          <p class="avisame__nota">
+            {notaAntes}<a href="/comunidad">comunidad</a>{notaDespues}
+          </p>
+        </Formulario>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* La pregunta, bajo el nombre, sobre la foto. */
+  .escuela-pregunta {
+    max-width: 44ch;
+    margin-top: 14px;
+    color: #fff;
+    font: 500 var(--t-enunciado) / 1.4 var(--font-display);
+    text-wrap: balance;
+  }
+
+  /* La entrada, sin el dibujo (José, 01/10): en la columna de lectura. */
+  .entrada-sola {
+    max-width: var(--columna);
+    margin-inline: auto;
+  }
+
+  .entrada-sola .antetitulo {
+    text-align: left;
+  }
+
+  .escuela-preguntas {
+    margin-top: var(--tras-titulo);
+  }
+
+  .escuela-preguntas p {
+    color: var(--color-tinta);
+    font-weight: 500;
+  }
+
+  .escuela-preguntas .circulo {
+    margin: 0 auto 16px;
+  }
+
+  .escuela-cierre {
+    max-width: 640px;
+    margin: calc(var(--tras-titulo) + 16px) auto 0;
+    text-align: center;
+  }
+
+  .escuela-cierre__frase + .escuela-cierre__frase {
+    margin-top: 16px;
+  }
+
+  .escuela-cierre__frase--fuerte {
+    color: var(--color-tinta);
+    font: 500 var(--t-enunciado) / 1.4 var(--font-display);
+    text-wrap: balance;
+  }
+
+  .escuela-cierre__frase--fuerte :global(strong) {
+    font-weight: 500;
+  }
+
+  .escuela-cierre__frase--fuerte:last-child {
+    color: var(--color-oro-texto);
+  }
+
+  .avisame__texto {
+    margin-top: 20px;
+  }
+
+  .avisame__texto p + p {
+    margin-top: 8px;
+  }
+
+  .avisame__nota {
+    margin-top: 14px;
+    font-size: var(--t-nota);
+    line-height: 1.45;
+  }
+
+  .avisame__nota a {
+    display: inline-block;
+    padding: 12px 2px;
+    margin: -12px -2px;
+    color: var(--color-oliva);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--color-oro);
+  }
+
+  .avisame > * + * {
+    margin-top: 28px;
+  }
+
+  @media (min-width: 1100px) {
+    .avisame {
+      display: grid;
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      column-gap: clamp(48px, 6vw, 80px);
+      align-items: start;
+      max-width: 1140px;
+      margin-inline: auto;
+    }
+    .avisame > * + * {
+      margin-top: 0;
+    }
+  }
+</style>

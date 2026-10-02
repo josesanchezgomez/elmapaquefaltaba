@@ -1,0 +1,53 @@
+# Publica la web en GitHub Pages cada vez que main recibe cambios (siempre por
+# PR desde develop). Las dos claves salen de los secretos del repositorio
+# (Settings → Secrets and variables → Actions), nunca del código:
+#   PUBLIC_WEB3FORMS_KEY  la clave de Web3Forms (el formulario al correo)
+#   WHATSAPP_PERSONAL     el número del botón de WhatsApp, sin «+» ni espacios
+# Si falta alguna, no se publica.
+name: Publicar en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  construir:
+    runs-on: ubuntu-latest
+    env:
+      PUBLIC_WEB3FORMS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_KEY }}
+      WHATSAPP_PERSONAL: ${{ secrets.WHATSAPP_PERSONAL }}
+    steps:
+      - name: Comprobar las claves
+        run: |
+          test -n "$PUBLIC_WEB3FORMS_KEY" || { echo "::error::Falta el secreto PUBLIC_WEB3FORMS_KEY"; exit 1; }
+          test -n "$WHATSAPP_PERSONAL" || { echo "::error::Falta el secreto WHATSAPP_PERSONAL"; exit 1; }
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  publicar:
+    needs: construir
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - id: despliegue
+        uses: actions/deploy-pages@v4

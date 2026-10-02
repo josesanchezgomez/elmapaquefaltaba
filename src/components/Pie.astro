@@ -1,0 +1,221 @@
+---
+/**
+ * El pie, a la manera de la plantilla LifeCoach: columnas (la marca y su lema
+ * con las redes en círculos; los caminos; lo legal) y, a la derecha, su panel
+ * de «Free consultation» convertido en la firma de José y el botón para
+ * escribirle. En la plantilla es negro; aquí, claro con el panel turquesa
+ * (José no quiere fondos oscuros).
+ *
+ * Sin el crédito de Colorlib (José, 01/10): el reconocimiento que pide la
+ * licencia de la plantilla (CC BY 3.0) va en el aviso legal.
+ */
+import Icono from './Icono.astro';
+import { ACCION, PIE } from '../contenido';
+import { MARCA, MENU_PLANO, REDES } from '../consts';
+
+interface Props {
+  /** La página de gracias ya termina con la firma: no se repite aquí. */
+  sinFirma?: boolean;
+}
+const { sinFirma = false } = Astro.props;
+const nombre = [MARCA.persona, MARCA.apellido].filter(Boolean).join(' ');
+const frases = PIE.firma.split(/(?<=\.) /);
+const caminos = MENU_PLANO.filter((m) => m.ruta !== '/');
+const palabras = MARCA.rotulo.split(' ');
+---
+
+<footer class="pie">
+  <div class="pie__reja">
+    <div class="pie__columnas">
+      <div class="pie__col pie__col--marca">
+        <p class="pie__marca" aria-label={MARCA.rotulo}>
+          <span aria-hidden="true"><b>{palabras.slice(0, 2).join(' ')}</b> <span class="pie__gris">{palabras.slice(2).join(' ')}</span></span>
+        </p>
+        <p class="pie__lema">{PIE.lema}</p>
+        <p class="pie__redes">
+          <a href={REDES.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Icono nombre="instagram" /></a>
+          <a href={REDES.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube"><Icono nombre="youtube" /></a>
+        </p>
+      </div>
+      <nav class="pie__col" aria-label="Caminos">
+        <h2 class="pie__titulo">Caminos</h2>
+        <ul>
+          {caminos.map((c) => <li><a href={c.ruta}>{c.texto}</a></li>)}
+        </ul>
+      </nav>
+      <nav class="pie__col" aria-label="Legal">
+        <h2 class="pie__titulo">Legal</h2>
+        <ul>
+          <li><a href="/aviso-legal">Aviso legal</a></li>
+          <li><a href="/privacidad">Privacidad</a></li>
+          <li><a href="/cookies">Cookies</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="pie__panel">
+      {
+        !sinFirma && (
+          <p class="pie__firma">
+            {frases.map((f, i) => (
+              <>
+                {i > 0 && ' '}
+                <span class="nw">{f}</span>
+              </>
+            ))}
+          </p>
+        )
+      }
+      <p class="pie__quien">{nombre} · {MARCA.usuario}</p>
+      <a class="boton pie__boton" href="/#contacto">{ACCION.caso}</a>
+    </div>
+  </div>
+
+</footer>
+
+<style>
+  .pie {
+    padding-bottom: calc(var(--barra) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--color-filete);
+    background: #fff;
+  }
+
+  :global(body:not(:has([data-barra]))) .pie {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .pie__reja {
+    display: grid;
+    max-width: calc(var(--ancho) + 2 * var(--lado));
+    margin: 0 auto;
+  }
+
+  .pie__columnas {
+    display: grid;
+    gap: 36px 40px;
+    padding: 56px var(--lado) 40px;
+  }
+
+  .pie__marca {
+    color: var(--color-tinta);
+    font: 700 19px / 1.2 var(--font-display);
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+  }
+
+  .pie__gris {
+    color: #80858b;
+  }
+
+  .pie__lema {
+    max-width: 38ch;
+    margin-top: 14px;
+    text-wrap: balance;
+  }
+
+  /* Las redes en sus círculos (en la plantilla, oscuros; aquí, turquesa). */
+  .pie__redes {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .pie__redes a {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--color-salvia);
+    color: var(--color-tinta);
+    transition: background-color var(--t-rapida);
+  }
+
+  .pie__redes a:hover {
+    background: var(--color-oro);
+  }
+
+  .pie__redes :global(svg) {
+    width: 20px;
+    height: 20px;
+  }
+
+  .pie__titulo {
+    margin-bottom: 14px;
+    font: 600 17px / 1.3 var(--font-cuerpo);
+    letter-spacing: 0;
+  }
+
+  .pie__titulo::after {
+    display: none;
+  }
+
+  .pie__col ul {
+    display: grid;
+  }
+
+  .pie__col li a {
+    display: inline-block;
+    padding: 8px 0;
+    color: var(--color-tinta-2);
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .pie__col li a:hover {
+    color: var(--color-oliva);
+    text-decoration: underline;
+    text-decoration-color: var(--color-oro);
+    text-underline-offset: 5px;
+  }
+
+  /* El panel de la derecha: la firma y el botón para escribir. */
+  .pie__panel {
+    padding: 40px var(--lado);
+    background: var(--color-turquesa);
+    color: var(--color-tinta);
+  }
+
+  .pie__firma {
+    font: italic 400 var(--t-enunciado) / 1.4 var(--font-display);
+    text-wrap: balance;
+  }
+
+  .pie__quien {
+    margin-top: 8px;
+    font-size: var(--t-nota);
+  }
+
+  .pie__boton {
+    margin-top: 22px;
+  }
+
+  /* Desde 1000 px no hay barra fija (BarraFija.astro): el pie no le guarda
+     sitio debajo. */
+  @media (min-width: 1000px) {
+    .pie {
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+  }
+
+  @media (min-width: 700px) {
+    .pie__columnas {
+      grid-template-columns: 1.6fr 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1100px) {
+    .pie__reja {
+      grid-template-columns: minmax(0, 1fr) 380px;
+    }
+    .pie__columnas {
+      padding-block: 72px 56px;
+    }
+    .pie__panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 56px 40px;
+    }
+  }
+</style>

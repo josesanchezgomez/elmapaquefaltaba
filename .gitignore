@@ -1,0 +1,42 @@
+# ══════════════════════════════════════════════════════════════════════════
+# FRONTERA DEL REPOSITORIO
+#
+# Al repo viaja ÚNICAMENTE la web: el código del sitio y lo necesario para
+# levantarlo. El andamiaje de trabajo (instrucciones, agentes, scripts de
+# verificación, capturas, brain) se queda en local: no es el entregable.
+#
+# La estrategia es de lista blanca: se ignora todo y se desbloquea lo que sí
+# tiene que viajar. Así es imposible que se cuele algo por descuido.
+# ══════════════════════════════════════════════════════════════════════════
+
+# Todo fuera por defecto
+/*
+
+# ── La web ────────────────────────────────────────────────────────────────
+!/src/
+!/public/
+
+# ── Lo necesario para levantarla ──────────────────────────────────────────
+!/package.json
+!/package-lock.json
+!/astro.config.mjs
+!/tsconfig.json
+!/.env.example
+!/README.md
+!/.gitignore
+
+# ── La publicación en GitHub Pages (01/10) ─────────────────────────────────
+!/.github/
+
+# ── Fuera SIEMPRE, aunque estén dentro de lo anterior ─────────────────────
+node_modules/
+dist/
+.astro/
+.env
+.env.local
+.DS_Store
+Thumbs.db
+*.log
+
+# Los bocetos de las direcciones visuales descartadas no son producto.
+/src/pages/direcciones/

@@ -1,0 +1,574 @@
+---
+/**
+ * La cabecera. Una sola en el DOM: la misma sirve al móvil y al escritorio.
+ *
+ * · Escritorio (desde 1000 px): la marca, la navegación (Inicio y los
+ *   caminos; los dos acompañamientos, en el desplegable «Acompañamientos») y
+ *   «Cuéntame tu caso». La marca pone su nombre en la columna del
+ *   texto de la página; el signo cuelga en el margen, a la izquierda.
+ * · Móvil y tableta: la marca y el menú (sin desplegable: cada página, una vez). «Cuéntame tu caso» va dentro del menú,
+ *   abajo, al alcance del pulgar. En la fila no cabe junto al nombre (a 390 px
+ *   harían falta 442), y además sobra: en la primera pantalla ya está la acción
+ *   de la página y, pasada esta, la lleva la barra fija del pulgar
+ *   (BarraFija.astro). Al volver a subir se verían dos botones iguales a la vez.
+ *   Al bajar, la cabecera se aparta para dejar sitio a la lectura; al subir
+ *   vuelve.
+ *
+ * «Cuéntame tu caso» es contextual: en la portada y en el 1 a 1 baja al
+ * formulario de esa misma página (#contacto); en las demás, al de la portada.
+ * En la portada se llama como el resto de sus botones de contacto, «Cuéntame
+ * qué te pasa» (Nacho): una sola etiqueta para el mismo formulario.
+ */
+import Signo from './Signo.astro';
+import Icono from './Icono.astro';
+import { ACCION, CABECERA } from '../contenido';
+import { CON_CONTACTO, MARCA, MENU, MENU_PLANO, REDES } from '../consts';
+import { rutaLimpia } from '../lib/ruta';
+
+const ruta = rutaLimpia(Astro.url.pathname);
+const esPortada = ruta === '/';
+const casoTexto = esPortada ? ACCION.portada : ACCION.caso;
+const casoHref = (CON_CONTACTO as readonly string[]).includes(ruta) ? '#contacto' : '/#contacto';
+const actual = (href: string) => (href === ruta ? 'page' : undefined);
+const dentro = (hijos: readonly { ruta: string }[]) => hijos.some((h) => h.ruta === ruta);
+// El logotipo a la manera de la plantilla («LIFECOACH»): «El mapa» en tinta y
+// «que faltaba» en gris, en mayúsculas.
+const palabras = MARCA.rotulo.split(' ');
+const marcaA = palabras.slice(0, 2).join(' ');
+const marcaB = palabras.slice(2).join(' ');
+---
+
+{/* v6: la barra de arriba de la plantilla, en claro: «Mis redes sociales:», el usuario y las redes. */}
+<div class="arriba">
+  <div class="arriba__fila">
+    <span class="arriba__usuario"><span class="arriba__rotulo">{CABECERA.redes}</span> {MARCA.usuario}</span>
+    <span class="arriba__redes">
+      <a href={REDES.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><Icono nombre="instagram" /></a>
+      <a href={REDES.youtube} target="_blank" rel="noopener noreferrer" aria-label="YouTube"><Icono nombre="youtube" /></a>
+    </span>
+  </div>
+</div>
+
+<header class="cabecera" data-cabecera>
+  <div class="fila">
+    {/* En la portada, «#top» sube al principio sin recargar (lo resuelve el navegador). */}
+    <a class="marca" href={esPortada ? '#top' : '/'} aria-label={MARCA.rotulo}>
+      <Signo tamano={24} class="marca__signo" />
+      <span aria-hidden="true"><b>{marcaA}</b> <span class="marca__gris">{marcaB}</span></span>
+    </a>
+
+    <nav class="nav" aria-label="Principal">
+      {
+        MENU.map((e, i) =>
+          'hijos' in e ? (
+            <div class:list={['nav__grupo', { 'nav__grupo--actual': dentro(e.hijos) }]} data-grupo>
+              <button class="nav__abre" type="button" aria-expanded="false" aria-controls={`nav-grupo-${i}`}>
+                {e.texto}
+                <svg class="nav__flecha" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+                  <path d="M1.5 3.5L5 7l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+              <ul class="nav__sub" id={`nav-grupo-${i}`}>
+                {e.hijos.map((h) => (
+                  <li>
+                    <a href={h.ruta} aria-current={actual(h.ruta)}>
+                      {h.texto}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <a href={e.ruta} aria-current={actual(e.ruta)}>
+              {e.texto}
+            </a>
+          )
+        )
+      }
+    </nav>
+
+    <a class="boton cabecera__boton" href={casoHref}>{casoTexto}</a>
+
+    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="menu" data-menu-abrir>
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 7h18M3 12h18M3 17h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+      </svg>
+      <span class="sr">Abrir el menú</span>
+    </button>
+  </div>
+</header>
+
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menú" data-menu hidden>
+  <div class="menu__cab">
+    <span class="marca">
+      <Signo tamano={24} class="marca__signo" />
+      <span><b>{marcaA}</b> <span class="marca__gris">{marcaB}</span></span>
+    </span>
+    <button class="menu-boton" type="button" data-menu-cerrar>
+      <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+      </svg>
+      <span class="sr">Cerrar el menú</span>
+    </button>
+  </div>
+  <nav class="menu__nav" aria-label="Menú principal">
+    {
+      MENU_PLANO.map((e) => (
+        <a href={e.ruta} aria-current={actual(e.ruta)}>
+          {e.texto}
+        </a>
+      ))
+    }
+  </nav>
+  <div class="menu__pie">
+    <a class="boton menu__boton" href={casoHref}>{casoTexto}</a>
+    <p class="menu__redes">
+      <a href={REDES.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href={REDES.youtube} target="_blank" rel="noopener noreferrer">YouTube</a>
+    </p>
+  </div>
+</div>
+
+<style>
+  /* ── La barra de arriba (en la plantilla, negra; aquí, clara) ── */
+  .arriba {
+    background: var(--color-salvia);
+    border-bottom: 1px solid var(--color-filete);
+    font-size: var(--t-nota);
+  }
+
+  .arriba__fila {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: calc(var(--ancho) + 2 * var(--lado));
+    margin: 0 auto;
+    padding: 0 var(--lado);
+  }
+
+  .arriba__usuario {
+    color: var(--color-tinta-2);
+  }
+
+  /* «Mis redes sociales:», un punto más oscuro que el usuario. */
+  .arriba__rotulo {
+    color: var(--color-tinta);
+    font-weight: 500;
+  }
+
+  /* En el móvil no cabe en una línea: el rótulo arriba y el usuario debajo,
+     con el interlineado justo para que la barra apenas crezca. */
+  @media (max-width: 599.98px) {
+    .arriba__usuario {
+      padding-block: 3px;
+      line-height: 1.3;
+    }
+    .arriba__rotulo {
+      display: block;
+    }
+  }
+
+  .arriba__redes {
+    display: flex;
+  }
+
+  .arriba__redes a {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 38px;
+    color: var(--color-tinta);
+    border-left: 1px solid var(--color-filete);
+  }
+
+  .arriba__redes a:last-child {
+    border-right: 1px solid var(--color-filete);
+  }
+
+  .arriba__redes a:hover {
+    background: var(--color-oro);
+  }
+
+  .arriba__redes :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .cabecera {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: #fff;
+    box-shadow: 0 1px 0 var(--color-filete);
+    transition: transform var(--t-media) ease;
+  }
+
+  .cabecera[data-oculta] {
+    transform: translateY(-100%);
+  }
+
+  :global(html[data-sin-barra]) .cabecera[data-oculta] {
+    transform: none;
+  }
+
+  .fila {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: var(--cab);
+    max-width: calc(var(--ancho) + 2 * var(--lado));
+    margin: 0 auto;
+    padding: 0 6px 0 var(--lado);
+  }
+
+  /* El logotipo: «EL MAPA» en tinta, «QUE FALTABA» en gris (como LIFE/COACH). */
+  .marca {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    margin-right: auto;
+    color: var(--color-tinta);
+    font: 700 17px/1 var(--font-display);
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .marca b {
+    font-weight: 700;
+  }
+
+  .marca__gris {
+    color: #80858b;
+  }
+
+  .nav,
+  .cabecera__boton {
+    display: none;
+  }
+
+  .menu-boton {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: var(--radio);
+    background: none;
+    color: var(--color-tinta);
+    cursor: pointer;
+  }
+
+  .menu-boton:focus-visible {
+    outline-offset: -3px;
+  }
+
+  @media (min-width: 1000px) {
+    .fila {
+      gap: 0;
+      padding: 0 var(--lado);
+    }
+    .marca {
+      font-size: 19px;
+    }
+    /* La navegación de la plantilla: mayúsculas espaciadas y la página en la
+       que estás, en su bloque lima de alto completo. */
+    .nav {
+      display: flex;
+      align-self: stretch;
+      margin-right: 22px;
+    }
+    .nav > a,
+    .nav__abre {
+      display: grid;
+      place-items: center;
+      padding: 0 16px;
+      color: var(--color-tinta);
+      font: 600 12px / 1.3 var(--font-cuerpo);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background-color var(--t-rapida);
+    }
+    .nav > a:hover,
+    .nav__abre:hover {
+      background: var(--color-salvia);
+    }
+    .nav > a[aria-current='page'],
+    .nav__grupo--actual .nav__abre {
+      background: var(--color-oro);
+      color: var(--color-sobre-oro);
+    }
+    /* «Acompañamientos»: el desplegable con el 1 a 1 y el grupal. Se abre al
+       pasar el ratón y al pulsarlo (con el dedo o el teclado). Estando en una
+       de sus páginas, el grupo lleva el bloque lima. */
+    .nav__grupo {
+      position: relative;
+      display: flex;
+    }
+    .nav__abre {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      border: 0;
+      background: none;
+      cursor: pointer;
+    }
+    .nav__flecha {
+      transition: transform var(--t-rapida);
+    }
+    .nav__sub {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 2;
+      min-width: 100%;
+      padding: 8px 0;
+      border-top: 3px solid var(--color-oro);
+      background: #fff;
+      box-shadow: var(--sombra);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(6px);
+      transition:
+        opacity var(--t-rapida) ease,
+        transform var(--t-rapida) ease,
+        visibility 0s linear var(--t-rapida);
+    }
+    .nav__grupo[data-abierto] .nav__sub {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+      transition:
+        opacity var(--t-rapida) ease,
+        transform var(--t-rapida) ease,
+        visibility 0s;
+    }
+    .nav__grupo[data-abierto] .nav__flecha {
+      transform: rotate(180deg);
+    }
+    .nav__sub a {
+      display: block;
+      padding: 13px 20px;
+      color: var(--color-tinta);
+      font: 600 12px / 1.3 var(--font-cuerpo);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav__sub a:hover {
+      background: var(--color-salvia);
+    }
+    .nav__sub a[aria-current='page'] {
+      box-shadow: inset 3px 0 0 var(--color-oro);
+    }
+    .cabecera__boton {
+      display: inline-flex;
+      flex: none;
+      min-height: 46px;
+      padding: 12px 22px;
+    }
+    .menu-boton {
+      display: none;
+    }
+  }
+
+  @media (min-width: 1000px) and (max-width: 1179.98px) {
+    .nav > a,
+    .nav__abre {
+      padding: 0 10px;
+      letter-spacing: 0.1em;
+    }
+  }
+
+  /* ── Menú del móvil ── */
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    padding: 0 6px calc(24px + env(safe-area-inset-bottom)) var(--lado);
+    background: #fff;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    opacity: 0;
+    transition: opacity var(--t-media) ease;
+  }
+
+  .menu[data-abierto] {
+    opacity: 1;
+  }
+
+  .menu[hidden] {
+    display: none;
+  }
+
+  .menu__cab {
+    display: flex;
+    flex: none;
+    align-items: center;
+    height: var(--cab);
+  }
+
+  .menu__nav {
+    display: flex;
+    flex-direction: column;
+    margin-top: 24px;
+  }
+
+  .menu__nav a {
+    padding: 16px 14px 16px 0;
+    border-bottom: 1px solid var(--color-filete);
+    color: var(--color-tinta);
+    font: 600 14px / 1.3 var(--font-cuerpo);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .menu__nav a[aria-current='page'] {
+    box-shadow: inset 4px 0 0 var(--color-oro);
+    padding-left: 16px;
+  }
+
+  .menu__pie {
+    margin-top: auto;
+    padding: 40px 14px 0 0;
+  }
+
+  .menu__boton {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .menu__redes {
+    display: flex;
+    gap: 28px;
+    margin-top: 12px;
+  }
+
+  .menu__redes a {
+    padding: 12px 0;
+    color: var(--color-oliva);
+    font-size: var(--t-ui);
+    font-weight: 600;
+  }
+</style>
+
+<script>
+  const cabecera = document.querySelector<HTMLElement>('[data-cabecera]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+  const abrir = document.querySelector<HTMLButtonElement>('[data-menu-abrir]');
+  const cerrar = document.querySelector<HTMLButtonElement>('[data-menu-cerrar]');
+  const escritorio = matchMedia('(min-width: 1000px)');
+
+  /* ── En el móvil, la cabecera se aparta al bajar y vuelve al subir ── */
+  let yAnterior = scrollY;
+  let pendiente = false;
+  addEventListener(
+    'scroll',
+    () => {
+      if (pendiente) return;
+      pendiente = true;
+      requestAnimationFrame(() => {
+        pendiente = false;
+        const y = scrollY;
+        if (escritorio.matches || y < 60 || y < yAnterior - 6) cabecera?.removeAttribute('data-oculta');
+        else if (y > yAnterior + 6 && y > 120) cabecera?.setAttribute('data-oculta', '');
+        yAnterior = y;
+      });
+    },
+    { passive: true }
+  );
+
+  /* ── «Acompañamientos», el desplegable del escritorio ── */
+  const grupos = [...document.querySelectorAll<HTMLElement>('[data-grupo]')];
+  const abrirGrupo = (g: HTMLElement, si: boolean) => {
+    g.toggleAttribute('data-abierto', si);
+    g.querySelector('button')?.setAttribute('aria-expanded', String(si));
+  };
+  const raton = matchMedia('(hover: hover)');
+  for (const g of grupos) {
+    const boton = g.querySelector('button');
+    // Con ratón, pasar por encima ya lo abre y el clic lo deja abierto; con el
+    // dedo o el teclado (detail 0), el botón abre y cierra.
+    boton?.addEventListener('click', (e) =>
+      abrirGrupo(g, raton.matches && e.detail > 0 ? true : !g.hasAttribute('data-abierto'))
+    );
+    g.addEventListener('mouseenter', () => raton.matches && abrirGrupo(g, true));
+    g.addEventListener('mouseleave', () => raton.matches && abrirGrupo(g, false));
+    // Con el teclado: se cierra al salir el foco del grupo o con Escape.
+    g.addEventListener('focusout', (e) => {
+      if (!g.contains(e.relatedTarget as Node | null)) abrirGrupo(g, false);
+    });
+    g.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && g.hasAttribute('data-abierto')) {
+        abrirGrupo(g, false);
+        boton?.focus();
+      }
+    });
+  }
+  // Un toque fuera lo cierra.
+  document.addEventListener('click', (e) => {
+    for (const g of grupos) if (!g.contains(e.target as Node)) abrirGrupo(g, false);
+  });
+
+  /* ── Menú ── */
+  let cierre: number | undefined;
+  const abierto = () => menu?.hasAttribute('data-abierto') ?? false;
+
+  const abrirMenu = () => {
+    if (!menu) return;
+    clearTimeout(cierre);
+    menu.hidden = false;
+    void menu.offsetHeight; // para que el fundido arranque desde 0
+    menu.setAttribute('data-abierto', '');
+    abrir?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    cerrar?.focus();
+  };
+
+  const cerrarMenu = (devolverFoco = true) => {
+    if (!menu) return;
+    menu.removeAttribute('data-abierto');
+    abrir?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    cierre = window.setTimeout(() => (menu.hidden = true), 260);
+    if (devolverFoco) abrir?.focus();
+  };
+
+  abrir?.addEventListener('click', abrirMenu);
+  cerrar?.addEventListener('click', () => cerrarMenu());
+  // Cualquier enlace del menú lo cierra (también «Cuéntame tu caso», que en la
+  // portada y en el 1 a 1 solo baja por la página).
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => cerrarMenu(false)));
+
+  // Si la ventana pasa a escritorio con el menú abierto, se cierra: en el
+  // escritorio no hay botón para cerrarlo.
+  escritorio.addEventListener('change', (e) => {
+    if (e.matches && abierto()) cerrarMenu(false);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!abierto() || !menu) return;
+    if (e.key === 'Escape') cerrarMenu();
+    // El foco no se escapa del menú mientras está abierto.
+    if (e.key === 'Tab') {
+      const tocables = [...menu.querySelectorAll<HTMLElement>('a, button')];
+      const primero = tocables[0];
+      const ultimo = tocables[tocables.length - 1];
+      if (e.shiftKey && document.activeElement === primero) {
+        e.preventDefault();
+        ultimo.focus();
+      } else if (!e.shiftKey && document.activeElement === ultimo) {
+        e.preventDefault();
+        primero.focus();
+      }
+    }
+  });
+</script>
