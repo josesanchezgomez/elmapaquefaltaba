@@ -39,7 +39,7 @@ const marcaB = palabras.slice(2).join(' ');
 ---
 
 {/* v6: la barra de arriba de la plantilla, en claro: «Mis redes sociales:», el usuario y las redes. */}
-<div class="arriba">
+<div class="arriba" data-nosnippet>
   <div class="arriba__fila">
     <span class="arriba__usuario"><span class="arriba__rotulo">{CABECERA.redes}</span> {MARCA.usuario}</span>
     <span class="arriba__redes">
@@ -50,7 +50,7 @@ const marcaB = palabras.slice(2).join(' ');
 </div>
 
 <header class="cabecera" data-cabecera>
-  <div class="fila">
+  <div class="fila" data-nosnippet>
     {/* En la portada, «#top» sube al principio sin recargar (lo resuelve el navegador). */}
     <a class="marca" href={esPortada ? '#top' : '/'} aria-label={MARCA.rotulo}>
       <Signo tamano={24} class="marca__signo" />
@@ -98,7 +98,7 @@ const marcaB = palabras.slice(2).join(' ');
   </div>
 </header>
 
-<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menú" data-menu hidden>
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menú" data-menu data-nosnippet hidden>
   <div class="menu__cab">
     <span class="marca">
       <Signo tamano={24} class="marca__signo" />

@@ -77,10 +77,10 @@ const fuera = externo ? { target: '_blank', rel: 'noopener noreferrer' } : {};
     ) : (
       /* La frase va partida en sus dos golpes para que no corte a mitad. */
       <p class="barra__quien">
-        <span>
+        <span data-nosnippet>
           <strong>{MARCA.persona}</strong> · {firma[0]}
         </span>
-        <span>{firma[1]}</span>
+        <span data-nosnippet>{firma[1]}</span>
       </p>
     )
   }
