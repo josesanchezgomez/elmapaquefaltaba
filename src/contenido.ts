@@ -876,35 +876,39 @@ export const PIE = {
    dolor → mecanismo → posibilidad → José. Cinco búsquedas de dolor como
    máximo, una por página. Las secciones empiezan por su nombre del menú (los
    enlaces de debajo del resultado). «repetir» siempre con «patrones» o «lo
-   mismo»: solo, Google lo lleva a la digestión («por qué repito la comida»). */
+   mismo»: solo, Google lo lleva a la digestión («por qué repito la comida»).
+   Las descripciones no empiezan por «¿»: Google lo quita al enseñarlas (v30). */
 export const SEO = {
   portada: {
     // José, 02/10: más corto, para que la pestaña no lo corte sin sentido.
     titulo: '¿Por qué repites patrones? · El mapa que faltaba',
     descripcion:
       // José, 01/10: la síntesis del v23 y el v24 (las dos enteras pasan de 300
-      // caracteres y Google corta hacia los 155).
-      'No te falta fuerza de voluntad: hay un mecanismo que te hace repetir patrones y conductas. Coaching online de transformación personal con José.',
+      // caracteres y Google corta hacia los 155). José, 04/10 (v30): empieza por la
+      // marca para que Google la use al buscar «El mapa que faltaba» (antes tomaba el pie).
+      'El mapa que faltaba: no te falta fuerza de voluntad, hay un mecanismo que te hace repetir patrones y conductas. Coaching de transformación personal con José.',
   },
   acompanamiento: {
-    titulo: 'Acompañamiento 1 a 1 · Cómo dejar de reaccionar siempre igual',
+    // José, 04/10 (v30): más corto, Google lo cortaba con «…».
+    titulo: 'Acompañamiento 1 a 1 · Cómo dejar de reaccionar',
     descripcion:
-      '¿Decides hacerlo diferente y vuelves a reaccionar igual? Vemos qué se activa antes de reaccionar y practicas otra respuesta. Coaching 1 a 1 online con José.',
+      'Decides hacerlo diferente y vuelves a reaccionar igual. Vemos qué se activa antes de reaccionar y practicas otra respuesta. Coaching 1 a 1 online con José.',
   },
   grupal: {
-    titulo: 'Acompañamiento grupal · Cuando siempre vuelves a lo mismo',
+    // José, 04/10 (v30): más corto, Google lo cortaba con «…».
+    titulo: 'Acompañamiento grupal · Siempre vuelves a lo mismo',
     descripcion:
-      '¿Intentas cambiar y siempre vuelves a lo mismo? Un grupo guiado por José para ver qué ocurre antes de repetir, con el apoyo de otros. Primer contacto privado.',
+      'Intentas cambiar y siempre vuelves a lo mismo. Un grupo guiado por José para ver qué ocurre antes de repetir, con el apoyo de otros. Primer contacto privado.',
   },
   // José, 01/10: «Comunidad · El mapa que faltaba».
   comunidad: {
     titulo: 'Comunidad · El mapa que faltaba',
     descripcion:
-      '¿Con quién hablas de lo que repites sin aparentar? Una comunidad en WhatsApp para compartir este camino con José y otras personas. Participa o escucha.',
+      'Para hablar de lo que repites sin aparentar: una comunidad en WhatsApp para compartir este camino con José y otras personas. Participa o escucha.',
   },
   escuela: {
     titulo: 'La escuela · Las piezas del Mecanismo · El mapa que faltaba',
     descripcion:
-      '¿Y si reconocieras el mecanismo antes de volver a caer en lo mismo? La escuela de José, en preparación, para verlo por ti mismo. Te aviso cuando abra.',
+      'Para reconocer el mecanismo antes de volver a caer en lo mismo: la escuela de José, en preparación, para verlo por ti mismo. Te aviso cuando abra.',
   },
 };
