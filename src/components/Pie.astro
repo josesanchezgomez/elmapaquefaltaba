@@ -25,7 +25,10 @@ const palabras = MARCA.rotulo.split(' ');
 ---
 
 <footer class="pie">
-  <div class="pie__reja">
+  {/* data-nosnippet: Google no monta con el pie el texto de los resultados.
+       Con la búsqueda de la marca usaba «El mapa que faltaba» + el lema + «Caminos»
+       en lugar de la descripción de cada página (04/10). */}
+  <div class="pie__reja" data-nosnippet>
     <div class="pie__columnas">
       <div class="pie__col pie__col--marca">
         <p class="pie__marca" aria-label={MARCA.rotulo}>
