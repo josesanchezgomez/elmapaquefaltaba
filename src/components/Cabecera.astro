@@ -16,8 +16,7 @@
  *
  * «Cuéntame tu caso» es contextual: en la portada y en el 1 a 1 baja al
  * formulario de esa misma página (#contacto); en las demás, al de la portada.
- * En la portada se llama como el resto de sus botones de contacto, «Cuéntame
- * qué te pasa» (Nacho): una sola etiqueta para el mismo formulario.
+ * Una sola etiqueta en toda la web (José, 05/10: «nombre único Cuéntame tu caso»).
  */
 import Signo from './Signo.astro';
 import Icono from './Icono.astro';
@@ -27,7 +26,7 @@ import { rutaLimpia } from '../lib/ruta';
 
 const ruta = rutaLimpia(Astro.url.pathname);
 const esPortada = ruta === '/';
-const casoTexto = esPortada ? ACCION.portada : ACCION.caso;
+const casoTexto = ACCION.caso;
 const casoHref = (CON_CONTACTO as readonly string[]).includes(ruta) ? '#contacto' : '/#contacto';
 const actual = (href: string) => (href === ruta ? 'page' : undefined);
 const dentro = (hijos: readonly { ruta: string }[]) => hijos.some((h) => h.ruta === ruta);

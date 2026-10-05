@@ -65,7 +65,7 @@ const unoAUno = CAMINOS.lista[0];
   descripcion={SEO.portada.descripcion}
   og={OG.portada}
   esquema={(site, ruta) => [preguntas(site, ruta, FRECUENTES_HOME.lista), ...videos(site)]}
-  barra={{ texto: ACCION.portada, href: '#contacto', ocultarSobre: '#contacto' }}
+  barra={{ texto: ACCION.caso, href: '#contacto', ocultarSobre: '#contacto' }}
 >
   {/* ═══ 1 · PORTADA A SANGRE ═══ */}
   <section class="heroe heroe--portada" id="arriba">
@@ -75,7 +75,7 @@ const unoAUno = CAMINOS.lista[0];
       <h1>{HERO.titular}</h1>
       <div class="acciones acciones--centro portada__acciones" data-accion-principal>
         <a class="boton boton--blanco" href="#mapa">{HERO.accion}</a>
-        <a class="enlace portada__enlace" href="#contacto">{ACCION.portada}</a>
+        <a class="enlace portada__enlace" href="#contacto">{ACCION.caso}</a>
       </div>
     </div>
   </section>
@@ -165,7 +165,7 @@ const unoAUno = CAMINOS.lista[0];
         {/* Auditoría UX 05/10: justo tras el bucle el visitante ya se ha reconocido;
              la acción pasa de enlace a botón (el mismo texto, con más peso). */}
         <div class="acciones">
-          <a class="boton" href="#contacto">{ACCION.portada}</a>
+          <a class="boton" href="#contacto">{ACCION.caso}</a>
         </div>
       </div>
     </div>
