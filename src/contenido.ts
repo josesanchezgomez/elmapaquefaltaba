@@ -182,12 +182,13 @@ export const CAMINOS = {
   lista: [
     {
       nombre: 'Acompañamiento 1 a 1',
-      // Nacho, ajuste del 30/09: sin precio, sesiones ni duración; la acción
-      // lleva a contar el caso (la carta del 1 a 1).
+      // Nacho, ajuste del 30/09: sin precio, sesiones ni duración.
       texto:
         'Un espacio individual para mirar conmigo aquello que se está repitiendo en tu vida, comprender qué mecanismo hay detrás y empezar a relacionarte de otra manera con lo que hoy te está atrapando.',
-      accion: 'Cuéntame tu caso',
-      ruta: '/acompanamiento-1-a-1#contacto',
+      // José, 05/10 (v31): como las otras tres puertas, lleva al principio de su
+      // página («Conocer…»). Antes llevaba a la carta del final del 1 a 1.
+      accion: 'Conocer el acompañamiento 1 a 1',
+      ruta: '/acompanamiento-1-a-1',
       estado: 'abierto' as const,
     },
     {

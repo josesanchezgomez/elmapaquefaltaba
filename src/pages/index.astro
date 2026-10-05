@@ -91,7 +91,9 @@ const unoAUno = CAMINOS.lista[0];
         <span class="circulo circulo--pequeno"><Icono nombre="conversacion" /></span>
         <span>{ficha2}</span>
       </p>
-      <a class="boton franja__boton" href={unoAUno.ruta}>{unoAUno.accion}</a>
+      {/* José, 05/10: contar el caso es la carta de esta misma página, como los
+           demás botones de contacto de Inicio (antes saltaba a la del 1 a 1). */}
+      <a class="boton franja__boton" href="#contacto">{ACCION.caso}</a>
     </div>
   </section>
 
