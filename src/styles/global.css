@@ -383,6 +383,13 @@
       transform var(--t-rapida) ease;
   }
 
+  /* En el móvil, la letra del botón un punto más grande (auditoría UX 05/10). */
+  @media (max-width: 599.98px) {
+    .boton {
+      font-size: 14px;
+    }
+  }
+
   .boton:hover {
     background: var(--color-oro-vivo);
   }
@@ -571,6 +578,13 @@
       aspect-ratio: 1 / 1 !important;
       object-position: 50% 30%;
     }
+    /* «Yo fui mi primer caso», más baja (auditoría UX 05/10): cuadrada ocupaba
+       casi media pantalla. Va aquí, en la misma capa que la regla de arriba,
+       porque un !important de la página no gana al de esta capa. */
+    #quien-soy .partida__foto img {
+      aspect-ratio: 4 / 3 !important;
+      object-position: 27% 43%;
+    }
   }
 
   @media (min-width: 900px) {
@@ -753,9 +767,21 @@
     color: #fff;
   }
 
+  /* Auditoría UX 05/10: sobre los claros de la foto bajaba a 2,5:1. Una sombra
+     suave lo separa del fondo sin cambiar el color aprobado; en el móvil,
+     un punto más grande. */
   .heroe .antetitulo {
     color: var(--color-lima-claro);
     letter-spacing: 0.26em;
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.6),
+      0 0 14px rgba(0, 0, 0, 0.45);
+  }
+
+  @media (max-width: 599.98px) {
+    .heroe .antetitulo {
+      font-size: 13px;
+    }
   }
 
   .heroe--portada {
@@ -788,6 +814,7 @@
     gap: 6px 12px;
     margin-bottom: 14px;
     font-size: var(--t-ui);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 12px rgba(0, 0, 0, 0.4);
   }
 
   .migas a {

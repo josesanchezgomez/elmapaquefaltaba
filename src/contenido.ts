@@ -30,12 +30,11 @@
  * no la frase. scripts/verificar-texto.mjs lo comprueba contra texto/TEXTO-v11.md.
  */
 
-/** Las dos etiquetas de la acción de escribir. */
+/** La etiqueta de la acción de escribir. José, 05/10 (v32, tras la auditoría UX):
+    «nombre único Cuéntame tu caso»; sale «Cuéntame qué te pasa» de la portada. */
 export const ACCION = {
-  /** Cabecera, barra fija de las páginas y acompañamiento 1 a 1. */
+  /** Cabecera, barra fija, portada y acompañamientos. */
   caso: 'Cuéntame tu caso',
-  /** Botones de contacto de la portada. */
-  portada: 'Cuéntame qué te pasa',
 };
 
 /* ═══════════════════════════════ PORTADA ═══════════════════════════════ */

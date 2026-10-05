@@ -16,8 +16,7 @@
  *
  * «Cuéntame tu caso» es contextual: en la portada y en el 1 a 1 baja al
  * formulario de esa misma página (#contacto); en las demás, al de la portada.
- * En la portada se llama como el resto de sus botones de contacto, «Cuéntame
- * qué te pasa» (Nacho): una sola etiqueta para el mismo formulario.
+ * Una sola etiqueta en toda la web (José, 05/10: «nombre único Cuéntame tu caso»).
  */
 import Signo from './Signo.astro';
 import Icono from './Icono.astro';
@@ -27,7 +26,7 @@ import { rutaLimpia } from '../lib/ruta';
 
 const ruta = rutaLimpia(Astro.url.pathname);
 const esPortada = ruta === '/';
-const casoTexto = esPortada ? ACCION.portada : ACCION.caso;
+const casoTexto = ACCION.caso;
 const casoHref = (CON_CONTACTO as readonly string[]).includes(ruta) ? '#contacto' : '/#contacto';
 const actual = (href: string) => (href === ruta ? 'page' : undefined);
 const dentro = (hijos: readonly { ruta: string }[]) => hijos.some((h) => h.ruta === ruta);
@@ -274,8 +273,9 @@ const marcaB = palabras.slice(2).join(' ');
     .marca {
       font-size: 19px;
     }
-    /* La navegación de la plantilla: mayúsculas espaciadas y la página en la
-       que estás, en su bloque lima de alto completo. */
+    /* La navegación de la plantilla: mayúsculas espaciadas. La página en la que
+       estás, con una raya lima fina debajo (auditoría UX 05/10: el bloque lima
+       de alto completo parecía otro botón junto a «Cuéntame…»). */
     .nav {
       display: flex;
       align-self: stretch;
@@ -299,12 +299,12 @@ const marcaB = palabras.slice(2).join(' ');
     }
     .nav > a[aria-current='page'],
     .nav__grupo--actual .nav__abre {
-      background: var(--color-oro);
-      color: var(--color-sobre-oro);
+      box-shadow: inset 0 -4px 0 var(--color-oro);
+      color: var(--color-tinta);
     }
     /* «Acompañamientos»: el desplegable con el 1 a 1 y el grupal. Se abre al
        pasar el ratón y al pulsarlo (con el dedo o el teclado). Estando en una
-       de sus páginas, el grupo lleva el bloque lima. */
+       de sus páginas, el grupo lleva la raya lima. */
     .nav__grupo {
       position: relative;
       display: flex;
