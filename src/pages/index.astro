@@ -9,13 +9,11 @@
  *   2 · La franja de la plantilla («Call us / Opening hours / Appointment»):
  *       la ficha del 1 a 1 y su botón.                        · salvia
  *   3 · Sus párrafos y el lema, junto a su foto (camisa verde). · papel
- *   4 · Los contadores de la plantilla → el manifiesto (sin cifras).
- *                                                             · salvia
- *   5 · La banda de testimonios → la cita de Jung (sin testimonios).
- *                                                             · turquesa
- *   6 · ¿Cuánto de lo que haces…? (los puntos, con su círculo). · papel
- *   7 · El giro.                                              · salvia
- *   8 · #mapa: el bucle a un lado y el texto al otro.         · papel
+ *   6 · ¿Cuánto de lo que haces…? (los puntos, con su círculo). · salvia
+ *   7 · El giro.                                              · papel
+ *   8 · #mapa: el bucle a un lado y el texto al otro.         · salvia
+ * 4-5 · El manifiesto y la cita de Jung, una sola pausa (tras el bucle desde
+ *       el 05/10, José).                                      · turquesa
  *   9 · El puente y «Yo fui mi primer caso», con el mirador.  · salvia
  *  10 · #rendicion.                                           · papel
  *  11 · El método junto a su foto (escritorio), pasos en círculos. · salvia
@@ -112,25 +110,8 @@ const unoAUno = CAMINOS.lista[0];
     </div>
   </section>
 
-  {/* ═══ 4-5 · EL MANIFIESTO Y LA CITA, una sola pausa (01/10) ═══
-       Antes, dos bandas para cuatro líneas (y la cita en una tarjeta blanca
-       dentro del turquesa: un marco dentro de otro). Ahora, una: el manifiesto
-       en una fila y, debajo, la cita de Jung, directa sobre el turquesa. */}
-  <section class="banda banda--turquesa pausa" aria-label={MARCA.nombre}>
-    <div class="envoltorio">
-      <p class="manifiesto__frases">
-        {HERO.manifiesto.map((frase, i) => (i ? <> <span>{frase}</span></> : <span>{frase}</span>))}
-      </p>
-      <figure class="testimonio">
-        <span class="testimonio__icono"><Icono nombre="cita" /></span>
-        <blockquote>{HERO.cita}</blockquote>
-        <figcaption>{HERO.citaAutor}</figcaption>
-      </figure>
-    </div>
-  </section>
-
   {/* ═══ 6 · RECONOCIMIENTO ═══ */}
-  <section class="banda banda--papel" aria-labelledby="t-reconocimiento">
+  <section class="banda banda--salvia" aria-labelledby="t-reconocimiento">
     <div class="envoltorio">
       <div class="cabeza-seccion">
         <h2 id="t-reconocimiento" set:html={atarCortas(RECONOCIMIENTO.titulo)} />
@@ -143,7 +124,7 @@ const unoAUno = CAMINOS.lista[0];
   </section>
 
   {/* ═══ 7 · EL GIRO ═══ */}
-  <section class="banda banda--salvia giro" aria-label={RECONOCIMIENTO.absolucion.ahi}>
+  <section class="banda banda--papel giro" aria-label={RECONOCIMIENTO.absolucion.ahi}>
     <div class="envoltorio">
       <p class="frase">{blanca.map((parte, i) => (i ? <> <span>{parte}</span></> : <span>{parte}</span>))}</p>
       <p class="giro__remate">{RECONOCIMIENTO.absolucion.remate}</p>
@@ -152,7 +133,7 @@ const unoAUno = CAMINOS.lista[0];
   </section>
 
   {/* ═══ 8 · EL MAPA: el bucle a un lado, el texto al otro ═══ */}
-  <section class="banda banda--papel" id="mapa" aria-labelledby="t-mapa">
+  <section class="banda banda--salvia" id="mapa" aria-labelledby="t-mapa">
     <div class="envoltorio partida">
       <div class="partida__foto caja bucle-caja">
         {/* Una sola variante: en la v6 el bucle va en su caja, sin el riel del
@@ -168,6 +149,25 @@ const unoAUno = CAMINOS.lista[0];
           <a class="boton" href="#contacto">{ACCION.caso}</a>
         </div>
       </div>
+    </div>
+  </section>
+
+  {/* ═══ 4-5 · EL MANIFIESTO Y LA CITA, una sola pausa (01/10) ═══
+       José, 05/10 (auditoría UX): va tras el bucle; quien llega por primera vez
+       se reconoce antes y las tres frases y Jung llegan con sentido.
+       Antes, dos bandas para cuatro líneas (y la cita en una tarjeta blanca
+       dentro del turquesa: un marco dentro de otro). Ahora, una: el manifiesto
+       en una fila y, debajo, la cita de Jung, directa sobre el turquesa. */}
+  <section class="banda banda--turquesa pausa" aria-label={MARCA.nombre}>
+    <div class="envoltorio">
+      <p class="manifiesto__frases">
+        {HERO.manifiesto.map((frase, i) => (i ? <> <span>{frase}</span></> : <span>{frase}</span>))}
+      </p>
+      <figure class="testimonio">
+        <span class="testimonio__icono"><Icono nombre="cita" /></span>
+        <blockquote>{HERO.cita}</blockquote>
+        <figcaption>{HERO.citaAutor}</figcaption>
+      </figure>
     </div>
   </section>
 
