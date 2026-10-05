@@ -13,6 +13,11 @@
  * v22 (01/10): el WebSite le da a Google el nombre de la web, el que sale
  * encima del enlace («El Corte Inglés» en su resultado). Va en todas las
  * páginas, y Google lo lee en la portada.
+ *
+ * 05/10: la marca (Organization) con su logotipo y sus perfiles. Instagram y
+ * YouTube son @el_mapa_que_faltaba, la marca: así Google ata el nombre, la web
+ * y los perfiles (que ya enlazan a la web), y deja de leer «El mapa que faltaba»
+ * como una frase suelta (un libro, un artículo…). José es su fundador.
  */
 import { MARCA, REDES, FOTOS, VIDEOS } from '../consts';
 import { CANAL, PIE, ACOMPANAMIENTO, GRUPAL } from '../contenido';
@@ -23,7 +28,7 @@ export type Nodo = Record<string, unknown>;
 const abs = (ruta: string, site: URL) => new URL(ruta, site).href;
 const id = (site: URL, ancla: string, ruta = '/') => `${abs(ruta, site)}#${ancla}`;
 
-/** José y la web: van en todas las páginas y el resto los enlaza por @id. */
+/** José, la marca y la web: van en todas las páginas y el resto los enlaza por @id. */
 export const base = (site: URL): Nodo[] => [
   {
     '@type': 'Person',
@@ -44,7 +49,18 @@ export const base = (site: URL): Nodo[] => [
       'Conductas repetitivas',
       'Conductas adictivas',
     ],
+    worksFor: { '@id': id(site, 'marca') },
+  },
+  {
+    '@type': 'Organization',
+    '@id': id(site, 'marca'),
+    name: MARCA.nombre,
+    alternateName: [MARCA.dominio],
+    url: abs('/', site),
+    // El signo de la marca, el del favicon (Google pide 112 px o más).
+    logo: { '@type': 'ImageObject', url: abs('/favicon-192.png', site), width: 192, height: 192 },
     sameAs: [REDES.instagram, REDES.youtube],
+    founder: { '@id': id(site, 'jose') },
   },
   {
     '@type': 'WebSite',
@@ -55,7 +71,7 @@ export const base = (site: URL): Nodo[] => [
     url: abs('/', site),
     description: PIE.lema,
     inLanguage: 'es-ES',
-    publisher: { '@id': id(site, 'jose') },
+    publisher: { '@id': id(site, 'marca') },
   },
 ];
 
