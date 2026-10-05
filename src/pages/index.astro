@@ -162,8 +162,10 @@ const unoAUno = CAMINOS.lista[0];
       <div class="partida__texto">
         <h2 id="t-mapa" class="raya raya--izquierda" set:html={atarCortas(MAPA.titulo)} />
         {MAPA.parrafos.map((p) => <p set:html={negritas(p)} />)}
+        {/* Auditoría UX 05/10: justo tras el bucle el visitante ya se ha reconocido;
+             la acción pasa de enlace a botón (el mismo texto, con más peso). */}
         <div class="acciones">
-          <a class="enlace" href="#contacto">{ACCION.portada}</a>
+          <a class="boton" href="#contacto">{ACCION.portada}</a>
         </div>
       </div>
     </div>
@@ -471,6 +473,7 @@ const unoAUno = CAMINOS.lista[0];
   .partida__foto[data-cara] img {
     aspect-ratio: 3 / 4;
   }
+
 
   /* ── 11 · El método ── */
   .metodo__cita {
