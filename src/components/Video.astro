@@ -15,11 +15,18 @@
  * Sin reproducción automática al cargar y sin subtítulos quemados.
  */
 import { VIDEOS } from '../consts';
+
+interface Props {
+  /** Solo estos vídeos (por id); sin él, todos (la portada). */
+  ids?: string[];
+}
+const { ids } = Astro.props;
+const lista = ids ? VIDEOS.filter((v) => ids.includes(v.id)) : VIDEOS;
 ---
 
 <ul class="videos">
   {
-    VIDEOS.map((v) => (
+    lista.map((v) => (
       <li>
         <figure class="video" data-video={v.incrustable === false ? undefined : v.id} data-titulo={v.titulo}>
           <a

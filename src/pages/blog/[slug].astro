@@ -1,0 +1,218 @@
+---
+/**
+ * Un artículo del blog (06/10, borrador a la espera de José). Sale de un
+ * tema que la gente busca en Google, con la voz de Hawkins.
+ *
+ *   · Cabecera con la foto del blog, migas (Inicio › Blog › artículo), el h1
+ *     y quién lo escribe, cuándo y cuánto se tarda en leer.
+ *   · El texto, en una columna de lectura (66 caracteres por línea).
+ *   · El vídeo del que sale, por fachada: nada de YouTube carga hasta pulsar.
+ *   · El cierre: «¿Te reconoces en esto?» y «Cuéntame tu caso», que lleva a la
+ *     carta de la portada, como el botón del pie.
+ */
+import Base from '../../layouts/Base.astro';
+import FotoFondo from '../../components/FotoFondo.astro';
+import Video from '../../components/Video.astro';
+import { render } from 'astro:content';
+import { ACCION, BLOG } from '../../contenido';
+import { FONDOS } from '../../consts';
+import { articulo, migas, videos } from '../../lib/esquema';
+import { articulos, fechaLarga, minutos, type Articulo } from '../../lib/blog';
+import { atarCortas } from '../../lib/texto';
+
+export async function getStaticPaths() {
+  return (await articulos()).map((a) => ({ params: { slug: a.id }, props: { a } }));
+}
+
+const { a } = Astro.props as { a: Articulo };
+const { Content } = await render(a);
+const d = a.data;
+const fecha = d.fecha.toISOString().slice(0, 10);
+---
+
+<Base
+  titulo={d.tituloSeo}
+  descripcion={d.descripcion}
+  esquema={(site, ruta) => [
+    migas(site, ruta, d.tituloSeo, { nombre: BLOG.rotulo, ruta: '/blog' }),
+    articulo(site, ruta, { titulo: d.titulo, descripcion: d.descripcion, fecha: d.fecha, imagen: FONDOS.blog.src, video: d.video }),
+    ...videos(site).filter((v) => d.video && String(v['@id']).endsWith(`video-${d.video}`)),
+  ]}
+  barra={{ texto: ACCION.caso, href: '/#contacto' }}
+>
+  <section class="heroe heroe--pagina" aria-labelledby="t-articulo">
+    <FotoFondo foto="blog" />
+    <div class="envoltorio">
+      <div class="heroe__bloque">
+        <nav aria-label="Estás en">
+          <ol class="migas">
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/blog">{BLOG.rotulo}</a></li>
+            <li aria-current="page">{d.tituloSeo}</li>
+          </ol>
+        </nav>
+        <h1 id="t-articulo" set:html={atarCortas(d.titulo)} />
+        <p class="articulo-meta">
+          <span>{BLOG.autor}</span>
+          <span aria-hidden="true">·</span>
+          <time datetime={fecha}>{fechaLarga(d.fecha)}</time>
+          <span aria-hidden="true">·</span>
+          <span>{minutos(a.body)} {BLOG.minutos}</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <article class="banda banda--papel" aria-labelledby="t-articulo">
+    <div class="envoltorio">
+      <div class="articulo">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  {
+    d.video && (
+      <section class="banda banda--salvia" aria-labelledby="t-video">
+        <div class="envoltorio articulo-video">
+          <h2 id="t-video" class="raya">{BLOG.video.titulo}</h2>
+          <Video ids={[d.video]} />
+        </div>
+      </section>
+    )
+  }
+
+  <section class="banda banda--papel" aria-labelledby="t-cierre">
+    <div class="envoltorio articulo-cierre">
+      <h2 id="t-cierre" class="raya">{BLOG.cierre.titulo}</h2>
+      <p>{BLOG.cierre.texto}</p>
+      <div class="acciones acciones--centro">
+        <a class="boton" href="/#contacto">{ACCION.caso}</a>
+      </div>
+      <p class="articulo-volver">
+        <a class="enlace" href="/blog">{BLOG.volver}</a>
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* En el móvil, las migas sin el último paso: el título del artículo, largo,
+     ya es el h1 de debajo. */
+  @media (max-width: 599.98px) {
+    .migas [aria-current] {
+      display: none;
+    }
+  }
+
+  .articulo-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    margin-top: 16px;
+    color: rgba(255, 255, 255, 0.88);
+    font: 500 14px / 1.6 var(--font-cuerpo);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+  }
+
+  /* La columna de lectura: 66 caracteres por línea, a la izquierda. */
+  .articulo {
+    max-width: 66ch;
+    margin-inline: auto;
+  }
+
+  .articulo :global(p) {
+    margin-top: 18px;
+  }
+
+  .articulo :global(p:first-child) {
+    margin-top: 0;
+    color: var(--color-tinta);
+    font: 500 var(--t-enunciado) / 1.45 var(--font-display);
+  }
+
+  .articulo :global(h2) {
+    position: relative;
+    margin-top: 52px;
+    padding-bottom: 16px;
+    font-size: clamp(22px, 18px + 1vw, 28px);
+    line-height: 1.3;
+  }
+
+  /* La raya lima de la plantilla bajo cada titular, a la izquierda. */
+  .articulo :global(h2)::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 48px;
+    height: 3px;
+    background: var(--color-oro);
+  }
+
+  .articulo :global(h2 + p) {
+    margin-top: 20px;
+  }
+
+  .articulo :global(strong) {
+    color: var(--color-tinta);
+  }
+
+  /* Los enlaces dentro del texto: como .enlace, pero en línea. */
+  .articulo :global(a) {
+    color: var(--color-oliva);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+    text-decoration-color: var(--color-oro);
+  }
+
+  .articulo :global(a:hover) {
+    text-decoration-color: var(--color-oliva);
+  }
+
+  /* Los pasos: numerados, con el número en el oliva de los antetítulos. */
+  .articulo :global(ol) {
+    display: grid;
+    gap: 14px;
+    margin-top: 20px;
+    padding-left: 1.4em;
+    list-style: decimal;
+  }
+
+  .articulo :global(ol li::marker) {
+    color: var(--color-oro-texto);
+    font-weight: 700;
+  }
+
+  .articulo :global(ol + p) {
+    margin-top: 24px;
+  }
+
+  .articulo-video {
+    max-width: 720px;
+    text-align: center;
+  }
+
+  /* Un solo vídeo: centrado y a 560 px, no en la rejilla de dos de la portada. */
+  .articulo-video :global(.videos) {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 560px;
+    margin-inline: auto;
+    text-align: left;
+  }
+
+  .articulo-cierre {
+    max-width: 640px;
+    text-align: center;
+  }
+
+  .articulo-cierre > p {
+    margin-top: 18px;
+  }
+
+  .articulo-volver {
+    margin-top: 22px;
+  }
+</style>
