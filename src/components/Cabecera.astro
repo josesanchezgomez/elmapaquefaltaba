@@ -265,7 +265,9 @@ const marcaB = palabras.slice(2).join(' ');
     outline-offset: -3px;
   }
 
-  @media (min-width: 1000px) {
+  /* El menú completo desde 1100 px (06/10: con «Blog», a 1000-1080 px no
+     cabía y «La escuela» se partía). Por debajo, el menú del móvil. */
+  @media (min-width: 1100px) {
     .fila {
       gap: 0;
       padding: 0 var(--lado);
@@ -291,6 +293,7 @@ const marcaB = palabras.slice(2).join(' ');
       letter-spacing: 0.16em;
       text-transform: uppercase;
       text-decoration: none;
+      white-space: nowrap;
       transition: background-color var(--t-rapida);
     }
     .nav > a:hover,
@@ -377,7 +380,7 @@ const marcaB = palabras.slice(2).join(' ');
     }
   }
 
-  @media (min-width: 1000px) and (max-width: 1179.98px) {
+  @media (min-width: 1100px) and (max-width: 1179.98px) {
     .nav > a,
     .nav__abre {
       padding: 0 10px;
@@ -465,7 +468,7 @@ const marcaB = palabras.slice(2).join(' ');
   const menu = document.querySelector<HTMLElement>('[data-menu]');
   const abrir = document.querySelector<HTMLButtonElement>('[data-menu-abrir]');
   const cerrar = document.querySelector<HTMLButtonElement>('[data-menu-cerrar]');
-  const escritorio = matchMedia('(min-width: 1000px)');
+  const escritorio = matchMedia('(min-width: 1100px)');
 
   /* ── En el móvil, la cabecera se aparta al bajar y vuelve al subir ── */
   let yAnterior = scrollY;

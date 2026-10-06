@@ -5,9 +5,11 @@
  * legales (01/10: que no compitan con las secciones en los enlaces de
  * debajo del resultado; siguen enlazados en el pie).
  * Sin <lastmod>: una fecha que no cambia de verdad Google la ignora.
+ * 06/10: más los artículos del blog que se construyen (sin borradores).
  */
 import type { APIRoute } from 'astro';
 import { rutaLimpia } from '../lib/ruta';
+import { articulos } from '../lib/blog';
 
 const FUERA = ['/gracias', '/gracias-lista', '/404', '/aviso-legal', '/privacidad', '/cookies'];
 
@@ -16,8 +18,9 @@ const rutas = Object.keys(import.meta.glob('./*.astro'))
   .filter((r) => !FUERA.includes(r))
   .sort((a, b) => (a === '/' ? -1 : b === '/' ? 1 : a.localeCompare(b)));
 
-export const GET: APIRoute = ({ site }) => {
-  const urls = rutas.map((r) => `  <url><loc>${new URL(r, site).href}</loc></url>`).join('\n');
+export const GET: APIRoute = async ({ site }) => {
+  const blog = (await articulos()).map((a) => `/blog/${a.id}`);
+  const urls = [...rutas, ...blog].map((r) => `  <url><loc>${new URL(r, site).href}</loc></url>`).join('\n');
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls}

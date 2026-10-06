@@ -202,6 +202,16 @@ export const FONDOS = {
     alt: 'José, agachado en lo alto de un monte, con el valle detrás',
     foco: '40% 55%',
   },
+  // José en un prado junto al bosque, con los ojos cerrados y un brazo abierto
+  // (IMG_20260803_195617.jpg, la séptima foto, sin usar hasta el 06/10): el blog.
+  // José queda a la derecha; el titular, a la izquierda.
+  blog: {
+    src: '/img/jose-pradera.webp',
+    ancho: 1920,
+    alto: 1080,
+    alt: 'José, con los ojos cerrados y un brazo abierto, en un prado junto al bosque',
+    foco: '62% 40%',
+  },
 } as const;
 
 /**
@@ -229,6 +239,8 @@ export const MENU: readonly (Enlace | Grupo)[] = [
   },
   { texto: 'Comunidad', ruta: '/comunidad' },
   { texto: 'La escuela', ruta: '/escuela' },
+  // 06/10: el blog, un artículo por vídeo (borrador, a la espera de José).
+  { texto: 'Blog', ruta: '/blog' },
 ];
 
 /** El menú sin grupos: cada página, una vez y en su orden. */

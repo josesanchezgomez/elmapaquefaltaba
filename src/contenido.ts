@@ -832,6 +832,27 @@ export const ESCUELA = {
   },
 };
 
+/* ═══════════════════════════════ BLOG ═══════════════════════════════ */
+
+/** El blog (06/10, BORRADOR a la espera de José): la portada del blog y los
+    rótulos de cada artículo. Los artículos van en src/content/blog/*.md. */
+export const BLOG = {
+  rotulo: 'Blog',
+  titulo: 'Blog',
+  entrada: 'Artículos sobre el mecanismo que te hace repetir lo mismo.',
+  leer: 'Leer el artículo',
+  autor: 'José',
+  minutos: 'min de lectura',
+  video: {
+    titulo: 'Este artículo sale de mi vídeo',
+  },
+  cierre: {
+    titulo: '¿Te reconoces en esto?',
+    texto: 'Si quieres mirarlo conmigo, cuéntame qué estás viviendo.',
+  },
+  volver: 'Todos los artículos',
+};
+
 /* ═══════════════════════════════ GRACIAS ═══════════════════════════════ */
 
 /** Tras el formulario de contacto (portada y 1 a 1). */
@@ -905,6 +926,13 @@ export const SEO = {
     titulo: 'Comunidad · El mapa que faltaba',
     descripcion:
       'Para hablar de lo que repites sin aparentar: una comunidad en WhatsApp para compartir este camino con José y otras personas. Participa o escucha.',
+  },
+  // 06/10 (borrador): la portada del blog. Cada artículo lleva su título y su
+  // descripción en su propio fichero (src/content/blog).
+  blog: {
+    titulo: 'Blog · El mapa que faltaba',
+    descripcion:
+      'Artículos de José sobre el mecanismo que te hace repetir patrones y conductas.',
   },
   escuela: {
     titulo: 'La escuela · Las piezas del Mecanismo · El mapa que faltaba',
