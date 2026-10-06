@@ -108,7 +108,8 @@
     --medida: 66ch;
   }
 
-  @media (min-width: 1000px) {
+  /* La cabecera de escritorio, desde 1100 px (06/10, con «Blog» en el menú). */
+  @media (min-width: 1100px) {
     :root {
       --cab: 84px;
     }
@@ -223,7 +224,7 @@
     scroll-margin-top: calc(var(--cab) + 16px);
   }
 
-  @media (max-width: 999.98px) {
+  @media (max-width: 1099.98px) {
     html {
       scroll-padding-bottom: calc(var(--barra) + 12px);
     }

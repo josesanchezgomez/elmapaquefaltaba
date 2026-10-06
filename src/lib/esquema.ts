@@ -96,13 +96,40 @@ export const pagina = (
 
 /** Las migas de la página, las mismas que se leen bajo la foto: Inicio › la
     página. Google las usa en lugar de la URL debajo del título. */
-export const migas = (site: URL, ruta: string, nombre: string): Nodo => ({
+export const migas = (
+  site: URL,
+  ruta: string,
+  nombre: string,
+  padre?: { nombre: string; ruta: string },
+): Nodo => ({
   '@type': 'BreadcrumbList',
   '@id': id(site, 'migas', ruta),
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Inicio', item: abs('/', site) },
-    { '@type': 'ListItem', position: 2, name: nombre, item: abs(ruta, site) },
+    ...(padre ? [{ '@type': 'ListItem', position: 2, name: padre.nombre, item: abs(padre.ruta, site) }] : []),
+    { '@type': 'ListItem', position: padre ? 3 : 2, name: nombre, item: abs(ruta, site) },
   ],
+});
+
+/** Un artículo del blog: escrito por José, publicado por la marca, con su
+    vídeo si sale de uno (el VideoObject de la portada, por @id). */
+export const articulo = (
+  site: URL,
+  ruta: string,
+  a: { titulo: string; descripcion: string; fecha: Date; imagen: string; video?: string },
+): Nodo => ({
+  '@type': 'BlogPosting',
+  '@id': id(site, 'articulo', ruta),
+  headline: a.titulo,
+  description: a.descripcion,
+  datePublished: a.fecha.toISOString().slice(0, 10),
+  inLanguage: 'es-ES',
+  image: abs(a.imagen, site),
+  url: abs(ruta, site),
+  mainEntityOfPage: { '@id': id(site, 'pagina', ruta) },
+  author: { '@id': id(site, 'jose') },
+  publisher: { '@id': id(site, 'marca') },
+  ...(a.video ? { video: { '@id': id(site, `video-${a.video}`) } } : {}),
 });
 
 /** Los acompañamientos: el servicio de cada página, con sus palabras y sin
