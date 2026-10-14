@@ -902,7 +902,8 @@ export const PIE = {
 export const SEO = {
   portada: {
     // José, 02/10: más corto, para que la pestaña no lo corte sin sentido.
-    titulo: '¿Por qué repites patrones? · El mapa que faltaba',
+    // José, 14/10: la marca delante, para la búsqueda «el mapa que faltaba».
+    titulo: 'El mapa que faltaba · ¿Por qué repites patrones?',
     descripcion:
       // José, 01/10: la síntesis del v23 y el v24 (las dos enteras pasan de 300
       // caracteres y Google corta hacia los 155). José, 04/10 (v30): empieza por la
