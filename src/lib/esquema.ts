@@ -134,10 +134,10 @@ export const articulo = (
 });
 
 /** Los acompañamientos: el servicio de cada página, con sus palabras y sin
-    precio. El grupal (01/10) no dice «online» en la página: aquí tampoco. */
+    precio. El grupal dice «online» en la página desde el 25/11 (v35): aquí también. */
 const SERVICIOS = {
   unoAUno: { name: ACOMPANAMIENTO.antetitulo, serviceType: 'Coaching individual online', description: ACOMPANAMIENTO.ficha },
-  grupal: { name: GRUPAL.nombre, serviceType: 'Coaching grupal', description: GRUPAL.presentacion },
+  grupal: { name: GRUPAL.nombre, serviceType: 'Coaching grupal online', description: GRUPAL.presentacion },
 } as const;
 
 export const servicio = (site: URL, ruta: string, cual: keyof typeof SERVICIOS = 'unoAUno'): Nodo => ({

@@ -460,7 +460,8 @@ export const ACOMPANAMIENTO = {
         ],
       },
       {
-        pregunta: '¿Esto es terapia?',
+        // José, 25/11 (plan SEO, paso 0): «psicoterapia», una de sus tres palabras.
+        pregunta: '¿Esto es psicoterapia?',
         // José, 30/09 (noche): «trasformación» pasa a «transformación», como en el
         // resto de la web. La segunda línea, reescrita por José tras el compact.
         respuesta: [
@@ -495,7 +496,9 @@ export const GRUPAL = {
   /** El nombre de la página (la tarjeta de la portada, las migas). */
   nombre: 'Acompañamiento grupal',
   // Bloque 1 · Hero
-  antetitulo: 'Acompañamiento grupal · Conductas adictivas y patrones repetitivos',
+  // José, 25/11 (plan SEO, paso 0; DECISIONES-v35.md): «La B». Fuera «Conductas
+  // adictivas» (PER-D-063, PER-D-154) y dentro «online» (todo será online).
+  antetitulo: 'Acompañamiento grupal online · Patrones repetitivos',
   // José, 01/10 (sobre la versión de Nacho): «cambiar algo» y «volviendo a hacer».
   titulo: '¿Cuántas veces has intentado cambiar algo y has terminado volviendo a hacer lo mismo?',
   parrafos: [
@@ -911,10 +914,13 @@ export const SEO = {
       'El mapa que faltaba: no te falta fuerza de voluntad, hay un mecanismo que te hace repetir patrones y conductas. Coaching de transformación personal con José.',
   },
   acompanamiento: {
-    // José, 04/10 (v30): más corto, Google lo cortaba con «…».
-    titulo: 'Acompañamiento 1 a 1 · Cómo dejar de reaccionar',
+    // José, 25/11 (plan SEO, paso 0; DECISIONES-v35.md): sus tres palabras, una en
+    // cada sitio (título, descripción y la pregunta de la página). «Cómo dejar de
+    // reaccionar» no trajo ni una impresión: irá a un artículo del blog. El título
+    // empieza por el nombre del menú (regla de v24, que vigila auditoria-seo).
+    titulo: 'Acompañamiento 1 a 1 · Coach emocional online',
     descripcion:
-      'Decides hacerlo diferente y vuelves a reaccionar igual. Vemos qué se activa antes de reaccionar y practicas otra respuesta. Coaching 1 a 1 online con José.',
+      'Decides hacerlo diferente y vuelves a reaccionar igual. Vemos qué se activa antes y practicas otra respuesta. Acompañamiento emocional online con José.',
   },
   grupal: {
     // José, 04/10 (v30): más corto, Google lo cortaba con «…».
