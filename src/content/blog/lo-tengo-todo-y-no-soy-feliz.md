@@ -9,35 +9,33 @@ borrador: true
 
 Si lo tienes todo y no eres feliz no es porque te falte algo. Es porque llevas años buscando fuera una sensación que solo puede aparecer dentro. Lo que consigues te alivia unos días y después vuelve el mismo vacío.
 
-Seguramente te suena. Tienes un buen trabajo, una casa y gente que te quiere. Todos te ven como el que puede con todo. Cierras el proyecto más importante del año y a los tres días ya estás pensando en el siguiente. Llegas a casa y necesitas algo para desconectar. Una copa, el móvil hasta tarde o abrir el portátil después de cenar. Tu pareja te dice que estás pero no estás. Tú contestas que es estrés y que cuando pase esta temporada bajarás el ritmo.
+Son las nueve de la noche y acabas de llegar a casa. Antes de quitarte la chaqueta ya te has servido una copa. Otras noches no es una copa. Es el móvil hasta las dos o el portátil abierto después de cenar «solo un momento». Hace tres días cerraste el proyecto más importante del año. Todo el mundo te felicitó. Hoy ya estás pensando en el siguiente.
 
-Por dentro te dices que no tienes derecho a quejarte. Por eso no se lo cuentas a nadie.
+Tienes un buen trabajo, una casa y gente que te quiere. Todos te ven como el que puede con todo. Tu pareja te dice que estás pero no estás. Tú le contestas que es estrés y que cuando pase esta temporada bajarás el ritmo. Llevas años diciendo lo mismo. Por dentro piensas que no tienes derecho a quejarte. Por eso no se lo cuentas a nadie.
 
 ## Por qué tengo todo lo que quiero y no soy feliz
 
-David R. Hawkins fue psiquiatra y dedicó buena parte de su vida a estudiar por qué sufrimos. Lo explicaba de forma muy sencilla. Casi todos buscamos fuera lo que creemos que nos falta. Lo dice así en su libro. «Un rasgo común en los humanos es buscar fuera de sí mismos la satisfacción de sus necesidades» (*Dejar ir*, p. 39).
+Haz una prueba. Piensa en algo que hayas querido mucho. Un ascenso, por ejemplo. Pregúntate para qué lo querías. Para que me reconozcan. ¿Para qué quiero que me reconozcan? Para sentirme seguro. ¿Para qué necesito sentirme seguro? Para estar bien.
 
-Hawkins proponía una pregunta para verlo. Piensa en algo que hayas querido mucho y pregúntate para qué lo querías. Un ascenso, por ejemplo. ¿Para qué? Para que me reconozcan. ¿Para qué quiero que me reconozcan? Para sentirme seguro. ¿Para qué necesito sentirme seguro? Para estar bien. Si sigues preguntando casi siempre llegas al mismo sitio. Lo que buscabas con el ascenso era una sensación.
-
-Las cosas de fuera no traen esa sensación. Como mucho la prometen.
+Si sigues preguntando casi siempre acabas en el mismo sitio. Lo que buscabas con el ascenso era una sensación. Querías sentirte tranquilo y valorado. El problema es que buscas esa sensación fuera. En el cargo, en la casa, en la cifra de la cuenta o en la siguiente meta. Las cosas de fuera no la traen. Como mucho la prometen.
 
 ## Lo tengo todo y aun así no soy feliz
 
-Después de conseguir algo suele llegar un bajón. Hawkins llamaba glamur al brillo que le ponemos a lo que perseguimos. Imaginas que cuando llegues al puesto, a la casa o a la cifra te vas a sentir de otra manera. Él lo explica con estas palabras. «Muy a menudo perseguimos algún objetivo y luego, cuando lo logramos, nos sentimos decepcionados» (*Dejar ir*, p. 103). Lo que consigues nunca coincide con lo que te habías imaginado.
+Después de conseguir algo suele llegar un bajón. Mientras perseguías la meta le pusiste un brillo especial. Imaginabas que cuando llegaras al puesto o a la casa te ibas a sentir de otra manera. Llegas y la cosa es la que es. Un despacho más grande y más horas de trabajo. La sensación que esperabas no aparece.
 
-Su ejemplo es el de un hombre que se pasa años luchando por presidir su empresa. Cuando lo consigue descubre que el despacho, el coche y los títulos son superficiales. Está tan agotado que no le queda energía para su vida. Su mujer se queja de que nunca está. Ni siquiera disfruta de lo que antes le gustaba.
+Lo he visto muchas veces. Alguien se pasa años luchando por llegar arriba en su empresa. Cuando lo consigue está tan cansado que no le queda energía para su vida. Su pareja le reprocha que nunca está. Ya ni siquiera disfruta de lo que antes le gustaba.
 
-Por eso el bajón llega aunque hayas elegido bien la meta. Ninguna meta podía darte lo que le estabas pidiendo. Entonces tu mente hace lo único que sabe. Busca la siguiente.
+El bajón no quiere decir que hayas elegido mal la meta. Ninguna meta podía darte lo que le estabas pidiendo. Tu mente hace entonces lo único que sabe hacer. Busca la siguiente.
 
 ## Tengo todo para ser feliz y no lo soy
 
-Si lo que buscas no está fuera, ¿por qué no paras de buscar? Porque parar da miedo. Muchos aprendimos de niños que valíamos por lo que éramos capaces de hacer. Con esa idea pararte se vive como un peligro.
+Si lo que buscas no está fuera, ¿por qué no paras de buscar? Porque parar da miedo. Muchos aprendimos de niños que el cariño se ganaba con lo que eras capaz de hacer. Con esa idea grabada pararte se vive como un peligro.
 
-Hawkins describe tres formas de no sentir lo que nos incomoda. La primera es aguantarlo y empujarlo hacia abajo. La segunda es soltarlo encima de los demás. La tercera es escapar. Es la que mejor se disimula porque está bien vista. En su lista entran trabajar, viajar, ir de compras, comer de más o no soltar el móvil (*Dejar ir*, pp. 28-30).
+Yo lo viví así durante años. Cumplí el plan con sufrimiento y esfuerzo. Carrera, trabajo, casa, coche y pareja. Aun así transité un vacío que no sabía expresar. Cada meta a la que llegaba me traía frustración porque no me daba paz ni felicidad. Siempre tenía el mismo pensamiento. Cuando consiga el siguiente objetivo estaré bien.
 
-Cuanto más tienes más fácil es escapar. Siempre hay un objetivo nuevo, una cena o una pantalla. Lo que sientes se queda debajo esperando. Ese vacío que no sabes explicar es lo que llevas años sin querer sentir.
+Cuando algo te incomoda por dentro tienes tres maneras de no sentirlo. Puedes aguantarlo y empujarlo hacia abajo. Puedes soltarlo encima de los tuyos con un estallido. La tercera es escapar. Es la que mejor se disimula porque está bien vista. Trabajas más, viajas, compras, comes de más o no sueltas el móvil.
 
-Hawkins lo resume en una frase. «Ninguna riqueza puede compensar la sensación de pobreza interior» (*Dejar ir*, pp. 55-56).
+Cuanto más tienes más fácil es escapar. Siempre hay un objetivo nuevo, una cena o una pantalla. Lo que sientes se queda debajo esperando. Ese vacío que no sabes explicar es todo lo que llevas años sin querer sentir. Ningún dinero lo compensa.
 
 ## Me siento vacío aunque no me falte nada
 
@@ -47,21 +45,21 @@ Si la tristeza es muy intensa, si dura semanas o si te cuesta levantarte, busca 
 
 ## Qué hacer cuando lo tienes todo y no eres feliz
 
-Estos pasos salen de la técnica de dejar ir que Hawkins explica en su libro. Se hacen sin cambiar de vida. Solo piden que dejes de huir de lo que sientes.
+Estos pasos se hacen sin cambiar de vida. Solo te piden que dejes de huir de lo que sientes.
 
-1. **Para cuando vayas a tapar.** Fíjate en el momento en que vas a por la copa, el móvil o el siguiente objetivo. No hace falta que dejes de hacerlo. Basta con que lo veas.
-2. **Pregúntate para qué.** ¿Para qué necesito esto ahora? Encadena para qués hasta llegar a lo que sientes. Casi siempre aparece cansancio, soledad o miedo a no ser suficiente.
-3. **Quédate con la sensación.** Déjala estar sin pelearte con ella y sin buscarle explicación. No hagas caso a los pensamientos que la acompañan. Si no la alimentas se va gastando sola.
-4. **Quítale el brillo a lo que persigues.** Piensa en tu próxima meta y pregúntate qué esperas sentir cuando la consigas. Separa la cosa de la película que te has montado con ella. Hawkins decía que cuando entiendes el glamur es mucho más fácil soltar el deseo (*Dejar ir*, p. 103).
-5. **Cambia el «necesito» por el «prefiero».** Puedes seguir queriendo cosas. Lo que sueltas es la idea de que sin ellas no puedes estar bien. Para Hawkins lo has soltado del todo cuando está bien si llega y está bien si no llega (*Dejar ir*, p. 101).
+1. **Fíjate en el momento en que vas a por algo.** La copa, el móvil, el portátil o el siguiente objetivo. No hace falta que dejes de hacerlo. Basta con que te des cuenta de que vas a por ello.
+2. **Pregúntate para qué.** ¿Para qué necesito esto ahora? Sigue preguntando hasta llegar a lo que sientes. Casi siempre aparece cansancio, soledad o miedo a no ser suficiente.
+3. **Quédate con lo que sientes.** Déjalo estar sin pelearte con ello y sin buscarle explicación. No hagas caso a los pensamientos que lo acompañan. Si no lo alimentas se va gastando solo.
+4. **Mira tu próxima meta sin adornos.** Pregúntate qué esperas sentir cuando la consigas. Separa lo que es de verdad de la película que te has montado con ella. Cuando ves la película es mucho más fácil dejar de necesitarla.
+5. **Cambia el «necesito» por el «prefiero».** Puedes seguir queriendo cosas. Lo que sueltas es la idea de que sin ellas no puedes estar bien. Sabes que lo has soltado cuando te parece bien si llega y también si no llega.
 6. **Disfruta de algo que ya tienes.** Una cena sin el móvil. Una tarde con tu hijo sin mirar el correo. No como una tarea más. Como prueba de que lo que buscabas fuera puede estar ya aquí.
 
 Al principio tu mente dirá que esto es demasiado simple. Es normal. Lleva años convencida de que la solución es conseguir algo más.
 
 ## Lo que cambia cuando dejas de buscar fuera
 
-Hawkins describía tres etapas. Primero valoramos lo que tenemos. Después lo que hacemos. Al final lo que somos (*Dejar ir*, p. 102). Cuando pasas del tener y el hacer al ser, la gente no te busca por tu cargo ni por tu casa. Te busca por cómo estás con ella.
+Primero valoras lo que tienes. Después lo que haces. Con el tiempo empiezas a valorar lo que eres. Cuando das ese paso la gente ya no te busca por tu cargo ni por tu casa. Te busca por cómo estás con ella.
 
-No dejas de trabajar ni de tener metas. Lo que cambia es para qué las persigues. Ya no las necesitas para tapar nada. Por eso empiezas a disfrutar de lo que te costó tanto conseguir.
+No dejas de trabajar ni de tener metas. Lo que cambia es para qué las persigues. Ya no las necesitas para dejar de sentir. Por eso empiezas a disfrutar de lo que te costó tanto conseguir.
 
 Con entenderlo no siempre basta. Si lo entiendes y sigues igual, eso es lo que trabajo en el [acompañamiento 1 a 1](/acompanamiento-1-a-1). Si prefieres hacerlo con otras personas que viven lo mismo, también puedes trabajarlo en el [acompañamiento grupal](/acompanamiento-grupal).
