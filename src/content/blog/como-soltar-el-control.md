@@ -38,8 +38,6 @@ La necesidad de control y la ansiedad se alimentan entre sí. El miedo fabrica p
 
 Hawkins repetía que lo que mantiene vivo un sentimiento es resistirse a sentirlo. Controlar es justo eso. El miedo sigue ahí esperando mientras tú te ocupas de que todo esté en su sitio.
 
-Si la ansiedad es muy intensa o no te deja hacer tu vida, pide cita con tu médico. Con una ansiedad así el cuerpo necesita atención y no conviene esperar a que se pase sola.
-
 ## Cuando el control se mete en la pareja
 
 En la pareja el control se nota todavía más. Preguntas dónde está. Miras si ha leído tus mensajes. Te adelantas a cómo va a reaccionar. Detrás suele haber miedo a perder a esa persona.
