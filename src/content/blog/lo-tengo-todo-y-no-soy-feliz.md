@@ -4,7 +4,7 @@ tituloSeo: 'Lo tengo todo y no soy feliz: por qué pasa'
 descripcion: 'Tienes trabajo, casa y gente que te quiere. Aun así algo se apaga por dentro. Por qué conseguir lo siguiente no lo arregla y qué puedes hacer hoy.'
 resumen: 'Por fuera todo está en orden y por dentro algo se apaga. No te falta nada y aun así no estás bien. Te cuento por qué pasa y qué puedes hacer.'
 fecha: 2026-11-25
-borrador: true
+borrador: false
 ---
 
 Si lo tienes todo y no eres feliz no es porque te falte algo. Es porque llevas años buscando fuera una sensación que solo puede aparecer dentro. Lo que consigues te alivia unos días y después vuelve el mismo vacío.
