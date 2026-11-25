@@ -60,4 +60,4 @@ Primero valoras lo que tienes. Después lo que haces. Con el tiempo empiezas a v
 
 No dejas de trabajar ni de tener metas. Lo que cambia es para qué las persigues. Ya no las necesitas para dejar de sentir. Por eso empiezas a disfrutar de lo que te costó tanto conseguir.
 
-Con entenderlo no siempre basta. Si lo entiendes y sigues igual, eso es lo que trabajo en el [acompañamiento 1 a 1](/acompanamiento-1-a-1). Si prefieres hacerlo con otras personas que viven lo mismo, también puedes trabajarlo en el [acompañamiento grupal](/acompanamiento-grupal).
+Con entenderlo no siempre basta. Si lo entiendes y sigues igual, eso es lo que trabajo en el [acompañamiento 1 a 1](/acompanamiento-1-a-1). Si prefieres hacerlo con otras personas que viven lo mismo, también puedes trabajarlo en el [acompañamiento grupal](/acompanamiento-grupal). Si antes quieres escuchar cómo lo viven otros, puedes entrar en la [comunidad de WhatsApp](/comunidad).
