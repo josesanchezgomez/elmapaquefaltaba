@@ -41,7 +41,7 @@ Cuanto más tienes más fácil es escapar. Siempre hay un objetivo nuevo, una ce
 
 Sentirte así no te convierte en un desagradecido ni en alguien roto. Lo que te sirvió para llegar hasta aquí ya no te sirve para estar bien. Esforzarte y competir te dio muchas cosas. Paz no te la puede dar.
 
-Si la tristeza es muy intensa, si dura semanas o si te cuesta levantarte, busca a un profesional de la salud. Este artículo te ayuda a entender lo que pasa pero no sustituye a un tratamiento.
+Si la tristeza es muy intensa, si dura semanas o si te cuesta levantarte, ve a tu médico. Eso no se aguanta a solas ni se espera a que pase.
 
 ## Qué hacer cuando lo tienes todo y no eres feliz
 
