@@ -116,13 +116,14 @@ export const migas = (
 export const articulo = (
   site: URL,
   ruta: string,
-  a: { titulo: string; descripcion: string; fecha: Date; imagen: string; video?: string },
+  a: { titulo: string; descripcion: string; fecha: Date; actualizado?: Date; imagen: string; video?: string },
 ): Nodo => ({
   '@type': 'BlogPosting',
   '@id': id(site, 'articulo', ruta),
   headline: a.titulo,
   description: a.descripcion,
   datePublished: a.fecha.toISOString().slice(0, 10),
+  dateModified: (a.actualizado ?? a.fecha).toISOString().slice(0, 10),
   inLanguage: 'es-ES',
   image: abs(a.imagen, site),
   url: abs(ruta, site),
