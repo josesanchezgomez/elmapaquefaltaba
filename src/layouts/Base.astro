@@ -32,9 +32,13 @@ interface Props {
   /** Los datos estructurados propios de la página (servicio, preguntas, vídeo),
       además de José, la web y la página, que van siempre (src/lib/esquema.ts). */
   esquema?: (site: URL, ruta: string) => Nodo[];
+  /** Un artículo del blog (25/11): al compartirlo se presenta como artículo,
+      con su fecha de publicación y, si cambió, la de la última modificación. */
+  articulo?: { publicado: Date; modificado?: Date };
 }
 
-const { titulo, descripcion, barra, sinFirma = false, noIndexar = false, og = OG.portada, esquema } = Astro.props;
+const { titulo, descripcion, barra, sinFirma = false, noIndexar = false, og = OG.portada, esquema, articulo } = Astro.props;
+const dia = (f: Date) => f.toISOString().slice(0, 10);
 const ruta = rutaLimpia(Astro.url.pathname);
 const canonica = new URL(ruta, Astro.site);
 const imagenOG = new URL(og.src, Astro.site);
@@ -78,7 +82,9 @@ const jsonLd = noIndexar
     <link rel="preload" as="font" type="font/woff2" href={serif} crossorigin />
     <link rel="preload" as="font" type="font/woff2" href={sans} crossorigin />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={articulo ? 'article' : 'website'} />
+    {articulo && <meta property="article:published_time" content={dia(articulo.publicado)} />}
+    {articulo && <meta property="article:modified_time" content={dia(articulo.modificado ?? articulo.publicado)} />}
     <meta property="og:site_name" content={MARCA.nombre} />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:url" content={canonica} />

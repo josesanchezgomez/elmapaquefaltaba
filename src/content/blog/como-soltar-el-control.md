@@ -4,6 +4,7 @@ tituloSeo: 'Cómo soltar el control de todo'
 descripcion: 'Necesitas controlarlo todo porque debajo hay un miedo que nadie te explicó. De dónde sale, qué le hace a tu pareja y cómo soltar el control paso a paso.'
 resumen: 'Revisas, anticipas y te cuesta delegar. Aun así no descansas. Debajo de esa necesidad de controlarlo todo hay un miedo. Te cuento de dónde sale y cómo soltarlo.'
 fecha: 2026-10-06
+actualizado: 2026-11-25
 borrador: false
 ---
 
@@ -49,7 +50,7 @@ Para él muchas emociones en pareja son formas sutiles de imponer lo que quieres
 
 ## Soltar el control no es resignarse
 
-Quizá te da miedo que soltar el control te deje de brazos cruzados. Te asusta que todo se descontrole si dejas de vigilar. A Hawkins le plantearon esa misma duda y respondió lo contrario. Decía que soltar «despeja el camino para la acción eficaz». Sin el miedo empujando ves opciones que antes no veías y decides mejor.
+Quizá te da miedo que soltar el control te deje de brazos cruzados. Te asusta que todo se descontrole si dejas de vigilar. A Hawkins le plantearon esa misma duda y respondió lo contrario. Decía que soltar «despeja el camino para la acción eficaz» (*Dejar ir*, p. 256). Sin el miedo empujando ves opciones que antes no veías y decides mejor.
 
 Puedes soltar el control y seguir queriendo cosas. Lo que sueltas es la necesidad de tenerlas para estar bien. Sabes que has soltado algo cuando te parece bien si pasa y también si no pasa. Sigues trabajando y cuidando lo que te importa. La diferencia es que el resultado ya no decide si duermes o no.
 
