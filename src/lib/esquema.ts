@@ -19,7 +19,7 @@
  * y los perfiles (que ya enlazan a la web), y deja de leer «El mapa que faltaba»
  * como una frase suelta (un libro, un artículo…). José es su fundador.
  */
-import { MARCA, REDES, FOTOS, VIDEOS } from '../consts';
+import { MARCA, REDES, FOTOS, VIDEOS, TITULAR } from '../consts';
 import { CANAL, PIE, ACOMPANAMIENTO, GRUPAL } from '../contenido';
 import { sinMarcas } from './texto';
 
@@ -33,7 +33,12 @@ export const base = (site: URL): Nodo[] => [
   {
     '@type': 'Person',
     '@id': id(site, 'jose'),
-    name: [MARCA.persona, MARCA.apellido].filter(Boolean).join(' '),
+    // José, 25/11: su nombre completo y sus redes, para que buscadores e
+    // inteligencias artificiales sepan quién es. Solo en estos datos: el texto
+    // visible sigue firmando «José» (MARCA.apellido, vacío, lo usa el pie).
+    name: TITULAR.nombre,
+    alternateName: MARCA.persona,
+    sameAs: [REDES.instagram, REDES.youtube],
     url: abs('/', site),
     image: abs(FOTOS.quienSoy.src, site),
     jobTitle: 'Coach de transformación personal',
