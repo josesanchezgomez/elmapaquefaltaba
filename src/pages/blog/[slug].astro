@@ -33,9 +33,10 @@ const fecha = d.fecha.toISOString().slice(0, 10);
 <Base
   titulo={d.tituloSeo}
   descripcion={d.descripcion}
+  articulo={{ publicado: d.fecha, modificado: d.actualizado }}
   esquema={(site, ruta) => [
     migas(site, ruta, d.tituloSeo, { nombre: BLOG.rotulo, ruta: '/blog' }),
-    articulo(site, ruta, { titulo: d.titulo, descripcion: d.descripcion, fecha: d.fecha, imagen: FONDOS.blog.src, video: d.video }),
+    articulo(site, ruta, { titulo: d.titulo, descripcion: d.descripcion, fecha: d.fecha, actualizado: d.actualizado, imagen: FONDOS.blog.src, video: d.video }),
     ...videos(site).filter((v) => d.video && String(v['@id']).endsWith(`video-${d.video}`)),
   ]}
   barra={{ texto: ACCION.caso, href: '/#contacto' }}

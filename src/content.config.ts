@@ -23,6 +23,9 @@ const blog = defineCollection({
     /** Las dos líneas de la tarjeta en la portada del blog. */
     resumen: z.string(),
     fecha: z.coerce.date(),
+    /** La última vez que cambió el texto (25/11): solo si cambia de verdad.
+        Va a Google como fecha de modificación y al mapa del sitio. */
+    actualizado: z.coerce.date().optional(),
     /** El vídeo del que sale (id de YouTube, en VIDEOS de consts.ts). */
     video: z.string().optional(),
     borrador: z.boolean().default(false),
