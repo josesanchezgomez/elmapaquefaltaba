@@ -41,8 +41,6 @@ Cuanto más tienes más fácil es escapar. Siempre hay un objetivo nuevo, una ce
 
 Sentirte así no te convierte en un desagradecido ni en alguien roto. Lo que te sirvió para llegar hasta aquí ya no te sirve para estar bien. Esforzarte y competir te dio muchas cosas. Paz no te la puede dar.
 
-Si la tristeza es muy intensa, si dura semanas o si te cuesta levantarte, busca a un profesional de la salud. Este artículo te ayuda a entender lo que pasa pero no sustituye a un tratamiento.
-
 ## Qué hacer cuando lo tienes todo y no eres feliz
 
 Estos pasos se hacen sin cambiar de vida. Solo te piden que dejes de huir de lo que sientes.
@@ -62,4 +60,4 @@ Primero valoras lo que tienes. Después lo que haces. Con el tiempo empiezas a v
 
 No dejas de trabajar ni de tener metas. Lo que cambia es para qué las persigues. Ya no las necesitas para dejar de sentir. Por eso empiezas a disfrutar de lo que te costó tanto conseguir.
 
-Con entenderlo no siempre basta. Si lo entiendes y sigues igual, eso es lo que trabajo en el [acompañamiento 1 a 1](/acompanamiento-1-a-1). Si prefieres hacerlo con otras personas que viven lo mismo, también puedes trabajarlo en el [acompañamiento grupal](/acompanamiento-grupal).
+Con entenderlo no siempre basta. Si lo entiendes y sigues igual, eso es lo que trabajo en el [acompañamiento 1 a 1](/acompanamiento-1-a-1). Si prefieres hacerlo con otras personas que viven lo mismo, también puedes trabajarlo en el [acompañamiento grupal](/acompanamiento-grupal). Si antes quieres escuchar cómo lo viven otros, puedes entrar en la [comunidad de WhatsApp](/comunidad).
