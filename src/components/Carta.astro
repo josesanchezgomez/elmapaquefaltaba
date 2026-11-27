@@ -16,7 +16,7 @@
 import Formulario from './Formulario.astro';
 import BotonWhatsApp from './BotonWhatsApp.astro';
 import Promesa from './Promesa.astro';
-import { CONTACTO } from '../contenido';
+import { ACCION, CONTACTO } from '../contenido';
 import { atarCortas, negritas } from '../lib/texto';
 import { REDES } from '../consts';
 
@@ -32,6 +32,11 @@ interface Props {
   boton?: string;
   /** El mensaje que WhatsApp deja escrito (por defecto, CONTACTO.mensajeWhatsApp). */
   mensajeWhatsApp?: string;
+  /** v36 (PER-D-162): WhatsApp primero, encima del formulario; abajo queda
+      Instagram. Portada y 1 a 1. */
+  whatsappArriba?: boolean;
+  /** v36: la frase bajo el botón de WhatsApp (la portada: «Si prefieres…»). */
+  notaWhatsApp?: string;
 }
 const {
   asunto,
@@ -40,10 +45,12 @@ const {
   promesaArriba = false,
   boton,
   mensajeWhatsApp: mensaje = CONTACTO.mensajeWhatsApp,
+  whatsappArriba = false,
+  notaWhatsApp,
 } = Astro.props;
 ---
 
-<div class:list={['carta-caja', { 'carta-caja--promesa-arriba': promesaArriba }]}>
+<div class:list={['carta-caja', { 'carta-caja--promesa-arriba': promesaArriba, 'carta-caja--whatsapp': whatsappArriba }]}>
   {/* La cabeza de la carta va junta: en la admisión, en el escritorio ancho,
       ocupa la columna izquierda y acompaña al formulario (ver abajo). El
       «lado» es solo el recorrido de esa compañía. */}
@@ -56,6 +63,17 @@ const {
       {promesaArriba && <Promesa />}
     </div>
   </div>
+
+  {
+    whatsappArriba && (
+      <div class="carta-caja__whatsapp">
+        <div class="acciones">
+          <BotonWhatsApp texto={ACCION.whatsapp} clase="boton" mensaje={mensaje} />
+        </div>
+        {notaWhatsApp && <p class="carta-caja__nota">{notaWhatsApp}</p>}
+      </div>
+    )
+  }
 
   <Formulario variante="completo" asunto={asunto} boton={boton}>
     {!promesaArriba && <Promesa />}
@@ -71,7 +89,7 @@ const {
       </svg>
       Instagram
     </a>
-    <BotonWhatsApp mensaje={mensaje} />
+    {!whatsappArriba && <BotonWhatsApp mensaje={mensaje} />}
   </div>
 </div>
 
@@ -124,6 +142,19 @@ const {
     text-wrap: balance;
   }
 
+  /* v36: WhatsApp primero, encima del formulario. */
+  .carta-caja__whatsapp {
+    margin: clamp(28px, 4vw, 48px) clamp(24px, 4vw, 48px) 0;
+  }
+
+  .carta-caja__whatsapp .boton {
+    gap: 10px;
+  }
+
+  .carta-caja__nota {
+    margin-top: 16px;
+  }
+
   /* Instagram y WhatsApp, uno junto a otro si caben; si no, uno bajo otro. */
   .puertas {
     display: grid;
@@ -167,6 +198,26 @@ const {
     .puertas {
       grid-column: 2;
       grid-row: 3;
+    }
+    /* v36: con WhatsApp arriba, una fila más en la columna de la derecha. */
+    .carta-caja--whatsapp {
+      grid-template-rows: auto auto auto 1fr;
+    }
+    .carta-caja--whatsapp .carta-caja__lado {
+      grid-row: 1 / span 4;
+    }
+    .carta-caja__whatsapp {
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .carta-caja--whatsapp > :global(form) {
+      grid-row: 2;
+    }
+    .carta-caja--whatsapp .carta-caja__privado {
+      grid-row: 3;
+    }
+    .carta-caja--whatsapp .puertas {
+      grid-row: 4;
     }
   }
 </style>

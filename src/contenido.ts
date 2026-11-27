@@ -35,52 +35,75 @@
 export const ACCION = {
   /** Cabecera, barra fija, portada y acompañamientos. */
   caso: 'Cuéntame tu caso',
+  /** v36 (PER-D-162): WhatsApp primero. La acción principal de la portada y
+      del 1 a 1 y el primer botón de sus contactos. */
+  whatsapp: 'Escríbeme por WhatsApp',
 };
 
 /* ═══════════════════════════════ PORTADA ═══════════════════════════════ */
 
 export const HERO = {
   // José, 27/09, literal (Nacho: «Mantener»).
-  antetitulo: 'Soy José. Te acompaño a encontrar tu propio camino.',
+  // v36 (27/11, PER-D-162 y PER-D-163): quién es y qué hace, en lugar de «Te
+  // acompaño a encontrar tu propio camino.». Texto de la sesión de la oferta
+  // (11-web-v36-texto.md), literal.
+  // v36 (PER-D-164, 27/11 tarde): la cabecera se aligera. La línea larga pasa a
+  // abrir «Yo fui mi primer caso» (QUIEN_SOY.presentacion).
+  // 27/11 noche: José rechaza «Soy Jose, coach emocional.» (dice lo que es, no
+  // lo que gana quien llega).
+  antetitulo: 'Soy Jose y te ayudo a volver a ser feliz.',
   // José, 01/10: la franja de debajo de la portada (con el grupal, ya no solo
   // «individual»). El 1 a 1 sigue con su ficha.
   franja: 'Acompañamiento online.',
-  titular: '¿Y si no te falta fuerza de voluntad, sino comprender qué te lleva a repetir lo mismo?',
+  // v36 (PER-D-164): sale la ficha del 1 a 1; su última frase se queda aquí.
+  franjaPrimero: 'Primero hablamos de lo que estás viviendo.',
+  // v36: la promesa arriba (PER-D-162).
+  titular: 'Lo tienes todo y aun así no estás bien.',
+  /** v36: la promesa, debajo del titular. */
+  promesa: 'Puedes volver a estar en paz contigo y con los tuyos sin tirar lo que has construido.',
   // Nacho, 30/09: los párrafos iniciales, «No sé si esa es tu historia…» y
-  // «Comparto el mapa…», en su orden.
+  // «Comparto el mapa…», en su orden. v36: el primero cambia y sale el tercero
+  // («También puede que hayas alcanzado…»), que ya dice una de las situaciones.
   parrafos: [
-    'Quizá te has propuesto cambiar una conducta, una relación o una forma de reaccionar y, durante un tiempo, lo has conseguido.',
+    'Quizá te has propuesto cambiar algo de tu vida, una relación o una forma de reaccionar y durante un tiempo lo has conseguido.',
     'Hasta que vuelve a aparecer la misma emoción, el mismo miedo o la misma necesidad… y acabas haciendo lo de siempre.',
-    'También puede que hayas alcanzado cosas que pensabas que iban a hacerte sentir bien y, poco después, hayas necesitado otro objetivo, otra relación o algo nuevo que perseguir.',
     '**Cambian las circunstancias. Pero algo dentro sigue llevándote al mismo lugar.**',
     'No sé si esa es tu historia. Durante años fue parte de la mía.',
     'Comparto el mapa que me ayudó a comprender los mecanismos que dirigían mi vida, a dejar de luchar constantemente con lo que sentía y a empezar a transformar desde dentro lo que llevaba años intentando cambiar desde fuera.',
   ],
   /** Cierra la apertura. */
   lema: 'Comprender qué te mantiene atrapado. Dejar de repetir lo mismo. Y abrir espacio a una forma distinta de vivir.',
-  /** Acción principal: baja a la explicación (#mapa). */
-  accion: 'Descubre el mapa',
-  /** Manifiesto visible bajo la portada. No es el H1. */
-  // José, 02/10: «Despertar tu esencia.» en lugar de «Despertar el espíritu.».
-  manifiesto: ['Comprender el ego.', 'Liberar la sombra.', 'Despertar tu esencia.'],
+  /** Acción secundaria: baja a la explicación (#mapa). v36: «Qué es el mapa»
+      (antes «Descubre el mapa»); la principal es WhatsApp (ACCION.whatsapp). */
+  accion: 'Qué es el mapa',
+  // v36 (PER-D-163): sale el manifiesto («Comprender el ego. Liberar la sombra.
+  // Despertar tu esencia.»). La cita de Jung se queda.
   cita: '«Quien mira hacia afuera, sueña. Quien mira hacia adentro, despierta.»',
   citaAutor: 'Carl Jung, carta a Fanny Bowditch (1916)',
 };
 
 export const RECONOCIMIENTO = {
   titulo: '¿Cuánto de lo que haces es para no detenerte?',
+  /** v36 (PER-D-164, 27/11 tarde): la fibra sale de la cabecera y abre esta sección. */
+  fibra: '**Cumples con todo y con todos. Con todos menos contigo.**',
   entrada: 'Puede que te reconozcas en alguna de estas situaciones:',
   lineas: [
+    // v36: ocho situaciones (la ruptura y el fin de semana, nuevas) y sin coma
+    // junto a la «y» en las que cambian.
     'Por fuera todo parece estar en orden, pero por dentro hace tiempo que algo se apaga.',
+    'Se ha terminado tu relación de pareja y llenas el hueco para no sentir la pérdida.',
     'Cuando algo te duele, te llenas de trabajo, planes, objetivos o distracciones para no quedarte demasiado tiempo ahí.',
-    'Has llegado a lugares que deseabas durante años y, al alcanzarlos, la sensación ha durado mucho menos de lo que esperabas.',
-    'Hay algo que llevas tiempo prometiéndote dejar y, cuando llega determinado momento, vuelves.',
+    'Puedes con todo hasta que llegas a casa o llega el fin de semana. Entonces necesitas escapar como sea.',
+    'Has llegado a lugares que deseabas durante años y al alcanzarlos la sensación ha durado mucho menos de lo que esperabas.',
+    'Hay algo que llevas tiempo prometiéndote dejar y cuando llega determinado momento vuelves.',
     'Cambian las personas o las circunstancias, pero la historia emocional se parece demasiado.',
     'Has leído, reflexionado o entendido muchas cosas sobre ti… y aun así sigues reaccionando igual cuando aparece el disparador de siempre.',
   ],
+  /** v36: la frase que cierra la lista, en negrita. */
+  cierre: '**Cumplir con todo también puede ser la forma más aplaudida de no pararte a sentir.**',
   /** El bloque final, tras la lista (Nacho: en negrita la primera y la última). */
   absolucion: {
-    blanca: 'Si te has visto en alguna, no significa que estés roto ni que te falte voluntad.',
+    blanca: 'Si te has visto en alguna, no significa que algo en ti esté roto ni que te falte voluntad.',
     remate:
       'Muchas veces intentamos cambiar directamente la conducta sin llegar a ver qué ocurre dentro de nosotros justo antes de repetirla.',
     ahi: 'Ahí empieza el mapa.',
@@ -91,7 +114,8 @@ export const RECONOCIMIENTO = {
 export const MAPA = {
   titulo: 'Lo que repites no empieza en lo que haces.',
   parrafos: [
-    'Cuando hablo de «mecanismo», me refiero a la secuencia que se activa entre lo que ocurre, lo que interpretas, lo que sientes y la forma en que respondes.',
+    // v36: el mecanismo en su orden (primero lo que sientes).
+    'Cuando hablo de «mecanismo» me refiero a lo que pasa dentro de ti entre lo que ocurre y lo que haces. Primero aparece lo que sientes. Después te cuentas algo para explicarlo. Y al final respondes como siempre.',
     'A veces esa respuesta te alivia durante unos minutos, unas horas o unos días. Pero después te devuelve al mismo punto.',
     'Puedes distraerte. Controlar. Buscar aprobación. Exigirte más. Comer. Trabajar. Discutir. Callarte. Perseguir otro objetivo.',
     'La forma cambia. **El mecanismo puede ser el mismo.**',
@@ -101,6 +125,9 @@ export const MAPA = {
 
 export const QUIEN_SOY = {
   titulo: 'Yo fui mi primer caso.',
+  /** v36 (PER-D-164, 27/11 tarde): la línea que estaba en la cabecera abre la sección. */
+  presentacion:
+    'Soy Jose. Cumplía con todos menos conmigo y tapaba lo que sentía con lo que tuviera a mano. Hoy acompaño a otras personas a dejar de huir de sí mismas.',
   /** El puente hacia la historia: va justo encima del título. */
   puente: [
     'Puedes llegar aquí porque hay algo que quieres dejar de repetir.',
@@ -111,10 +138,12 @@ export const QUIEN_SOY = {
   parrafos: [
     'Cumplí con muchas de las cosas que se suponía que tenían que hacerme sentir bien: carrera, trabajo, casa, coche, pareja…',
     'Por fuera parecía que avanzaba. **Por dentro me iba apagando.**',
+    // v36 (PER-D-163): una línea de su Historia.
+    'Durante años viví pensando que cuando consiguiera el siguiente objetivo estaría bien. Lo conseguía y el vacío volvía.',
     'Perseguí logros, placer, relaciones y nuevas metas buscando fuera algo que no sabía encontrar dentro. Cambiaban los objetivos. Cambiaban las circunstancias. Pero el fondo de mi sufrimiento volvía a aparecer.',
     '**Fui y volví del infierno tantas veces que terminé aprendiendo el camino de ida y, sobre todo, el de vuelta.**',
     'No llegué a este trabajo solo leyendo sobre el ego o la consciencia. Llegué después de tener que observar mis propios patrones, reconocer cuánto controlaba mi vida aquello de lo que intentaba escapar y aprender a relacionarme de otra manera con lo que sentía.',
-    'Las enseñanzas del Dr. David R. Hawkins me dieron un marco que me ayudó a ordenar muchas de esas piezas.',
+    'Las enseñanzas del psiquiatra David R. Hawkins me dieron un marco que me ayudó a ordenar muchas de esas piezas.',
     'Empecé a ver un mecanismo que antes dirigía mi vida sin que yo fuera consciente.',
     '**Ese es el mapa que hoy comparto contigo.**',
     'Porque cuando ves el mecanismo, dejas de luchar únicamente contra sus consecuencias.',
@@ -122,6 +151,8 @@ export const QUIEN_SOY = {
   // José, 02/10: en lugar de «Mi historia, en diez imágenes (en Instagram)» y
   // «El canal», botones a Instagram, WhatsApp y YouTube.
   redes: 'Puedes encontrarme en:',
+  /** v36 (PER-D-164): la llamada a la acción tras su historia. */
+  llamada: 'Yo salí de ahí. Si tú estás ahí ahora, escríbeme.',
 };
 
 /** La dimensión espiritual: va entre «Yo fui mi primer caso.» y el método. */
@@ -132,9 +163,9 @@ export const RENDICION = {
   parrafos: [
     'Puedes identificar perfectamente una reacción y aun así encontrarte con ella una y otra vez.',
     'A mí no me bastó con entender intelectualmente lo que me pasaba. Tuve que aprender a relacionarme de otra manera conmigo mismo.',
-    'Dentro del camino que propongo, a ese movimiento de dejar de pelear con lo que aparece y aprender a liberar los conflictos que te mantienen anclado en la escasez le llamo **rendición**.',
-    'No hablo de resignarse ni de dejar de actuar. Hablo de aceptar lo que ya está presente en cada uno de nosotros, reconocer hasta dónde llega nuestra pequeñez como individuo y abrir espacio a algo más grande.',
-    'Todo forma parte de mi experiencia y del enfoque que comparto, junto con la observación e identificación de los patrones del ego y su aplicación a decisiones, relaciones y situaciones cotidianas.',
+    // v36 (PER-D-163): la rendición con palabras de todos los días. Salen los
+    // dos párrafos siguientes y el último.
+    'Aprendí a dejar de pelear con lo que sentía. A ese movimiento lo llamo rendición. No es resignarse ni dejar de actuar. Es dejar de luchar contra lo que ya está ahí para que pierda la fuerza que tiene sobre ti.',
   ],
 };
 
@@ -146,7 +177,7 @@ export const METODO = {
     {
       nombre: 'Ver lo que realmente está ocurriendo',
       texto:
-        'Partimos de una situación real. Qué pasó, qué interpretaste, qué sentiste y qué hiciste después. Sin buscar una explicación perfecta ni juzgarte por haber reaccionado así.',
+        'Partimos de una situación real. Qué pasó, qué sentiste, qué te contaste y qué hiciste después. Sin buscar una explicación perfecta ni juzgarte por haber reaccionado así.',
     },
     {
       nombre: 'Reconocer el mecanismo',
@@ -154,9 +185,10 @@ export const METODO = {
         'Observamos qué se repite y qué función cumple esa respuesta: qué intentas evitar, conseguir, controlar o proteger. Las enseñanzas de David R. Hawkins forman parte de las referencias de mi enfoque.',
     },
     {
-      nombre: 'Practicar otra forma de responder',
+      // v36: lo que se practica es quedarse con lo que sientes.
+      nombre: 'Dejar de pelear con lo que sientes',
       texto:
-        'No se trata solo de entenderte mejor. Se trata de llevar esa comprensión a la vida real: aprender a dejar de luchar con lo que sientes, soltar parte del control y tomar decisiones desde un lugar más consciente.',
+        'No se trata solo de entenderte mejor. Se trata de aprender a quedarte con lo que sientes sin salir corriendo. Cuando lo haces, la respuesta distinta llega sola y decides desde un lugar más consciente.',
     },
   ],
   cierre: 'Comprender. Reconocer. Soltar. Y llevarlo a tu vida.',
@@ -167,6 +199,8 @@ export const CANAL = {
   parrafos: [
     'En el canal desarrollo distintas piezas del mapa: patrones, pensamientos, emociones, sentimientos, mente consciente e inconsciente, niveles de conciencia del Dr. David R. Hawkins.',
     '**No necesitas empezar por el principio. Empieza por aquello que ahora mismo más se parece a tu vida.**',
+    // v36: la salida discreta para quien prefiere leer (revisión SEO del 27/11).
+    'Si prefieres leer, empieza por [«Por qué lo tienes todo y no eres feliz»](/blog/lo-tengo-todo-y-no-soy-feliz) o por [«Cómo soltar el control de todo»](/blog/como-soltar-el-control).',
   ],
 };
 
@@ -182,8 +216,10 @@ export const CAMINOS = {
     {
       nombre: 'Acompañamiento 1 a 1',
       // Nacho, ajuste del 30/09: sin precio, sesiones ni duración.
+      // v36 (PER-D-159): la oferta.
       texto:
-        'Un espacio individual para mirar conmigo aquello que se está repitiendo en tu vida, comprender qué mecanismo hay detrás y empezar a relacionarte de otra manera con lo que hoy te está atrapando.',
+        // v36 (PER-D-164): lo que se lleva, sin las sesiones.
+        'Te acompaño a dejar de necesitar una vía de escape y a volver a estar en paz contigo y con los tuyos.',
       // José, 05/10 (v31): como las otras tres puertas, lleva al principio de su
       // página («Conocer…»). Antes llevaba a la carta del final del 1 a 1.
       accion: 'Conocer el acompañamiento 1 a 1',
@@ -210,7 +246,8 @@ export const CAMINOS = {
     {
       nombre: 'Las piezas del Mecanismo',
       texto:
-        'Una escuela en preparación para reunir el mapa completo y aprender a reconocer por ti mismo las piezas que intervienen en aquello que repites.',
+        // v36: sin el «en preparación» repetido (ya lo dice el dato).
+        'Una escuela para reunir el mapa completo y aprender a reconocer por ti mismo las piezas que intervienen en aquello que repites.',
       dato: 'En preparación.',
       accion: 'Avísame cuando abra',
       ruta: '/escuela',
@@ -244,9 +281,13 @@ export const FRECUENTES_HOME = {
     },
     {
       pregunta: '¿Esto es terapia?',
-      // José, 30/09 (noche), literal.
-      respuesta:
-        'Es acompañamiento de coaching desde mi experiencia y mi enfoque de trabajo y es totalmente complementario al tratamiento psicológico convencional.',
+      // v36 (PER-D-162): sin hablar de tratamientos; dice lo que es.
+      respuesta: 'No. Es acompañamiento emocional. Trabajo contigo desde lo que yo viví y desde cómo salí de ahí.',
+    },
+    {
+      // v36 (PER-D-162): el precio no se publica.
+      pregunta: '¿Cuánto cuesta?',
+      respuesta: 'Te lo cuento en la primera conversación, cuando sepa qué estás viviendo y qué necesitas.',
     },
     {
       pregunta: '¿Puedo escribir por alguien a quien quiero?',
@@ -275,12 +316,14 @@ export const CONTACTO = {
   contacto: 'Tu correo para responderte',
   boton: 'Enviar mi mensaje',
   firma: 'Lo leo yo. Te contesto yo.',
+  /** v36: bajo el botón de WhatsApp de la portada, antes del formulario. */
+  formularioDebajo: 'Si prefieres escribirlo con calma, tienes el formulario aquí debajo.',
   // José, 01/10: sin «MAPA»; debajo, los botones de Instagram y WhatsApp.
+  // v36: el WhatsApp ya va arriba; aquí queda Instagram.
   privado: 'También puedes escribirme por:',
   // José, 01/10: el mensaje que WhatsApp deja escrito al abrir el chat con
-  // su número (va en el enlace, no en la página).
-  mensajeWhatsApp:
-    'Hola Jose. He estado leyendo tu web y me gustaría contarte lo que estoy viviendo y conocer un poco más tu acompañamiento. ¿Podemos hablar?',
+  // su número (va en el enlace, no en la página). v36: pide menos.
+  mensajeWhatsApp: 'Hola, Jose. Vengo de tu web y me gustaría hablar contigo.',
   error: 'No se ha podido enviar el mensaje. Inténtalo de nuevo o escríbeme por Instagram.',
 };
 
@@ -288,38 +331,66 @@ export const CONTACTO = {
 
 export const ACOMPANAMIENTO = {
   antetitulo: 'Acompañamiento 1 a 1',
-  titulo: '¿Cuántas veces has decidido hacerlo diferente y, llegado el momento, has vuelto a reaccionar igual?',
+  // v36 (PER-D-159 y PER-D-162): la promesa arriba, distinta del titular de la
+  // portada para que no compitan en Google.
+  titulo: 'En dos meses puedes volver a estar en paz contigo y con los tuyos.',
+  /** v36: debajo del titular. */
+  // v36 (PER-D-164): sin nombrar el fin de semana como la vía de escape.
+  subtitulo: 'Sin tirar lo que has construido. Sin tener que escaparte para estar bien.',
+  /** v36: qué es estar en paz y la escena de su cliente, antes de la entrada. */
+  paz: 'Estar en paz contigo mismo no es que no vuelva a dolerte nada. Es que cuando duele ya no necesitas salir corriendo.',
+  escena: '**El lunes te prometes que no vuelve a pasar. El viernes vuelve a pasar.**',
   parrafos: [
     'Puede que entiendas perfectamente lo que «deberías» hacer. Que hayas leído, reflexionado o trabajado mucho en ti.',
-    'Y aun así, cuando aparece determinada emoción, una relación, el miedo, la culpa o la necesidad de control, vuelves a lo conocido.',
+    'Aun así vuelves a lo conocido cuando aparece determinada emoción, una relación, el miedo, la culpa o la necesidad de control.',
     '**Ahí es donde empieza mi trabajo contigo.**',
     'No para decirte cómo tienes que vivir, sino para ayudarte a ver el mecanismo que está operando cuando vuelves a caer en lo mismo.',
     'Porque cuando empiezas a reconocer qué sucede dentro de ti antes de reaccionar, puedes empezar a responder desde un lugar diferente.',
   ],
-  /** La ficha de la cabecera, junto al botón (ajuste de Nacho del 30/09, §3). */
-  ficha: 'Acompañamiento individual online. Primero hablamos de lo que estás viviendo.',
-  /** El bloque que Nacho añade justo después de la apertura (su primera línea, en
-      negrita, es el título). Sin «Durante cuatro sesiones» (ajuste §2). */
-  sesiones: {
-    titulo: 'Trabajamos sobre situaciones reales de tu vida.',
-    parrafos: [
-      'Miramos qué activa el patrón, qué estás sintiendo, qué interpretación aparece, dónde entra el miedo, el control o la necesidad de aprobación y qué haces para intentar escapar de esa incomodidad.',
-      'No buscamos únicamente comprenderlo. Buscamos que esa comprensión empiece a notarse en tus decisiones, tus relaciones y tu día a día.',
+  // v36 (PER-D-164): sale la ficha. Las tres frases que van encima de cada
+  // «Escríbeme por WhatsApp».
+  llamadas: {
+    arriba: 'Escríbeme y cuéntame qué te pasa. Si veo que puedo ayudarte, te lo digo y empezamos.',
+    encaja: 'Si te has visto aquí, esto tiene salida. Yo la encontré y te acompaño a encontrar la tuya.',
+    // v36 (PER-D-164, 27/11 tarde): se mueve de «Lo que cambia» a «Cómo empezamos».
+    empezamos: 'Ya sabes cómo empezamos. El primer paso es escribirme.',
+  },
+  /** v36 (PER-D-164): el bucle de su cliente, dibujado, y su salida. */
+  bucle: {
+    pasos: [
+      'Algo te pesa y no sabes ni qué es.',
+      'Necesitas desconectar.',
+      'Un rato estás bien.',
+      'Se pasa y vuelve el peso, ahora con culpa.',
+      'Te prometes que se acabó.',
+      'Vuelves. Dejas de creerte y acabas pensando «yo soy así».',
+    ],
+    salida: 'No eres así. Es lo que aprendiste para no sentir y se puede soltar.',
+  },
+  /** v36 (PER-D-164): el antes y el después, lado a lado. */
+  cambia: {
+    titulo: 'Lo que cambia',
+    columnas: ['Lo que vives hoy', 'Lo que puede cambiar'],
+    // Cada fila: lo de hoy y lo que puede cambiar (objetos, para volcar-texto).
+    parejas: [
+      { hoy: 'Cumples con todos menos contigo.', luego: 'Te cuentas entre las personas que cuidas.' },
+      { hoy: 'Necesitas algo para desconectar.', luego: 'Puedes parar sin tener que huir.' },
+      { hoy: 'Tras cada logro llega el bajón.', luego: 'Disfrutas lo que consigues sin correr a por lo siguiente.' },
+      { hoy: 'Te prometes que no más y vuelves.', luego: 'Ya no te hace falta prometértelo.' },
+      { hoy: 'Te tragas lo que sientes para no molestar.', luego: 'Lo sientes sin que te desborde.' },
+      { hoy: 'Piensas «yo soy así».', luego: 'Ves que eso lo aprendiste y que se puede soltar.' },
     ],
   },
-  /** Sustituye al párrafo espiritual del v8. Sin «Primero hablamos y comprobamos
-      si esta forma de trabajar encaja contigo.» (ajuste §8). */
-  espiritualidad: [
-    // José, 02/10, literal.
-    'Mi enfoque une esta observación práctica con un trabajo de transformación interior: aprender a relacionarnos de otra manera con lo que sentimos, soltar la necesidad de control y dejar de luchar contra nosotros mismos para empezar a vivir con más consciencia, claridad y libertad.',
-    'No necesitas tener todas las respuestas antes de empezar.',
-  ],
+  // v36: sale «Trabajamos sobre situaciones reales de tu vida» (repetía «Qué
+  // vamos a trabajar»); su última frase pasa al final de «Cómo empezamos».
   encaja: {
     titulo: 'Puede encajar contigo si…',
     lineas: [
       'Hay una conducta, reacción o relación que sabes que te hace daño y aun así vuelves a ella.',
+      'Entre semana cumples con todo y cuando llega el viernes necesitas desconectar como sea.',
       'Has entendido muchas cosas sobre ti, pero entenderlas no ha sido suficiente para dejar de repetirlas.',
       'Has conseguido cosas que pensabas que iban a hacerte sentir bien y el alivio ha durado menos de lo esperado.',
+      'Se ha terminado tu relación de pareja y llenas el hueco con trabajo, salidas o pantallas.',
       'Te descubres buscando aprobación, intentando controlarlo todo, evitando determinadas emociones o llenando el tiempo para no detenerte.',
       'Quieres comprender qué ocurre dentro de ti cuando se activa el patrón, no solo intentar contener sus consecuencias.',
       'Buscas un espacio individual donde poder mirar todo esto con continuidad y honestidad.',
@@ -328,8 +399,9 @@ export const ACOMPANAMIENTO = {
   trabajo: {
     titulo: 'Qué vamos a trabajar',
     // Sin «Cuatro sesiones nos dan un primer marco…» (ajuste §2).
+    // v36 (PER-D-159): el resultado, en lugar de «No prometo un resultado concreto».
     entrada:
-      'Cada proceso es distinto. No prometo un resultado concreto: trabajaremos con lo que vaya apareciendo en tu experiencia.',
+      'Cada proceso es distinto. Lo que buscamos es que vuelvas a estar en paz contigo y con los tuyos sin tirar lo que has construido. Que puedas parar sin tener que huir de lo que sientes.',
     bloques: [
       {
         nombre: 'Reconocer tu patrón',
@@ -343,10 +415,9 @@ export const ACOMPANAMIENTO = {
       },
       {
         nombre: 'Soltar parte del control',
-        // José, 30/09 (noche). Solo se arreglan los espacios junto a las comas y
-        // la coma entre «mejorar» y lo que mejora.
+        // v36: más corto. Sin enlace en la tarjeta (el del control va en la portada).
         texto:
-          'Observamos tu relación con los pensamientos, el control y la identidad que has construido. Dentro del marco que trabajaremos, aprenderás a liberarte del conflicto que habita en ti para mejorar la relación contigo mismo, la relación con tu propósito y aprenderás a construir relaciones sanas y duraderas.',
+          'Observamos tu relación con los pensamientos, el control y la imagen que has construido de ti. Aprendes a soltar el conflicto que llevas dentro. Mejora la relación contigo, con tu propósito y con los demás.',
       },
       {
         nombre: 'Llevarlo a tu vida',
@@ -372,7 +443,7 @@ export const ACOMPANAMIENTO = {
       {
         nombre: 'Me escribes',
         texto:
-          'Cuéntame qué se está repitiendo, qué te está pesando o qué llevas tiempo intentando cambiar. No necesitas saber explicarlo perfectamente.',
+          'Por WhatsApp o desde el formulario. Cuéntame qué se está repitiendo, qué te está pesando o qué llevas tiempo intentando cambiar. No necesitas saber explicarlo perfectamente.',
       },
       {
         nombre: 'Leo personalmente tu caso',
@@ -381,7 +452,7 @@ export const ACOMPANAMIENTO = {
       {
         nombre: 'Hablamos',
         texto:
-          'Si siento que mi forma de trabajar puede aportar algo a tu situación, tendremos una conversación para conocernos y profundizar un poco más en lo que está ocurriendo.',
+          'Si veo que puedo ayudarte, hablamos por WhatsApp o en una llamada para conocernos y mirar con más calma lo que está ocurriendo.',
       },
       {
         nombre: 'Te explico cómo trabajaría contigo',
@@ -390,20 +461,22 @@ export const ACOMPANAMIENTO = {
       },
       {
         nombre: 'Tú decides',
-        texto: 'Sin presión. La conversación también sirve para que tú notes si quieres recorrer este tramo conmigo.',
+        texto: 'La conversación también sirve para que tú notes si quieres recorrer este tramo conmigo.',
       },
     ],
+    /** v36: viene del bloque que sale («Trabajamos sobre situaciones reales…»). */
+    cierre: 'No necesitas tener todas las respuestas antes de empezar.',
   },
   // Nacho, 30/09: sustituye entero a «Tu compromiso contigo mismo».
   compromiso: {
     titulo: 'Yo puedo acompañarte, pero no puedo hacer el proceso por ti',
     parrafos: [
-      'Mi compromiso es poner a tu disposición mi experiencia, mi atención y todo lo que he aprendido recorriendo este camino.',
+      'Mi compromiso es poner a tu disposición mi experiencia, mi atención y todo lo que he aprendido recorriendo este camino. Entre sesión y sesión me tienes por WhatsApp y el ritmo lo marcas tú.',
       'El tuyo es venir dispuesto a observarte con honestidad y llevar lo que descubramos fuera de nuestras conversaciones.',
       // Sin «por pagar 320 € ni» ni «La inversión económica abre el espacio.»
       // (ajuste §2: fuera el precio y lo que justifica la inversión).
       '**La transformación no ocurre por hablar conmigo una hora.**',
-      'Ocurre cuando empiezas a reconocer en tu vida aquello que antes sucedía de forma automática y practicas una respuesta diferente.',
+      'Ocurre cuando empiezas a reconocer en tu vida aquello que antes sucedía de forma automática y te quedas con lo que sientes en vez de salir corriendo. La respuesta distinta llega después.',
       '**Tu atención y tu compromiso son los que pueden darle profundidad.**',
     ],
   },
@@ -431,21 +504,42 @@ export const ACOMPANAMIENTO = {
       },
       {
         pregunta: 'Ya he leído mucho, he trabajado en mí o he hecho terapia. ¿Tiene sentido?',
+        // v36: «Sí.» y sin «ni competir con otros procesos…».
         respuesta: [
-          'Puede tenerlo.',
-          'No necesito que olvides nada de lo que ya has aprendido ni competir con otros procesos que te hayan ayudado.',
+          'Sí.',
+          'No necesito que olvides nada de lo que ya has aprendido.',
           '**Trabajamos sobre lo que sigue ocurriendo hoy.**',
           'Si hay algo que comprendes intelectualmente pero continúa gobernándote cuando aparece una emoción, una relación o una situación concreta, ahí tenemos algo real que observar.',
         ],
       },
       {
+        // v36 (PER-D-159): lo que incluye la oferta.
+        pregunta: '¿Cuánto dura y qué incluye?',
+        respuesta:
+          // v36 (PER-D-164): sale la ficha; la búsqueda del título se queda
+          // aquí, en el texto visible (revisión SEO del 27/11).
+          'Es un acompañamiento emocional online de seis sesiones. Después de cada una te llevas un ejercicio y antes de la siguiente te devuelvo por escrito lo que veo en él. Entre sesiones me tienes por WhatsApp. Vamos a tu ritmo, en dos meses como mínimo.',
+      },
+      {
+        // v36 (PER-D-162): el precio no se publica.
+        pregunta: '¿Cuánto cuesta?',
+        respuesta: 'Te lo cuento en la primera conversación, cuando sepa qué estás viviendo y qué necesitas.',
+      },
+      {
+        // v36 (PER-D-164): los dos frenos de su cliente.
+        pregunta: 'No tengo tiempo para esto.',
+        respuesta:
+          'Las sesiones son online y el ritmo lo marcas tú. Entre sesión y sesión me tienes por WhatsApp. Lo que más tiempo te quita hoy es lo que haces para no sentir.',
+      },
+      {
+        pregunta: 'Me cuesta contar lo que me pasa.',
+        respuesta: 'A mí también me costó. Empieza por lo que puedas contar y lo demás va saliendo.',
+      },
+      {
         pregunta: '¿Cómo puedes ayudarme a transformar lo que estoy viviendo?',
-        // José, 01/10 (tarde): su respuesta nueva, literal.
+        // v36: más corta, con el enlace al artículo «Lo tengo todo».
         respuesta: [
-          'Mi forma de acompañar nace de mi propia experiencia y del camino que me ayudó a transformar mi vida.',
-          'Quiero ayudarte a comprender qué te mantiene atrapado en los mismos patrones, reconocer las emociones y creencias que pueden estar detrás de tus conductas y aprender a relacionarte de otra manera con lo que sientes, sin tener que escapar constantemente de ello.',
-          'Trabajaremos para que puedas soltar parte del miedo y del control, dejar de identificarte tanto con los mecanismos del ego y empezar a tomar decisiones desde un lugar más consciente, libre y conectado con tu esencia.',
-          'Mi propósito es compartir contigo lo que he aprendido y ayudarte a encontrar tu propia manera de llevarlo a la vida.',
+          'Mi forma de acompañar nace de mi propia experiencia. Te ayudo a ver qué te mantiene atrapado en lo mismo y qué sientes debajo de lo que haces. Después aprendes a quedarte con eso sin tener que escapar. Desde ahí empiezas a decidir con más libertad. Lo cuento también en [«Por qué lo tienes todo y no eres feliz»](/blog/lo-tengo-todo-y-no-soy-feliz).',
         ],
       },
       {
@@ -462,12 +556,10 @@ export const ACOMPANAMIENTO = {
       {
         // José, 25/11 (plan SEO, paso 0): «psicoterapia», una de sus tres palabras.
         pregunta: '¿Esto es psicoterapia?',
-        // José, 30/09 (noche): «trasformación» pasa a «transformación», como en el
-        // resto de la web. La segunda línea, reescrita por José tras el compact.
-        respuesta: [
-          '**Trabajo contigo sobre los patrones, mecanismos, decisiones y experiencias que aparecen en tu vida, desde mi experiencia y mi enfoque de coaching y transformación personal.**',
-          'Si estás siguiendo un tratamiento, no tienes que abandonarlo para trabajar conmigo.',
-        ],
+        // v36 (PER-D-162): sin hablar de tratamientos; «coach emocional» en el
+        // texto (SEO: la palabra del título de la página).
+        respuesta:
+          'No. Soy coach emocional y trabajo contigo sobre los patrones, decisiones y experiencias que aparecen en tu vida, desde lo que yo viví y desde cómo salí de ahí.',
       },
     ],
   },
@@ -478,7 +570,7 @@ export const ACOMPANAMIENTO = {
       'No necesitas saber explicarlo perfectamente.',
       'Cuéntame qué se repite, qué te está pesando o qué llevas tiempo intentando cambiar sin conseguir llegar al fondo.',
       '**Lo voy a leer yo.**',
-      'Y si siento que mi forma de trabajar puede aportar algo a lo que estás viviendo, te responderé personalmente para que hablemos.',
+      'Si veo que puedo ayudarte, te respondo para que hablemos.',
       '**Ese es el primer paso.**',
     ],
     boton: 'Quiero contarte mi caso',
@@ -628,7 +720,7 @@ export const GRUPAL = {
           'Escribirme no te compromete a nada. Y si el acompañamiento grupal no es lo apropiado para ti en ese momento, te lo diré con claridad.',
       },
     ],
-    accion: 'Quiero hablar con José',
+    accion: 'Quiero hablar con Jose',
   },
   // Bloque 8 · Preguntas frecuentes
   frecuentes: {
@@ -637,7 +729,8 @@ export const GRUPAL = {
       {
         pregunta: '¿Necesito tener una adicción para participar?',
         respuesta: [
-          'No. El enfoque está centrado en las conductas adictivas y los patrones repetitivos que quieres cambiar. También podemos hablar de otras conductas o respuestas que se repiten y te hacen sufrir. En la conversación previa veremos qué grupo es adecuado para lo que estás viviendo.',
+          // v36 (PER-D-063, PER-D-154): la respuesta entera, sin la frase que repetía.
+          'No. Trabajamos los patrones que se repiten y te hacen sufrir, también las conductas adictivas. En la conversación previa veremos qué grupo es adecuado para lo que estás viviendo.',
         ],
       },
       {
@@ -679,12 +772,13 @@ export const GRUPAL = {
     entrada: [
       'Si llevas tiempo intentando abandonar una conducta o cambiar un patrón y quieres conocer el acompañamiento grupal, escríbeme.',
       'No necesitas explicar perfectamente tu historia ni saber todavía si esta es tu modalidad.',
-      '**Te escucho primero en privado. Después hablamos de cómo puedo acompañarte y de las opciones disponibles.**',
+      // v36: sin «las opciones disponibles» (no se dan opciones, se recomienda).
+      '**Te escucho primero en privado. Después te digo cómo puedo acompañarte.**',
     ],
     boton: 'Quiero contarte mi caso',
     /** El mensaje que WhatsApp deja escrito desde esta página (va en el botón). */
     mensajeWhatsApp:
-      'Hola, José. He leído la sección de acompañamiento grupal y me gustaría contarte mi situación para conocer cómo trabajas y si esta modalidad puede encajar conmigo. ¿Podemos hablar?',
+      'Hola, Jose. He leído la sección de acompañamiento grupal y me gustaría contarte mi situación para conocer cómo trabajas y si esta modalidad puede encajar conmigo. ¿Podemos hablar?',
   },
 };
 
@@ -753,7 +847,8 @@ export const COMUNIDAD = {
       {
         pregunta: '¿Es terapia de grupo?',
         respuesta:
-          'No. Es un espacio de comunidad, reflexión y aprendizaje. No sustituye terapia ni incluye el trabajo individual del acompañamiento 1 a 1.',
+          // v36 (PER-D-162): sin hablar de tratamientos.
+          'No. Es un espacio de comunidad, reflexión y aprendizaje. No incluye el trabajo individual del acompañamiento 1 a 1.',
       },
       {
         pregunta: '¿Tengo que compartir unas creencias concretas?',
@@ -844,7 +939,7 @@ export const BLOG = {
   titulo: 'Blog',
   entrada: 'Artículos sobre el mecanismo que te hace repetir lo mismo.',
   leer: 'Leer el artículo',
-  autor: 'José',
+  autor: 'Jose',
   minutos: 'min de lectura',
   video: {
     titulo: 'Este artículo sale de mi vídeo',
@@ -911,7 +1006,8 @@ export const SEO = {
       // José, 01/10: la síntesis del v23 y el v24 (las dos enteras pasan de 300
       // caracteres y Google corta hacia los 155). José, 04/10 (v30): empieza por la
       // marca para que Google la use al buscar «El mapa que faltaba» (antes tomaba el pie).
-      'El mapa que faltaba: no te falta fuerza de voluntad, hay un mecanismo que te hace repetir patrones y conductas. Coaching de transformación personal con José.',
+      // v36 (27/11): la promesa, con la marca delante.
+      'El mapa que faltaba. Lo tienes todo y no estás bien. Vuelve a estar en paz contigo sin tirar lo que has construido. Acompañamiento online con Jose.',
   },
   acompanamiento: {
     // José, 25/11 (plan SEO, paso 0; DECISIONES-v35.md): sus tres palabras, una en
@@ -920,30 +1016,31 @@ export const SEO = {
     // empieza por el nombre del menú (regla de v24, que vigila auditoria-seo).
     titulo: 'Acompañamiento 1 a 1 · Coach emocional online',
     descripcion:
-      'Decides hacerlo diferente y vuelves a reaccionar igual. Vemos qué se activa antes y practicas otra respuesta. Acompañamiento emocional online con José.',
+      // v36 (27/11): la promesa del 1 a 1, distinta de la portada. El título no cambia.
+      'En dos meses puedes volver a estar en paz contigo y con los tuyos sin tirar lo que has construido. Acompañamiento emocional online con Jose.',
   },
   grupal: {
     // José, 04/10 (v30): más corto, Google lo cortaba con «…».
     titulo: 'Acompañamiento grupal · Siempre vuelves a lo mismo',
     descripcion:
-      'Intentas cambiar y siempre vuelves a lo mismo. Un grupo guiado por José para ver qué ocurre antes de repetir, con el apoyo de otros. Primer contacto privado.',
+      'Intentas cambiar y siempre vuelves a lo mismo. Un grupo guiado por Jose para ver qué ocurre antes de repetir, con el apoyo de otros. Primer contacto privado.',
   },
   // José, 01/10: «Comunidad · El mapa que faltaba».
   comunidad: {
     titulo: 'Comunidad · El mapa que faltaba',
     descripcion:
-      'Para hablar de lo que repites sin aparentar: una comunidad en WhatsApp para compartir este camino con José y otras personas. Participa o escucha.',
+      'Para hablar de lo que repites sin aparentar: una comunidad en WhatsApp para compartir este camino con Jose y otras personas. Participa o escucha.',
   },
   // 06/10 (borrador): la portada del blog. Cada artículo lleva su título y su
   // descripción en su propio fichero (src/content/blog).
   blog: {
     titulo: 'Blog · El mapa que faltaba',
     descripcion:
-      'Artículos de José sobre el mecanismo que te hace repetir patrones y conductas.',
+      'Artículos de Jose sobre el mecanismo que te hace repetir patrones y conductas.',
   },
   escuela: {
     titulo: 'La escuela · Las piezas del Mecanismo · El mapa que faltaba',
     descripcion:
-      'Para reconocer el mecanismo antes de volver a caer en lo mismo: la escuela de José, en preparación, para verlo por ti mismo. Te aviso cuando abra.',
+      'Para reconocer el mecanismo antes de volver a caer en lo mismo: la escuela de Jose, en preparación, para verlo por ti mismo. Te aviso cuando abra.',
   },
 };

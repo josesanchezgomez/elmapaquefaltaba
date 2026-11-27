@@ -7,7 +7,7 @@ export const MARCA = {
   nombre: 'El mapa que faltaba',
   rotulo: 'El mapa que faltaba',
   firma: 'El mapa está en ti. Y yo te acompaño.',
-  persona: 'José',
+  persona: 'Jose',
   apellido: '', // ← pendiente de José
   usuario: '@el_mapa_que_faltaba',
   dominio: 'elmapaquefaltaba.com', // ← pendiente de decidir (también en astro.config.mjs)
@@ -132,20 +132,20 @@ export const FOTOS = {
     ancho: 900,
     alto: 1200,
     cara: '0.27 0.43',
-    alt: 'José, sentado en el muro de un mirador, mirando la ciudad al amanecer',
+    alt: 'Jose, sentado en el muro de un mirador, mirando la ciudad al amanecer',
   },
   // Junto a la carta: «Lo leo yo. Te contesto yo.». 4:5, escribiendo en su
   // ordenador (José, 30/09: «Gemini_Generated_Image_o4yw8zo4yw8zo4yw.jpeg»).
-  carta: { src: '/img/jose-carta.webp', ancho: 400, alto: 500, alt: 'José, leyendo en su ordenador' },
+  carta: { src: '/img/jose-carta.webp', ancho: 400, alto: 500, alt: 'Jose, leyendo en su ordenador' },
   // La miniatura de la barra fija, cuadrada: su cara, de la foto de la ventana.
   mini: { src: '/img/jose-mini.webp', ancho: 192, alto: 192 },
   // v6 (plantilla LifeCoach): las fotos de José en grande.
-  verde: { src: '/img/jose-verde.webp', ancho: 900, alto: 1125, alt: 'José, con camisa verde, mirando a cámara' },
-  americana: { src: '/img/jose-americana.webp', ancho: 900, alto: 1200, alt: 'José, con americana, mirando a cámara' },
-  escritorio: { src: '/img/jose-escritorio.webp', ancho: 896, alto: 1195, alt: 'José, trabajando en su ordenador' },
+  verde: { src: '/img/jose-verde.webp', ancho: 900, alto: 1125, alt: 'Jose, con camisa verde, mirando a cámara' },
+  americana: { src: '/img/jose-americana.webp', ancho: 900, alto: 1200, alt: 'Jose, con americana, mirando a cámara' },
+  escritorio: { src: '/img/jose-escritorio.webp', ancho: 896, alto: 1195, alt: 'Jose, trabajando en su ordenador' },
   // 01/10: subiendo un sendero entre pinos (el grupal, junto a su entrada; la
   // camisa verde se queda solo en la portada, José).
-  sendero: { src: '/img/jose-sendero.webp', ancho: 900, alto: 1125, alt: 'José, subiendo un sendero entre pinos' },
+  sendero: { src: '/img/jose-sendero.webp', ancho: 900, alto: 1125, alt: 'Jose, subiendo un sendero entre pinos' },
 } as const;
 
 /**
@@ -190,7 +190,7 @@ export const FONDOS = {
     src: '/img/jose-monte-perro.webp',
     ancho: 1920,
     alto: 1080,
-    alt: 'José, sentado de espaldas en la ladera de un monte, con su perro',
+    alt: 'Jose, sentado de espaldas en la ladera de un monte, con su perro',
     foco: '50% 85%',
   },
   // José en lo alto de un monte, con el valle entero detrás: «el mapa
@@ -199,7 +199,7 @@ export const FONDOS = {
     src: '/img/jose-panorama.webp',
     ancho: 1920,
     alto: 1080,
-    alt: 'José, agachado en lo alto de un monte, con el valle detrás',
+    alt: 'Jose, agachado en lo alto de un monte, con el valle detrás',
     foco: '40% 55%',
   },
   // José en un prado junto al bosque, con los ojos cerrados y un brazo abierto
@@ -209,7 +209,7 @@ export const FONDOS = {
     src: '/img/jose-pradera.webp',
     ancho: 1920,
     alto: 1080,
-    alt: 'José, con los ojos cerrados y un brazo abierto, en un prado junto al bosque',
+    alt: 'Jose, con los ojos cerrados y un brazo abierto, en un prado junto al bosque',
     foco: '62% 40%',
   },
 } as const;

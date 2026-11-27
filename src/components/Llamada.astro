@@ -1,0 +1,50 @@
+---
+/**
+ * Una llamada a la acción (v36, PER-D-164): una frase corta y debajo el botón
+ * «Escríbeme por WhatsApp». El botón es siempre el mismo; la frase cambia según
+ * el sitio (lo que gana quien escribe, dicho con confianza).
+ */
+import BotonWhatsApp from './BotonWhatsApp.astro';
+import { ACCION } from '../contenido';
+
+interface Props {
+  frase: string;
+  /** Centrada (al pie de una sección) o alineada a la izquierda (en una columna). */
+  centro?: boolean;
+  /** La acción principal de la página (la que vigila la barra fija). */
+  principal?: boolean;
+}
+const { frase, centro = false, principal = false } = Astro.props;
+---
+
+<div class:list={['llamada', { 'llamada--centro': centro }]}>
+  <p class="llamada__frase">{frase}</p>
+  <div class:list={['acciones', { 'acciones--centro': centro }]} data-accion-principal={principal ? '' : undefined}>
+    <BotonWhatsApp texto={ACCION.whatsapp} clase="boton" />
+  </div>
+</div>
+
+<style>
+  .llamada {
+    margin-top: 32px;
+  }
+
+  .llamada--centro {
+    max-width: 640px;
+    margin: 48px auto 0;
+    text-align: center;
+  }
+
+  .llamada__frase {
+    color: var(--color-tinta);
+    font: 500 var(--t-enunciado) / 1.35 var(--font-display);
+  }
+
+  .llamada .acciones {
+    margin-top: 18px;
+  }
+
+  .llamada :global(.boton) {
+    gap: 10px;
+  }
+</style>

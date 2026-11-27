@@ -10,13 +10,15 @@ import { REDES } from '../consts';
 
 interface Props {
   rotulo: string;
+  /** v36: sin WhatsApp, cuando ya va justo encima (la llamada de «Quién soy»). */
+  sinWhatsApp?: boolean;
 }
-const { rotulo } = Astro.props;
+const { rotulo, sinWhatsApp = false } = Astro.props;
 ---
 
 <div class="redes">
   <p class="redes__rotulo">{rotulo}</p>
-  <div class="redes__botones">
+  <div class:list={['redes__botones', { 'redes__botones--dos': sinWhatsApp }]}>
     <a class="boton boton--linea" href={REDES.instagram} target="_blank" rel="noopener noreferrer">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
         <rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect>
@@ -25,7 +27,7 @@ const { rotulo } = Astro.props;
       </svg>
       Instagram
     </a>
-    <BotonWhatsApp />
+    {!sinWhatsApp && <BotonWhatsApp />}
     <a class="boton boton--linea" href={REDES.youtube} target="_blank" rel="noopener noreferrer">
       <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true">
         <rect x="2.5" y="5.5" width="19" height="13" rx="4"></rect>
@@ -53,6 +55,11 @@ const { rotulo } = Astro.props;
     gap: 10px;
     max-width: 560px;
     margin-top: 12px;
+  }
+
+  .redes__botones--dos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 374px;
   }
 
   .redes__botones :global(.boton) {
