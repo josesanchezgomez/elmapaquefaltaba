@@ -31,6 +31,8 @@ import Video from '../components/Video.astro';
 import Caminos from '../components/Caminos.astro';
 import Frecuentes from '../components/Frecuentes.astro';
 import Carta from '../components/Carta.astro';
+import BotonWhatsApp from '../components/BotonWhatsApp.astro';
+import Llamada from '../components/Llamada.astro';
 import { FOTOS, REDES, MARCA } from '../consts';
 import { atarCortas, negritas, esFuerte } from '../lib/texto';
 import {
@@ -45,16 +47,19 @@ import {
   CANAL,
   CAMINOS,
   FRECUENTES_HOME,
+  CONTACTO,
   SEO,
 } from '../contenido';
 import { OG } from '../lib/og';
 import { preguntas, videos } from '../lib/esquema';
 
 const blanca = RECONOCIMIENTO.absolucion.blanca.split(/(?<=,) /);
-// La franja: «Acompañamiento online.» (José, 01/10) y la segunda frase de la
-// ficha del 1 a 1 («Primero hablamos…»), una por icono.
+// La franja: «Acompañamiento online.» (José, 01/10) y la última frase de la
+// ficha del 1 a 1 («Primero hablamos…»), una por icono. v36: la ficha tiene
+// tres frases; la franja toma la última.
 const ficha1 = HERO.franja;
-const [, ficha2] = ACOMPANAMIENTO.ficha.split(/(?<=\.) /);
+// v36 (PER-D-164): sale la ficha; la frase vive en HERO.franjaPrimero.
+const ficha2 = HERO.franjaPrimero;
 const unoAUno = CAMINOS.lista[0];
 ---
 
@@ -69,11 +74,16 @@ const unoAUno = CAMINOS.lista[0];
   <section class="heroe heroe--portada" id="arriba">
     <FotoFondo foto="portada" forma="portada" />
     <div class="envoltorio">
-      <p class="antetitulo">{HERO.antetitulo}</p>
+      {/* 27/11 noche (José): la línea pequeña, en blanco sobre el bosque. */}
+      <p class="antetitulo portada__antetitulo">{HERO.antetitulo}</p>
       <h1>{HERO.titular}</h1>
+      {/* v36 (PER-D-162): la promesa, bajo el titular. 27/11 tarde (PER-D-164):
+           la fibra pasa a abrir el reconocimiento. */}
+      <p class="portada__promesa">{HERO.promesa}</p>
+      {/* v36: una acción principal (WhatsApp) y «Qué es el mapa» de secundaria. */}
       <div class="acciones acciones--centro portada__acciones" data-accion-principal>
-        <a class="boton boton--blanco" href="#mapa">{HERO.accion}</a>
-        <a class="enlace portada__enlace" href="#contacto">{ACCION.caso}</a>
+        <BotonWhatsApp texto={ACCION.whatsapp} clase="boton boton--blanco" />
+        <a class="enlace portada__enlace" href="#mapa">{HERO.accion}</a>
       </div>
     </div>
   </section>
@@ -89,9 +99,8 @@ const unoAUno = CAMINOS.lista[0];
         <span class="circulo circulo--pequeno"><Icono nombre="conversacion" /></span>
         <span>{ficha2}</span>
       </p>
-      {/* José, 05/10: contar el caso es la carta de esta misma página, como los
-           demás botones de contacto de Inicio (antes saltaba a la del 1 a 1). */}
-      <a class="boton franja__boton" href="#contacto">{ACCION.caso}</a>
+      {/* v36: sin botón, para que no haya dos «Cuéntame tu caso» en la primera
+           pantalla (la cabecera ya lo lleva). */}
     </div>
   </section>
 
@@ -115,11 +124,13 @@ const unoAUno = CAMINOS.lista[0];
     <div class="envoltorio">
       <div class="cabeza-seccion">
         <h2 id="t-reconocimiento" set:html={atarCortas(RECONOCIMIENTO.titulo)} />
+        <p class="frase reconocimiento__fibra" set:html={negritas(RECONOCIMIENTO.fibra)} />
         <p>{RECONOCIMIENTO.entrada}</p>
       </div>
       <ul class="puntos">
         {RECONOCIMIENTO.lineas.map((linea) => <li>{linea}</li>)}
       </ul>
+      <p class="fuerte reconocimiento__cierre" set:html={negritas(RECONOCIMIENTO.cierre)} />
     </div>
   </section>
 
@@ -146,7 +157,7 @@ const unoAUno = CAMINOS.lista[0];
         {/* Auditoría UX 05/10: justo tras el bucle el visitante ya se ha reconocido;
              la acción pasa de enlace a botón (el mismo texto, con más peso). */}
         <div class="acciones">
-          <a class="boton" href="#contacto">{ACCION.caso}</a>
+          <BotonWhatsApp texto={ACCION.whatsapp} clase="boton" />
         </div>
       </div>
     </div>
@@ -160,9 +171,7 @@ const unoAUno = CAMINOS.lista[0];
        en una fila y, debajo, la cita de Jung, directa sobre el turquesa. */}
   <section class="banda banda--turquesa pausa" aria-label={MARCA.nombre}>
     <div class="envoltorio">
-      <p class="manifiesto__frases">
-        {HERO.manifiesto.map((frase, i) => (i ? <> <span>{frase}</span></> : <span>{frase}</span>))}
-      </p>
+      {/* v36 (PER-D-163): sale el manifiesto; la cita de Jung se queda. */}
       <figure class="testimonio">
         <span class="testimonio__icono"><Icono nombre="cita" /></span>
         <blockquote>{HERO.cita}</blockquote>
@@ -175,6 +184,8 @@ const unoAUno = CAMINOS.lista[0];
   <section class="banda banda--salvia" id="quien-soy" aria-labelledby="t-quien">
     <div class="envoltorio">
       <div class="columna quien__puente">
+        {/* v36 (PER-D-164, 27/11 tarde): la línea que estaba en la cabecera. */}
+        <p class="frase quien__presentacion">{QUIEN_SOY.presentacion}</p>
         {QUIEN_SOY.puente.map((p) => <p set:html={negritas(p)} />)}
       </div>
       <div class="partida partida--al-reves quien__reja">
@@ -191,7 +202,10 @@ const unoAUno = CAMINOS.lista[0];
         <div class="partida__texto">
           <h2 id="t-quien" class="raya raya--izquierda" set:html={atarCortas(QUIEN_SOY.titulo)} />
           {QUIEN_SOY.parrafos.map((p) => <p set:html={negritas(p)} />)}
-          <Redes rotulo={QUIEN_SOY.redes} />
+          {/* v36 (PER-D-164): la llamada tras su historia. WhatsApp ya va en
+               ella: debajo, Instagram y YouTube. */}
+          <Llamada frase={QUIEN_SOY.llamada} />
+          <Redes rotulo={QUIEN_SOY.redes} sinWhatsApp />
         </div>
       </div>
     </div>
@@ -278,15 +292,59 @@ const unoAUno = CAMINOS.lista[0];
   {/* ═══ 15 · LA CARTA ═══ */}
   <section class="banda banda--salvia admision" id="contacto">
     <div class="envoltorio admision__dentro">
-      <Carta asunto="Cuéntame tu caso — desde la portada" promesaArriba />
+      <Carta asunto="Cuéntame tu caso — desde la portada" promesaArriba whatsappArriba notaWhatsApp={CONTACTO.formularioDebajo} />
     </div>
   </section>
 </Base>
 
 <style>
   /* ── 1 · Portada ── */
+  /* 27/11 noche (José): la línea pequeña en blanco, no en lima, para que se
+     lea sobre la foto del bosque. Conserva la sombra de .heroe .antetitulo. */
+  p.portada__antetitulo {
+    color: #fff;
+    font-size: clamp(13px, 12px + 0.25vw, 15px);
+  }
+
+  /* v36: la promesa, bajo el titular, en blanco sobre la foto con la misma
+     sombra que el antetítulo para que se lea en los claros. */
+  .portada__promesa {
+    max-width: 40ch;
+    margin: 18px auto 0;
+    color: #fff;
+    font-size: var(--t-destacado);
+    line-height: 1.5;
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.6),
+      0 0 14px rgba(0, 0, 0, 0.45);
+  }
+
+  /* v36 (PER-D-164, 27/11 tarde): la fibra abre el reconocimiento y la línea
+     larga de la cabecera abre «Yo fui mi primer caso». */
+  .reconocimiento__fibra {
+    max-width: 30ch;
+    margin: 6px auto 22px;
+  }
+
+  .quien__presentacion {
+    max-width: 40ch;
+    margin-bottom: 26px;
+  }
+
   .portada__acciones {
     margin-top: 34px;
+  }
+
+  .portada__acciones :global(.boton) {
+    gap: 10px;
+  }
+
+  /* v36: la frase que cierra las situaciones. */
+  .reconocimiento__cierre {
+    max-width: 46ch;
+    margin: 40px auto 0;
+    text-align: center;
+    font-size: var(--t-destacado);
   }
 
   .portada__enlace {
@@ -316,10 +374,6 @@ const unoAUno = CAMINOS.lista[0];
     color: var(--color-tinta);
     font-size: var(--t-destacado);
     line-height: 1.5;
-  }
-
-  .franja__boton {
-    justify-self: start;
   }
 
   @media (min-width: 900px) {
