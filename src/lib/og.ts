@@ -8,7 +8,7 @@ import { ACOMPANAMIENTO, COMUNIDAD, ESCUELA, GRUPAL, HERO } from '../contenido';
 import { MARCA } from '../consts';
 
 const alt = (antes: string, titular: string) =>
-  `${MARCA.nombre}. ${antes} «${titular}» José, ${MARCA.usuario}.`;
+  `${MARCA.nombre}. ${antes} «${titular}» Jose, ${MARCA.usuario}.`;
 
 export const OG = {
   portada: { src: '/img/og/portada.jpg', alt: alt(HERO.antetitulo, HERO.titular) },

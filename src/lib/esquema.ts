@@ -20,7 +20,7 @@
  * como una frase suelta (un libro, un artículo…). José es su fundador.
  */
 import { MARCA, REDES, FOTOS, VIDEOS, TITULAR } from '../consts';
-import { CANAL, PIE, ACOMPANAMIENTO, GRUPAL } from '../contenido';
+import { CANAL, PIE, ACOMPANAMIENTO, GRUPAL, SEO } from '../contenido';
 import { sinMarcas } from './texto';
 
 export type Nodo = Record<string, unknown>;
@@ -37,11 +37,14 @@ export const base = (site: URL): Nodo[] => [
     // inteligencias artificiales sepan quién es. Solo en estos datos: el texto
     // visible sigue firmando «José» (MARCA.apellido, vacío, lo usa el pie).
     name: TITULAR.nombre,
-    alternateName: MARCA.persona,
+    // v36 (PER-D-164): la web firma «Jose», sin tilde; el nombre legal la
+    // lleva. Las dos formas, para que Google las una.
+    alternateName: [MARCA.persona, 'José'],
     sameAs: [REDES.instagram, REDES.youtube],
     url: abs('/', site),
     image: abs(FOTOS.quienSoy.src, site),
-    jobTitle: 'Coach de transformación personal',
+    // v36 (PER-D-164): lo que dice la web («Soy coach emocional»).
+    jobTitle: 'Coach emocional',
     // Lo que la web cuenta que trabaja (1 a 1, grupal, preguntas frecuentes,
     // comunidad y canal).
     // José, 01/10: el eje es la transformación personal y los patrones; lo
@@ -141,7 +144,7 @@ export const articulo = (
 /** Los acompañamientos: el servicio de cada página, con sus palabras y sin
     precio. El grupal dice «online» en la página desde el 25/11 (v35): aquí también. */
 const SERVICIOS = {
-  unoAUno: { name: ACOMPANAMIENTO.antetitulo, serviceType: 'Coaching individual online', description: ACOMPANAMIENTO.ficha },
+  unoAUno: { name: ACOMPANAMIENTO.antetitulo, serviceType: 'Acompañamiento emocional online', description: SEO.acompanamiento.descripcion },
   grupal: { name: GRUPAL.nombre, serviceType: 'Coaching grupal online', description: GRUPAL.presentacion },
 } as const;
 

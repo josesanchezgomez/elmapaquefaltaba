@@ -1,0 +1,311 @@
+---
+/**
+ * EL BUCLE DE SU CLIENTE (v36, PER-D-164), para el 1 a 1.
+ *
+ * El mismo dibujo que el bucle de la portada (Bucle.astro, que no se toca): la
+ * vuelta repasada como un surco, la hondonada del centro y la línea que entra
+ * en ella y se enciende. Aquí la vuelta tiene seis estaciones numeradas y los
+ * seis pasos van al lado, como lista de verdad (texto que se lee, que lee
+ * Google y que lee el lector de pantalla). Por eso el dibujo va oculto para
+ * el lector de pantalla: no repite lo que ya dice la lista.
+ *
+ * La línea que entra en la hondonada sale de la estación 6 («yo soy así») y
+ * debajo de la lista va su frase: «No eres así…».
+ */
+import { anillo, barbas, curva, muestrea, pincel, temblor, type Punto } from '../lib/trazo';
+
+interface Props {
+  pasos: string[];
+  salida: string;
+}
+const { pasos, salida } = Astro.props;
+
+const ANCHO = 390;
+const ALTO = 380;
+const C: Punto = [195, 190];
+const RX = 150;
+const RY = 150;
+
+const en = (grados: number, k = 1): Punto => {
+  const a = (grados * Math.PI) / 180;
+  return [C[0] + RX * k * Math.cos(a), C[1] + RY * k * Math.sin(a)];
+};
+
+/* Seis estaciones en el sentido de las agujas del reloj, la 1 arriba. */
+const ANGULOS = [-90, -30, 30, 90, 150, 210];
+const estaciones = ANGULOS.map((g) => en(g));
+
+const vuelta = (semilla: number, k: number): string => {
+  const pts: Punto[] = [];
+  for (let i = 0; i < 18; i++) {
+    const a = (i / 18) * Math.PI * 2;
+    pts.push([C[0] + RX * k * Math.cos(a), C[1] + RY * k * Math.sin(a)]);
+  }
+  const linea = muestrea(pts, 4, true);
+  return curva(temblor(linea, 2.4, semilla).filter((_, i) => i % 3 === 0), true);
+};
+const pasadas = [
+  { d: vuelta(5, 1), clase: 'pasada pasada--1' },
+  { d: vuelta(11, 1.016), clase: 'pasada pasada--2' },
+  { d: vuelta(17, 0.986), clase: 'pasada pasada--3' },
+  { d: vuelta(23, 1.028), clase: 'pasada pasada--4' },
+];
+
+/* Flechitas del sentido, a medio camino entre estación y estación. */
+const flecha = (grados: number) => {
+  const [x, y] = en(grados);
+  const a = (grados * Math.PI) / 180;
+  const t: Punto = [-RX * Math.sin(a), RY * Math.cos(a)];
+  const L = Math.hypot(t[0], t[1]);
+  const [ux, uy] = [t[0] / L, t[1] / L];
+  const l = 7;
+  const p1: Punto = [x - ux * l - uy * l * 0.7, y - uy * l + ux * l * 0.7];
+  const p2: Punto = [x - ux * l + uy * l * 0.7, y - uy * l - ux * l * 0.7];
+  return `M${p1[0].toFixed(1)} ${p1[1].toFixed(1)}L${x.toFixed(1)} ${y.toFixed(1)}L${p2[0].toFixed(1)} ${p2[1].toFixed(1)}`;
+};
+const flechas = [-60, 0, 60, 120, 180, 240].map(flecha).join('');
+
+/* La hondonada del centro y la salida desde la estación 6. */
+const H: Punto = [C[0] + 4, C[1] + 8];
+const curvas = [1, 0.6].map((k, i) => anillo([H[0] - 3 * i, H[1] + 3 * i], 62 * k, 48 * k, 41 + i * 9, 0.12, -10));
+const SEIS = estaciones[5];
+const recorrido: Punto[] = [SEIS, [SEIS[0] + 34, SEIS[1] + 6], [H[0] - 40, H[1] - 26], H];
+const trazoSalida = pincel(recorrido, 3.4, 0.25, 12);
+const ejeSalida = curva(recorrido);
+---
+
+<div class="bucle-cli" data-bucle-cli>
+  <figure class="caja bucle-cli__dibujo" aria-hidden="true">
+    <svg viewBox={`0 0 ${ANCHO} ${ALTO}`}>
+      <defs>
+        <mask id="bucle-cli-m" maskUnits="userSpaceOnUse" x="-20" y="-20" width={ANCHO + 40} height={ALTO + 40}>
+          <path class="revela-salida" pathLength="1" d={ejeSalida} fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"></path>
+        </mask>
+        <radialGradient id="bucle-cli-luz">
+          <stop offset="0" stop-color="#5E998F" stop-opacity="0.55"></stop>
+          <stop offset="0.55" stop-color="#5E998F" stop-opacity="0.16"></stop>
+          <stop offset="1" stop-color="#5E998F" stop-opacity="0"></stop>
+        </radialGradient>
+      </defs>
+
+      <g class="bucle-cli__hondonada">
+        {curvas.map((pts) => <path d={curva(pts, true)} />)}
+        <path class="bucle-cli__barbas" d={barbas(curvas[0], H, 9, 5, 4)}></path>
+      </g>
+
+      {pasadas.map((p) => <path class:list={p.clase} pathLength="1" d={p.d}></path>)}
+      <path class="bucle-cli__flechas" d={flechas}></path>
+
+      <path class="bucle-cli__salida" d={trazoSalida} mask="url(#bucle-cli-m)"></path>
+      <g class="bucle-cli__luz">
+        <ellipse cx={H[0]} cy={H[1]} rx="54" ry="42" fill="url(#bucle-cli-luz)"></ellipse>
+        <circle cx={H[0]} cy={H[1]} r="6"></circle>
+      </g>
+
+      <g class="bucle-cli__estaciones">
+        {
+          estaciones.map(([x, y], i) => (
+            <g>
+              <circle cx={x} cy={y} r="17"></circle>
+              <text x={x} y={y + 6.5} text-anchor="middle">{i + 1}</text>
+            </g>
+          ))
+        }
+      </g>
+    </svg>
+  </figure>
+
+  <div class="bucle-cli__texto">
+    <ol class="bucle-cli__pasos">
+      {pasos.map((p) => <li>{p}</li>)}
+    </ol>
+    <p class="bucle-cli__fuera">{salida}</p>
+  </div>
+</div>
+
+<style>
+  .bucle-cli {
+    display: grid;
+    gap: 32px;
+    align-items: center;
+  }
+
+  @media (min-width: 900px) {
+    .bucle-cli {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(40px, 5vw, 80px);
+    }
+  }
+
+  .bucle-cli__dibujo {
+    padding: clamp(12px, 2vw, 28px);
+  }
+
+  .bucle-cli__dibujo svg {
+    display: block;
+    width: 100%;
+    max-width: 460px;
+    height: auto;
+    margin-inline: auto;
+    overflow: visible;
+  }
+
+  .bucle-cli__hondonada path {
+    fill: var(--color-terreno);
+    stroke: var(--color-curva-nivel);
+    stroke-width: 1.1;
+  }
+
+  .bucle-cli__hondonada .bucle-cli__barbas {
+    fill: none;
+    stroke: var(--color-curva-nivel);
+    stroke-linecap: round;
+  }
+
+  .pasada {
+    fill: none;
+    stroke: var(--color-vuelta);
+    stroke-linecap: round;
+  }
+  .pasada--1 {
+    stroke-width: 2.4;
+  }
+  .pasada--2 {
+    stroke-width: 1.5;
+    opacity: 0.6;
+  }
+  .pasada--3 {
+    stroke-width: 1.3;
+    opacity: 0.45;
+  }
+  .pasada--4 {
+    stroke-width: 1.1;
+    opacity: 0.3;
+  }
+
+  .bucle-cli__flechas {
+    fill: none;
+    stroke: var(--color-vuelta);
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .bucle-cli__salida {
+    fill: var(--color-hilo);
+  }
+
+  .bucle-cli__luz circle {
+    fill: var(--color-hilo);
+  }
+
+  /* Las estaciones: el número dentro, como los pasos de «Cómo empezamos». */
+  .bucle-cli__estaciones circle {
+    fill: #fff;
+    stroke: var(--color-vuelta);
+    stroke-width: 2.2;
+  }
+
+  .bucle-cli__estaciones text {
+    font: 600 18px var(--font-display);
+    fill: var(--color-vuelta-texto);
+  }
+
+  /* La lista: el mismo número, en su círculo, al principio de cada paso. */
+  .bucle-cli__pasos {
+    counter-reset: paso;
+    display: grid;
+    gap: 14px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bucle-cli__pasos li {
+    counter-increment: paso;
+    position: relative;
+    padding-left: 48px;
+    min-height: 34px;
+    padding-top: 4px;
+  }
+
+  .bucle-cli__pasos li::before {
+    content: counter(paso);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 2px solid var(--color-vuelta);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--color-vuelta-texto);
+    font: 600 16px / 1 var(--font-display);
+  }
+
+  .bucle-cli__fuera {
+    margin-top: 28px;
+    color: var(--color-tinta);
+    font: 500 var(--t-enunciado) / 1.35 var(--font-display);
+  }
+
+  /* Se dibuja al llegar a él, una vez, como el de la portada. */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .bucle-cli .pasada,
+    :global(.js) .bucle-cli .revela-salida {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+    :global(.js) .bucle-cli .bucle-cli__flechas,
+    :global(.js) .bucle-cli .bucle-cli__estaciones,
+    :global(.js) .bucle-cli .bucle-cli__luz {
+      opacity: 0;
+      transition: opacity 500ms ease;
+    }
+    :global(.js) .bucle-cli[data-visto] .pasada {
+      animation: trazar-bucle-cli 1.1s cubic-bezier(0.4, 0.1, 0.3, 1) forwards;
+    }
+    :global(.js) .bucle-cli[data-visto] .pasada--2 {
+      animation-delay: 0.25s;
+    }
+    :global(.js) .bucle-cli[data-visto] .pasada--3 {
+      animation-delay: 0.5s;
+    }
+    :global(.js) .bucle-cli[data-visto] .pasada--4 {
+      animation-delay: 0.75s;
+    }
+    :global(.js) .bucle-cli[data-visto] .bucle-cli__flechas,
+    :global(.js) .bucle-cli[data-visto] .bucle-cli__estaciones {
+      opacity: 1;
+      transition-delay: 0.9s;
+    }
+    :global(.js) .bucle-cli[data-visto] .revela-salida {
+      animation: trazar-bucle-cli 900ms cubic-bezier(0.5, 0, 0.3, 1) 1.7s forwards;
+    }
+    :global(.js) .bucle-cli[data-visto] .bucle-cli__luz {
+      opacity: 1;
+      transition-delay: 2.5s;
+    }
+  }
+
+  @keyframes trazar-bucle-cli {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+</style>
+
+<script>
+  // Sin JavaScript (sin la clase .js de Base.astro) el dibujo está entero.
+  const io = new IntersectionObserver(
+    (entradas) =>
+      entradas.forEach((e) => {
+        if (!e.isIntersecting) return;
+        e.target.setAttribute('data-visto', '');
+        io.unobserve(e.target);
+      }),
+    { threshold: 0.3 }
+  );
+  document.querySelectorAll<HTMLElement>('[data-bucle-cli]').forEach((b) => io.observe(b));
+</script>

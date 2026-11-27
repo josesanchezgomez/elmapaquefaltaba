@@ -53,13 +53,18 @@ const escapa = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').rep
  * compara verificar-texto.
  */
 export const negritas = (texto: string): string =>
-  escapa(atarCifras(atarRayas(texto))).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  escapa(atarCifras(atarRayas(texto)))
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    // v36 (27/11): un enlace a un artículo dentro de una frase, como en
+    // Markdown: [texto](/ruta). Solo rutas de la propia web.
+    .replace(/\[([^\]]+)\]\((\/[^)\s]*)\)/g, '<a class="enlace" href="$2">$1</a>');
 
 /** ¿El párrafo entero va en negrita? (para darle su paso de la escala). */
 export const esFuerte = (texto: string): boolean => /^\*\*[^*]+\*\*$/.test(texto);
 
 /** El texto sin las marcas de negrita (atributos, cortes por frase…). */
-export const sinMarcas = (texto: string): string => texto.replace(/\*\*/g, '');
+export const sinMarcas = (texto: string): string =>
+  texto.replace(/\*\*/g, '').replace(/\[([^\]]+)\]\(\/[^)\s]*\)/g, '$1');
 
 export const atarCortas = (texto: string): string => {
   const salida: string[] = [];
